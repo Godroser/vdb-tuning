@@ -1,0 +1,7 @@
+nohup: ignoring input
+Traceback (most recent call last):
+  File "/home/dzh/project/vdtuner/auto-configure/vdtuner/main_tuner.py", line 4, in <module>
+    from optimizer_pobo_sa import PollingBayesianOptimization
+  File "/home/dzh/project/vdtuner/auto-configure/vdtuner/optimizer_pobo_sa.py", line 2, in <module>
+    from botorch.models import SingleTaskGP
+ModuleNotFoundError: No module named 'botorch'
