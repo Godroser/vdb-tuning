@@ -1,0 +1,25 @@
+[
+  {
+    "name": "milvus-p10",
+    "engine": "milvus",
+    "connection_params": {
+      "port": "19531"
+    },
+    "collection_params": {},
+    "search_params": [
+      {
+        "parallel": 10,
+        "params": {
+          "nprobe": 10
+        }
+      }
+    ],
+    "upload_params": {
+      "parallel": 32,
+      "index_type": "IVF_SQ8",
+      "index_params": {
+        "nlist": 128
+      }
+    }
+  }
+]

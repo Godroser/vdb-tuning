@@ -1,0 +1,8 @@
+stopit
+typer
+tqdm
+elasticsearch
+pymilvus
+opensearch-py
+redis
+weaviate
