@@ -1,0 +1,33 @@
+[2025-12-22 11:11:16] --- OtterTune VDTuner Integration ---
+
+[2025-12-22 11:11:16] Initializing environment...
+[2025-12-22 11:11:16] Number of knobs: 16
+[2025-12-22 11:11:16] 
+--- Initial Sampling ---
+
+[2025-12-22 11:11:16] Generating 7 initial samples using Latin Hypercube Sampling...
+[2025-12-22 11:11:16] Initial samples shape: (7, 16)
+[2025-12-22 11:11:16] 
+Running initial sample 1/7...
+[2025-12-22 11:11:16] Index configuration: {'index_type': 'AUTOINDEX', 'nlist': 1757, 'nprobe': 55, 'm': 4, 'nbits': 4, 'M': 52, 'efConstruction': 289, 'ef': 856, 'reorder_k': 629}
+[2025-12-22 11:11:16] System configuration: {'dataCoord*segment*maxSize': 6502, 'dataCoord*segment*sealProportion': 70, 'queryCoord*autoHandoff': True, 'queryCoord*autoBalance': True, 'common*gracefulTime': 16103, 'dataNode*segment*insertBufSize': 6004705020, 'rootCoord*minSegmentSizeToEnableIndex': 2686}
+[2025-12-22 11:16:21] Performance: RPS = 1231.6368, Precision = 0.7671, Objective = 1000000.0000
+[2025-12-22 11:16:21] 
+Running initial sample 2/7...
+[2025-12-22 11:16:21] Index configuration: {'index_type': 'IVF_SQ8', 'nlist': 9334, 'nprobe': 41, 'm': 50, 'nbits': 7, 'M': 39, 'efConstruction': 449, 'ef': 565, 'reorder_k': 864}
+[2025-12-22 11:16:21] System configuration: {'dataCoord*segment*maxSize': 5595, 'dataCoord*segment*sealProportion': 38, 'queryCoord*autoHandoff': True, 'queryCoord*autoBalance': True, 'common*gracefulTime': 86364, 'dataNode*segment*insertBufSize': 7503322741, 'rootCoord*minSegmentSizeToEnableIndex': 8807}
+[2025-12-22 11:23:38] Performance: RPS = 184.6446, Precision = 0.9842, Objective = -184.6446
+[2025-12-22 11:23:38] 
+Running initial sample 3/7...
+[2025-12-22 11:23:38] Index configuration: {'index_type': 'IVF_FLAT', 'nlist': 1306, 'nprobe': 4, 'm': 20, 'nbits': 7, 'M': 58, 'efConstruction': 90, 'ef': 325, 'reorder_k': 929}
+[2025-12-22 11:23:38] System configuration: {'dataCoord*segment*maxSize': 9090, 'dataCoord*segment*sealProportion': 43, 'queryCoord*autoHandoff': True, 'queryCoord*autoBalance': False, 'common*gracefulTime': 1634, 'dataNode*segment*insertBufSize': 5348323113, 'rootCoord*minSegmentSizeToEnableIndex': 7197}
+[2025-12-22 11:28:25] Performance: RPS = 1039.5375, Precision = 0.8644, Objective = 1000000.0000
+[2025-12-22 11:28:25] 
+Running initial sample 4/7...
+[2025-12-22 11:28:25] Index configuration: {'index_type': 'FLAT', 'nlist': 4939, 'nprobe': 58, 'm': 1, 'nbits': 1, 'M': 9, 'efConstruction': 66, 'ef': 916, 'reorder_k': 560}
+[2025-12-22 11:28:25] System configuration: {'dataCoord*segment*maxSize': 4213, 'dataCoord*segment*sealProportion': 95, 'queryCoord*autoHandoff': True, 'queryCoord*autoBalance': True, 'common*gracefulTime': 46135, 'dataNode*segment*insertBufSize': 8850613659, 'rootCoord*minSegmentSizeToEnableIndex': 199}
+[2025-12-22 11:33:21] Performance: RPS = 202.8786, Precision = 1.0000, Objective = -202.8786
+[2025-12-22 11:33:21] 
+Running initial sample 5/7...
+[2025-12-22 11:33:21] Index configuration: {'index_type': 'HNSW', 'nlist': 6329, 'nprobe': 81, 'm': 10, 'nbits': 2, 'M': 33, 'efConstruction': 180, 'ef': 391, 'reorder_k': 409}
+[2025-12-22 11:33:21] System configuration: {'dataCoord*segment*maxSize': 2395, 'dataCoord*segment*sealProportion': 11, 'queryCoord*autoHandoff': False, 'queryCoord*autoBalance': False, 'common*gracefulTime': 38818, 'dataNode*segment*insertBufSize': 3687656241, 'rootCoord*minSegmentSizeToEnableIndex': 3616}

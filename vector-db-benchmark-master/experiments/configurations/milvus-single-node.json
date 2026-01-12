@@ -1,0 +1,24 @@
+[
+  {
+    "name": "milvus-p10",
+    "engine": "milvus",
+    "connection_params": {},
+    "collection_params": {},
+    "search_params": [
+      {
+        "parallel": 10,
+        "params": {
+          "nprobe": 5237,
+          "reorder_k": 568
+        }
+      }
+    ],
+    "upload_params": {
+      "parallel": 32,
+      "index_type": "SCANN",
+      "index_params": {
+        "nlist": 8183
+      }
+    }
+  }
+]
