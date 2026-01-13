@@ -58,44 +58,7 @@ docker compose up -d
 
 # 3. 等待启动 (你的经验数据：90s，这里为了测试可以用短一点，比如 random-100 可能 30s 就够)
 echo ">>> [Step 3] 等待服务启动 (90s)..."
-MAX_WAIT=120
-WAIT_COUNT=0
-while [ $WAIT_COUNT -lt $MAX_WAIT ]; do
-    # 检查容器是否在运行
-    if ! docker ps | grep -q milvus-standalone; then
-        echo "    ⚠️  milvus-standalone 容器未运行，检查日志..."
-        docker logs milvus-standalone --tail 20 2>&1 | grep -E "error|fatal|panic" | head -5 || true
-        echo "    ❌ 容器启动失败，退出"
-        exit 1
-    fi
-    
-    # 检查健康状态
-    HEALTH=$(docker inspect --format='{{.State.Health.Status}}' milvus-standalone 2>/dev/null || echo "none")
-    if [ "$HEALTH" = "healthy" ]; then
-        echo "    ✅ Milvus 服务已就绪"
-        break
-    fi
-    
-    # 检查容器是否退出
-    STATUS=$(docker inspect --format='{{.State.Status}}' milvus-standalone 2>/dev/null || echo "unknown")
-    if [ "$STATUS" = "exited" ]; then
-        echo "    ❌ 容器已退出，退出码: $(docker inspect --format='{{.State.ExitCode}}' milvus-standalone 2>/dev/null || echo 'unknown')"
-        echo "    最后 30 行日志:"
-        docker logs milvus-standalone --tail 30 2>&1
-        exit 1
-    fi
-    
-    sleep 2
-    WAIT_COUNT=$((WAIT_COUNT + 2))
-    if [ $((WAIT_COUNT % 10)) -eq 0 ]; then
-        echo "    等待中... (${WAIT_COUNT}s/${MAX_WAIT}s)"
-    fi
-done
-
-if [ $WAIT_COUNT -ge $MAX_WAIT ]; then
-    echo "    ⚠️  等待超时，但继续尝试运行测试..."
-fi
-
+sleep 90
 
 # 4. 运行 Python 测试
 echo ">>> [Step 4] 运行 Benchmark..."

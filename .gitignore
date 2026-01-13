@@ -69,6 +69,7 @@ vector-db-benchmark-master/engine/**/volumes/
 *.volumes/
 # Specific volume paths
 vector-db-benchmark-master/engine/servers/*/volumes/
+vector-db-benchmark-master/engine/servers/milvus-single-node/volumes/*
 
 # Results
 results/
