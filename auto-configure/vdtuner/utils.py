@@ -11,7 +11,7 @@ import random
 from configure import *
 
 KNOB_PATH = r'/home/z78ding/project/VDTuner/auto-configure/whole_param.json'
-RUN_ENGINE_PATH = r'/home/z78ding/project/VDTuner/vector-db-benchmark-master/run_engine.sh'
+RUN_ENGINE_PATH = r'/home/z78ding/project/VDTuner/vector-db-benchmark-master/run_engine_test.sh'
 
 def LHS_sample(dimension, num_points, seed):
     sampler = qmc.LatinHypercube(d=dimension, seed=seed)
@@ -84,11 +84,11 @@ class StaticEnv:
         return np.concatenate((np.array(Y1).reshape(-1,1), np.array(Y2).reshape(-1,1)), axis=1)
 
 class RealEnv:
-    def __init__(self, bench_path=RUN_ENGINE_PATH, knob_path=KNOB_PATH, dataset_name="glove-100-angular") -> None:
+    def __init__(self, bench_path=RUN_ENGINE_PATH, knob_path=KNOB_PATH, dataset="glove-100-angular") -> None:
         self.bench_path = bench_path
         self.knob_stand = KnobStand(knob_path)
         self.names = list(self.knob_stand.knobs_detail.keys())
-        self.dataset_name = dataset_name
+        self.dataset = dataset  # Store the dataset name
         self.t1 = time.time()
         self.t2 = time.time()
         self.sampled_times = 0
@@ -115,38 +115,64 @@ class RealEnv:
             # print(f"Parameters changed to: {index_conf} {system_conf}")
 
             try:
-                result = sp.run(f'sudo timeout 900 {RUN_ENGINE_PATH} "" "" {self.dataset_name}', shell=True, stdout=sp.PIPE)
+                result = sp.run(f'sudo timeout 2500 {RUN_ENGINE_PATH} "" "" {self.dataset}', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
+                
                 if result.returncode != 0:
                     error_msg = result.stderr.decode() if result.stderr else "Unknown error"
                     raise Exception(f"Benchmark failed with return code {result.returncode}. Error: {error_msg[:200]}")
                 
                 result_output = result.stdout.decode()
-                result_list = result_output.strip().split()
+                lines = result_output.strip().split('\n')
                 
-                # get_result() outputs: mean_precisions rps p95_time (3 values)
-                # We need to extract the last 2 or 3 numeric values
-                # Filter out non-numeric strings and extract numbers
+                # The script outputs results at the end: "📊 测试结果摘要:" followed by three numbers
+                # Try to extract from the last few lines (after result markers)
                 numeric_values = []
-                for item in result_list:
-                    try:
-                        numeric_values.append(float(item))
-                    except ValueError:
+                found_result_section = False
+                
+                # Search from the end backwards for the result section
+                for line in reversed(lines):
+                    if '测试结果摘要' in line or '📊' in line or '结果' in line:
+                        found_result_section = True
                         continue
+                    if found_result_section:
+                        # Extract all numeric values from this line
+                        words = line.strip().split()
+                        for word in words:
+                            try:
+                                numeric_values.append(float(word))
+                            except ValueError:
+                                continue
+                        # If we found 3 values, we're done
+                        if len(numeric_values) >= 3:
+                            break
+                
+                # Fallback: if we didn't find the result section, extract all numeric values from the end
+                if len(numeric_values) < 3:
+                    result_list = result_output.strip().split()
+                    numeric_values = []
+                    for item in result_list:
+                        try:
+                            numeric_values.append(float(item))
+                        except ValueError:
+                            continue
                 
                 if len(numeric_values) < 2:
                     print(f"Warning: Could not extract enough numeric values from output.")
-                    print(f"Output: {result_output[-500:]}")
+                    print(f"Output (last 500 chars): {result_output[-500:]}")
                     print(f"Extracted numeric values: {numeric_values}")
                     raise ValueError(f"Output format unexpected: only found {len(numeric_values)} numeric values")
                 
-                # Typically: [mean_precisions, rps, p95_time] or [rps, p95_time]
+                # The script outputs: mean_precisions rps p95_time
                 # We want: y1 = p95_time (latency), y2 = mean_precisions (recall/precision)
                 if len(numeric_values) >= 3:
-                    # Format: mean_precisions rps p95_time
-                    y1, y2 = numeric_values[-1], numeric_values[0]  # p95_time, mean_precisions
+                    # Take the last 3 values: [mean_precisions, rps, p95_time]
+                    # Index: -3 is mean_precisions, -2 is rps, -1 is p95_time
+                    y1, y2 = numeric_values[-1], numeric_values[-3]  # p95_time, mean_precisions
+                elif len(numeric_values) == 2:
+                    # Fallback: assume last two are rps and p95_time
+                    y1, y2 = numeric_values[-1], numeric_values[0]  # p95_time, rps (fallback)
                 else:
-                    # Format: rps p95_time (fallback)
-                    y1, y2 = numeric_values[-1], numeric_values[0]  # p95_time, rps
+                    raise ValueError(f"Unexpected number of numeric values: {len(numeric_values)}")
                 
                 self.Y1_record.append(y1)
                 self.Y2_record.append(y2)
@@ -155,18 +181,26 @@ class RealEnv:
                 if len(self.Y1_record) > 0 and len(self.Y2_record) > 0:
                     y1, y2 = min(self.Y1_record), min(self.Y2_record)
                 else:
-                    # If no previous records, use default values or raise error
                     print("Error: No previous records available and benchmark failed. Using default values.")
                     y1, y2 = 1000.0, 0.5  # Default fallback values
-                    # Alternatively, you can raise an exception:
-                    # raise Exception("Benchmark failed on first run and no previous records available")
             
             y3 = int(time.time()-self.t2)
             self.sampled_times += 1
 
             self.t2 = time.time()
             print(f'[{self.sampled_times}] {int(self.t2-self.t1)} {y1} {y2} {y3}')
-            sp.run(f'echo [{self.sampled_times}] {int(self.t2-self.t1)} {index_conf} {system_conf} {y1} {y2} {y3} >> record.log', shell=True, stdout=sp.PIPE)
+            # 使用 JSON 格式避免 shell 语法错误，并转义特殊字符
+            import json
+            log_entry = json.dumps({
+                'iteration': self.sampled_times,
+                'time': int(self.t2-self.t1),
+                'index_conf': index_conf,
+                'system_conf': system_conf,
+                'y1': y1,
+                'y2': y2,
+                'y3': y3
+            })
+            sp.run(f'echo {log_entry} >> record.log', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
 
             Y1.append(y1)
             Y2.append(y2)

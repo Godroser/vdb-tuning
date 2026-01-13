@@ -6,3 +6,5 @@ NOTES.md
 
 results/*
 tools/custom/data.json
+
+vector-db-benchmark-master/engine/servers/milvus-single-node/volumes

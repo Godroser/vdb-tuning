@@ -2,6 +2,9 @@ import sys
 # print('\n'.join(sys.path))
 # exit()
 sys.path.append('/home/ytn/.local/lib/python3.11/site-packages')
+import warnings
+# Suppress pkg_resources deprecation warning from stopit
+warnings.filterwarnings("ignore", category=UserWarning, message=".*pkg_resources is deprecated.*")
 
 import fnmatch
 import traceback

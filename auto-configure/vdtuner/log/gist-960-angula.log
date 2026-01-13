@@ -1,0 +1,46 @@
+nohup: ignoring input
+Benchmark failed (attempt 1/3): Benchmark failed with return code 1. Error:  Network milvus  Creating
+ Network milvus  Created
+ Container milvus-minio  Creating
+ Container milvus-etcd  Creating
+ Container milvus-etcd  Created
+ Container milvus-minio  Created
+ Container milvus
+Retrying in 2 seconds...
+Benchmark failed (attempt 2/3): Benchmark failed with return code 1. Error:  Network milvus  Creating
+ Network milvus  Created
+ Container milvus-minio  Creating
+ Container milvus-etcd  Creating
+ Container milvus-etcd  Created
+ Container milvus-minio  Created
+ Container milvus
+Retrying in 2 seconds...
+Benchmark failed after 3 consecutive attempts.
+Traceback (most recent call last):
+  File "/home/z78ding/project/VDTuner/auto-configure/vdtuner/utils.py", line 131, in get_state
+    raise Exception(f"Benchmark failed with return code {result.returncode}. Error: {error_msg[:200]}")
+Exception: Benchmark failed with return code 1. Error:  Network milvus  Creating
+ Network milvus  Created
+ Container milvus-minio  Creating
+ Container milvus-etcd  Creating
+ Container milvus-etcd  Created
+ Container milvus-minio  Created
+ Container milvus
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/z78ding/project/VDTuner/auto-configure/vdtuner/main_tuner.py", line 16, in <module>
+    model.init_sample()
+  File "/home/z78ding/project/VDTuner/auto-configure/vdtuner/optimizer_pobo_sa.py", line 223, in init_sample
+    y = self.env.get_state(x)
+        ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z78ding/project/VDTuner/auto-configure/vdtuner/utils.py", line 184, in get_state
+    raise Exception(f"Benchmark failed {self.max_retries} consecutive times. Aborting program. Last error: {last_error}")
+Exception: Benchmark failed 3 consecutive times. Aborting program. Last error: Benchmark failed with return code 1. Error:  Network milvus  Creating
+ Network milvus  Created
+ Container milvus-minio  Creating
+ Container milvus-etcd  Creating
+ Container milvus-etcd  Created
+ Container milvus-minio  Created
+ Container milvus

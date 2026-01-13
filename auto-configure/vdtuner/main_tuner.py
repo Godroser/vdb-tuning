@@ -6,10 +6,13 @@ from utils import RealEnv
 
 
 if __name__ == '__main__':
+    # ============================================
+    # 配置参数：在这里指定要测试的数据集
+    # ============================================
+    DATASET = "deep-image-96-angular"  # 可以修改为其他数据集，如 "glove-25-angular", "random-100" 等
+    
     # prepare the environment
-    # Change dataset_name to use different datasets: "glove-100-angular", "deep-image-96-angular", etc.
-    dataset_name = "random-match-keyword-100-angular-filters"  # Change this to your desired dataset
-    env = RealEnv(dataset_name=dataset_name)
+    env = RealEnv(dataset=DATASET)
     model = PollingBayesianOptimization(env, seed=1)
     
     # initial sampling
