@@ -11,7 +11,7 @@ import random
 from configure import *
 
 KNOB_PATH = r'/home/z78ding/project/vdb-tuning/auto-configure/whole_param.json'
-RUN_ENGINE_PATH = r'/home/z78ding/project/Vvdb-tuning/vector-db-benchmark-master/run_engine_test.sh'
+RUN_ENGINE_PATH = r'/home/z78ding/project/vdb-tuning/vector-db-benchmark-master/run_engine_test.sh'
 
 def LHS_sample(dimension, num_points, seed):
     sampler = qmc.LatinHypercube(d=dimension, seed=seed)

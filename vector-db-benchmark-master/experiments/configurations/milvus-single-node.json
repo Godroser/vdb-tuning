@@ -12,7 +12,7 @@
     ],
     "upload_params": {
       "parallel": 32,
-      "index_type": "FLAT",
+      "index_type": "AUTOINDEX",
       "index_params": {}
     }
   }
