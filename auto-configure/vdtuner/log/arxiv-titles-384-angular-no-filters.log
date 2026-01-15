@@ -1,1 +1,24 @@
 nohup: ignoring input
+Traceback (most recent call last):
+  File "/home/z78ding/project/vdb-tuning/auto-configure/vdtuner/main_tuner.py", line 4, in <module>
+    from optimizer_pobo_sa import PollingBayesianOptimization
+  File "/home/z78ding/project/vdb-tuning/auto-configure/vdtuner/optimizer_pobo_sa.py", line 9, in <module>
+    from utils import *
+  File "/home/z78ding/project/vdb-tuning/auto-configure/vdtuner/utils.py", line 11, in <module>
+    from configure import *
+  File "/home/z78ding/project/vdb-tuning/auto-configure/vdtuner/../configure.py", line 5, in <module>
+    INDEX_PARAM_DICT = json.load(f)
+                       ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ',' delimiter: line 45 column 9 (char 856)

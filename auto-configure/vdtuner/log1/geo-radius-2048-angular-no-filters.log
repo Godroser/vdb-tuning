@@ -1277,3 +1277,444 @@ instead, which fixes the issues and has the same API. See https://arxiv.org/abs/
 
 instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
   legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[156] 56059 2985196.0 352.82073533162475 463
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[157] 56333 3022509.0 138.4762110216543 274
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[158] 56694 3055300.0 168.5624636351131 360
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[159] 57208 3088033.0 403.8514513289556 514
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[160] 57499 3133250.0 174.86688379198313 291
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[161] 58068 3166192.0 409.33169651404023 568
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[162] 58364 3221910.0 170.28255238803104 295
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[163] 58792 3257831.0 304.4826249089092 428
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[164] 59534 3302916.0 426.7535261278972 741
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[165] 59820 3331496.0 179.2518715360202 285
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[166] 60431 3369190.0 398.4787873351015 611
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[167] 60730 3410687.0 184.47036792291328 299
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[168] 61337 3454755.0 323.1613353029825 606
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[169] 61598 3500877.0 134.62168905884027 260
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[170] 62086 3560527.0 236.7415964808315 488
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[171] 62649 3611589.0 259.80232950206846 562
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[172] 62987 3639415.0 167.7023514378816 338
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[173] 63425 3683616.0 277.72726605599746 437
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[174] 63909 3728292.0 260.67322014505044 483
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[175] 64264 3766104.0 227.10962131759152 355
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[176] 64898 3812470.0 399.0216201422736 634
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[177] 65198 3851669.0 184.63775117322803 299
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[178] 65837 3899732.0 258.9137739641592 638
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[179] 66115 3957448.0 117.43566379602998 278
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[180] 66599 4012420.0 240.48992776498199 484
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[181] 67078 4069258.0 196.42078699497506 478
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[182] 67472 4139989.0 160.1674523516558 394
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[183] 67762 4168666.0 184.44402722269297 289
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[184] 68459 58484.0 271.8735038070008 696
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[185] 68761 133417.0 175.91303213639185 302
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[186] 69363 182305.0 349.3841475388035 601
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[187] 69620 205408.0 156.39953323686495 257
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[188] 69914 229958.0 136.1519054370001 293
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[189] 70294 309906.0 135.9829385052435 380
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[190] 70678 387662.0 157.10685900924727 383
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[191] 71053 446976.0 252.55770664289594 374
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[192] 71608 471001.0 376.6088175517507 554
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[193] 71830 492859.0 122.95176590792835 222
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[194] 72283 513648.0 318.4677059301175 452
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[195] 72556 534379.0 170.581665602047 273
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[196] 72774 554330.0 117.78745396481827 217
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[197] 73112 577009.0 231.32297525415197 338
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+[198] 73637 660659.0 246.68170997314155 524
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[199] 74141 680966.0 205.05605956958607 503
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[200] 74467 702188.0 219.80373095395043 325
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[201] 74727 722514.0 161.99793297285214 260
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[202] 74948 742188.0 120.98297569295391 220
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[203] 75400 761408.0 310.27187803806737 452
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[204] 75720 781734.0 201.78518365323544 319
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[205] 76203 800144.0 276.31546100974083 483
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[206] 76495 818978.0 187.83984886389226 292
+/bin/sh: 1: Syntax error: "(" unexpected
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/acquisition/multi_objective/monte_carlo.py:110: NumericsWarning: qExpectedHypervolumeImprovement has known numerical issues that lead to suboptimal optimization performance. It is strongly recommended to simply replace
+
+	 qExpectedHypervolumeImprovement 	 --> 	 qLogExpectedHypervolumeImprovement 
+
+instead, which fixes the issues and has the same API. See https://arxiv.org/abs/2310.20708 for details.
+  legacy_ei_numerics_warning(legacy_name=type(self).__name__)
+/home/z78ding/project/venv/lib/python3.12/site-packages/botorch/optim/optimize.py:362: BadInitialCandidatesWarning: Unable to find non-zero acquisition function values - initial conditions are being selected randomly.
+  generated_initial_conditions = opt_inputs.get_ic_generator()(
+[207] 76838 838266.0 238.15220046695322 342

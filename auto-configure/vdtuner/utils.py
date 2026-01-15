@@ -115,14 +115,35 @@ class RealEnv:
             # print(f"Parameters changed to: {index_conf} {system_conf}")
 
             try:
-                result = sp.run(f'sudo timeout 2500 {RUN_ENGINE_PATH} "" "" {self.dataset}', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
-                
-                if result.returncode != 0:
-                    error_msg = result.stderr.decode() if result.stderr else "Unknown error"
-                    raise Exception(f"Benchmark failed with return code {result.returncode}. Error: {error_msg[:200]}")
-                
-                result_output = result.stdout.decode()
-                lines = result_output.strip().split('\n')
+                print(f"--- DEBUG: Starting command:---", flush=True)
+                process = sp.Popen(
+                    f'sudo timeout 2400 {RUN_ENGINE_PATH} "milvus-single-node" "milvus-p10" {self.dataset}',
+                    shell=True,
+                    stdout=sp.PIPE,
+                    stderr=sp.STDOUT, # 将错误和标准输出合并，方便实时打印
+                    text=True,
+                    bufsize=1,        # 行缓冲
+                    universal_newlines=True
+                )                
+
+                output_lines = []
+
+                # 实时读取子进程的输出
+                for line in process.stdout:
+                    # 1. 打印到当前终端（这样 nohup 日志就能实时收到了）
+                    sys.stdout.write(line)
+                    sys.stdout.flush() 
+                    # 2. 存入变量供后续解析
+                    output_lines.append(line)
+
+                # 等待子进程结束
+                process.wait()
+
+                if process.returncode != 0:
+                    raise Exception(f"Benchmark failed with return code {process.returncode}")
+
+                result_output = "".join(output_lines)
+                lines = result_output.strip().split('\n')   
                 
                 # The script outputs results at the end: "📊 测试结果摘要:" followed by three numbers
                 # Try to extract from the last few lines (after result markers)
@@ -179,10 +200,11 @@ class RealEnv:
             except Exception as e:
                 print(f"sp.run failed: {e}")
                 if len(self.Y1_record) > 0 and len(self.Y2_record) > 0:
-                    y1, y2 = min(self.Y1_record), min(self.Y2_record)
+                    # y1, y2 = min(self.Y1_record), min(self.Y2_record)
+                    y1, y2 = 0.1, 0.1
                 else:
                     print("Error: No previous records available and benchmark failed. Using default values.")
-                    y1, y2 = 1000.0, 0.5  # Default fallback values
+                    y1, y2 = 0.1, 0.1  # Default fallback values
             
             y3 = int(time.time()-self.t2)
             self.sampled_times += 1

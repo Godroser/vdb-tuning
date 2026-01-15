@@ -29,19 +29,19 @@
     },
     "m": {
         "class": "building",
-        "type": "enum",
-        "default": 8,
+        "type": "enum", 
+        "default": 10,
         "enum_values": [
             1,
             2,
-            6,
-            8,
-            12,
-            24,
-            32,
-            64,
-            128
-        ]  
+            4,
+            5,
+            10,
+            20,
+            25,
+            50,
+            100
+        ]
     },
     "nbits": {
         "class": "building",
