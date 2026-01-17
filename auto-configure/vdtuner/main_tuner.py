@@ -9,7 +9,7 @@ if __name__ == '__main__':
     # ============================================
     # 配置参数：在这里指定要测试的数据集
     # ============================================
-    DATASET = "glove-100-angular"  # 可以修改为其他数据集，如 "glove-25-angular", "random-100" 等
+    DATASET = "arxiv-titles-384-angular-no-filters"  # 可以修改为其他数据集，如 "glove-25-angular", "random-100" 等
     
     # prepare the environment
     env = RealEnv(dataset=DATASET)

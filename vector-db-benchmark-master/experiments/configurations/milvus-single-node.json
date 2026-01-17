@@ -7,13 +7,18 @@
     "search_params": [
       {
         "parallel": 10,
-        "params": {}
+        "params": {
+          "ef": 100
+        }
       }
     ],
     "upload_params": {
       "parallel": 32,
-      "index_type": "FLAT",
-      "index_params": {}
+      "index_type": "HNSW",
+      "index_params": {
+        "M": 53,
+        "efConstruction": 268
+      }
     }
   }
 ]

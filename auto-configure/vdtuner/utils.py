@@ -148,24 +148,20 @@ class RealEnv:
                 # The script outputs results at the end: "📊 测试结果摘要:" followed by three numbers
                 # Try to extract from the last few lines (after result markers)
                 numeric_values = []
-                found_result_section = False
                 
                 # Search from the end backwards for the result section
                 for line in reversed(lines):
+                    # Stop when we encounter the result summary line (don't process this line)
                     if '测试结果摘要' in line or '📊' in line or '结果' in line:
-                        found_result_section = True
-                        continue
-                    if found_result_section:
-                        # Extract all numeric values from this line
-                        words = line.strip().split()
-                        for word in words:
-                            try:
-                                numeric_values.append(float(word))
-                            except ValueError:
-                                continue
-                        # If we found 3 values, we're done
-                        if len(numeric_values) >= 3:
-                            break
+                        break
+                    # Extract all numeric values from this line
+                    print("line1: ", line)
+                    words = line.strip().split()
+                    for word in words:
+                        try:
+                            numeric_values.append(float(word))
+                        except ValueError:
+                            continue
                 
                 # Fallback: if we didn't find the result section, extract all numeric values from the end
                 if len(numeric_values) < 3:
@@ -182,13 +178,14 @@ class RealEnv:
                     print(f"Output (last 500 chars): {result_output[-500:]}")
                     print(f"Extracted numeric values: {numeric_values}")
                     raise ValueError(f"Output format unexpected: only found {len(numeric_values)} numeric values")
-                
+
+                print("numeric_values: ", numeric_values)
                 # The script outputs: mean_precisions rps p95_time
                 # We want: y1 = p95_time (latency), y2 = mean_precisions (recall/precision)
                 if len(numeric_values) >= 3:
                     # Take the last 3 values: [mean_precisions, rps, p95_time]
-                    # Index: -3 is mean_precisions, -2 is rps, -1 is p95_time
-                    y1, y2 = numeric_values[-1], numeric_values[-3]  # p95_time, mean_precisions
+                    # Index: -3 is p95_time, -2 is rps, -1 is mean_precisions
+                    y1, y2, y4 = numeric_values[-1], numeric_values[-3], numeric_values[-2] # mean_precisions, p95_time, rps
                 elif len(numeric_values) == 2:
                     # Fallback: assume last two are rps and p95_time
                     y1, y2 = numeric_values[-1], numeric_values[0]  # p95_time, rps (fallback)
@@ -197,14 +194,15 @@ class RealEnv:
                 
                 self.Y1_record.append(y1)
                 self.Y2_record.append(y2)
+                self.Y4_record.append(y4)
             except Exception as e:
                 print(f"sp.run failed: {e}")
                 if len(self.Y1_record) > 0 and len(self.Y2_record) > 0:
                     # y1, y2 = min(self.Y1_record), min(self.Y2_record)
-                    y1, y2 = 0.1, 0.1
+                    y1, y2, y4 = 0.1, 0.1, 0.1
                 else:
                     print("Error: No previous records available and benchmark failed. Using default values.")
-                    y1, y2 = 0.1, 0.1  # Default fallback values
+                    y1, y2, y4 = 0.1, 0.1, 0.1  # Default fallback values
             
             y3 = int(time.time()-self.t2)
             self.sampled_times += 1
@@ -218,9 +216,10 @@ class RealEnv:
                 'time': int(self.t2-self.t1),
                 'index_conf': index_conf,
                 'system_conf': system_conf,
-                'y1': y1,
-                'y2': y2,
-                'y3': y3
+                'precisions': y1,
+                'p95time': y2,
+                'Time': y3,
+                'RPS': y4
             })
             sp.run(f'echo {log_entry} >> record.log', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
 
