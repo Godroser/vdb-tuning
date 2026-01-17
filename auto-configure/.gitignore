@@ -2,3 +2,5 @@
 *.pyc
 *.png
 *.log
+# 但是允许 vdtuner/log 目录下的日志文件被提交
+!vdtuner/log/*.log

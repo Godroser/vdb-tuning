@@ -222,8 +222,6 @@ class PollingBayesianOptimization:
 
             self.X[k] = self.X[k] + x
             self.Y[k] = self.Y[k] + y.tolist()
-            # print(self.X)
-        
         self.update_model()
 
     def step(self,):

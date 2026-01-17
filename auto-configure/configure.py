@@ -32,7 +32,8 @@ def filter_index_rule(conf):
         building_params = {'M': conf['M'], 'efConstruction': conf['efConstruction']}
         searching_params = {'ef': conf['ef']}
     elif conf['index_type'] in ['SCANN']:
-        building_params = {'nlist': conf['nlist']}
+        # building_params = {'nlist': conf['nlist']}  ##report invalid index params        
+        building_params = {}
         searching_params = {'nprobe': conf['nprobe'], 'reorder_k': conf['reorder_k']}
 
     return conf['index_type'], building_params, searching_params

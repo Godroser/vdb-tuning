@@ -1,7 +1,28 @@
 nohup: ignoring input
-Traceback (most recent call last):
-  File "/home/dzh/project/vdtuner/auto-configure/vdtuner/main_tuner.py", line 4, in <module>
-    from optimizer_pobo_sa import PollingBayesianOptimization
-  File "/home/dzh/project/vdtuner/auto-configure/vdtuner/optimizer_pobo_sa.py", line 2, in <module>
-    from botorch.models import SingleTaskGP
-ModuleNotFoundError: No module named 'botorch'
+    执行基准测试（这可能需要几分钟，请耐心等待...）
+    配置: index_type=FLAT
+    执行命令: /home/dzh/project/vdtuner/vector-db-benchmark-master/run_engine_test.sh "" "" deep-image-96-angular
+    ✓ 测试成功: RPS=40.27, Precision=0.9999
+[1] 1338 40.267165003857826 0.999942 1338
+    执行基准测试（这可能需要几分钟，请耐心等待...）
+    配置: index_type=IVF_FLAT
+    执行命令: /home/dzh/project/vdtuner/vector-db-benchmark-master/run_engine_test.sh "" "" deep-image-96-angular
+    ✓ 测试成功: RPS=489.73, Precision=0.9760
+[2] 2472 489.7276521555878 0.97598 1133
+    执行基准测试（这可能需要几分钟，请耐心等待...）
+    配置: index_type=IVF_SQ8
+    执行命令: /home/dzh/project/vdtuner/vector-db-benchmark-master/run_engine_test.sh "" "" deep-image-96-angular
+    ✓ 测试成功: RPS=1034.47, Precision=0.9567
+[3] 3586 1034.4745446787913 0.95675 1113
+    执行基准测试（这可能需要几分钟，请耐心等待...）
+    配置: index_type=IVF_PQ
+    执行命令: /home/dzh/project/vdtuner/vector-db-benchmark-master/run_engine_test.sh "" "" deep-image-96-angular
+    测试失败 [1/3]: RuntimeError: Test execution failed with return code 1: Unknown error
+    重试第 1 次...
+    执行命令: /home/dzh/project/vdtuner/vector-db-benchmark-master/run_engine_test.sh "" "" deep-image-96-angular
+    测试失败 [2/3]: RuntimeError: Test execution failed with return code 1: Unknown error
+    重试第 2 次...
+    执行命令: /home/dzh/project/vdtuner/vector-db-benchmark-master/run_engine_test.sh "" "" deep-image-96-angular
+    测试失败 [3/3]: RuntimeError: Test execution failed with return code 1: Unknown error
+    ✗ 错误: 连续失败 3 次，退出程序
+    最后一次错误详情: Test execution failed with return code 1: Unknown error

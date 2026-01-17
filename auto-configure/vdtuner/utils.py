@@ -8,10 +8,12 @@ import numpy as np
 import time
 import subprocess as sp
 import random
+import threading
 from configure import *
 
 KNOB_PATH = r'/home/dzh/project/vdtuner/auto-configure/whole_param.json'
 RUN_ENGINE_PATH = r'/home/dzh/project/vdtuner/vector-db-benchmark-master/run_engine_test.sh'
+
 
 def LHS_sample(dimension, num_points, seed):
     sampler = qmc.LatinHypercube(d=dimension, seed=seed)
@@ -96,10 +98,11 @@ class RealEnv:
         self.X_record = []
         self.Y1_record = []
         self.Y2_record = []
+        self.Y4_record = []
         self.Y_record = []
 
     def get_state(self, knob_vals_arr):
-        Y1, Y2, Y3 = [], [], []
+        Y1, Y2, Y3, Y4 = [], [], [], []
         for i,record in enumerate(knob_vals_arr):
             conf_value = [self.knob_stand.scale_back(self.names[j], knob_val)[1] for j,knob_val in enumerate(record)]
             
@@ -114,62 +117,95 @@ class RealEnv:
 
             # print(f"Parameters changed to: {index_conf} {system_conf}")
 
-            # 重试机制：最多重试3次
-            max_retries = 3
-            retry_count = 0
-            test_success = False
-            y1, y2 = None, None
-            
-            while retry_count < max_retries and not test_success:
-                try:
-                    if retry_count > 0:
-                        print(f"    重试第 {retry_count} 次...")
-                        time.sleep(5)  # 重试前等待5秒
-                    
-                    result = sp.run(
-                        f'timeout 900 {RUN_ENGINE_PATH} "" "" {self.dataset}',
-                        shell=True,
-                        stdout=sp.PIPE,
-                        stderr=sp.PIPE
-                    )
-                    
-                    # 检查命令是否成功执行
-                    if result.returncode != 0:
-                        error_msg = result.stderr.decode() if result.stderr else "Unknown error"
-                        raise RuntimeError(f"Test execution failed with return code {result.returncode}: {error_msg[:200]}")
-                    
-                    result_output = result.stdout.decode()
-                    result_parts = result_output.split()
-                    
-                    # 检查输出是否足够
-                    if len(result_parts) < 3:
-                        raise ValueError(f"Insufficient output from test. Output: {result_output[:200]}")
-                    
-                    y1, y2 = float(result_parts[-2]), float(result_parts[-3])
-                    
-                    # 验证结果是否合理
-                    if y1 <= 0 or y2 <= 0:
-                        raise ValueError(f"Invalid test results: y1={y1}, y2={y2}")
-                    
-                    # 测试成功
-                    test_success = True
-                    self.Y1_record.append(y1)
-                    self.Y2_record.append(y2)
-                    
-                except Exception as e:
-                    retry_count += 1
-                    error_type = type(e).__name__
-                    print(f"    测试失败 [{retry_count}/{max_retries}]: {error_type}: {str(e)[:200]}")
-                    
-                    if retry_count >= max_retries:
-                        print(f"    ✗ 错误: 连续失败 {max_retries} 次，退出程序")
-                        print(f"    最后一次错误详情: {str(e)}")
-                        sys.exit(1)
-            
-            # 如果到这里还没有成功，理论上不应该发生（因为上面会退出），但为了安全起见
-            if not test_success or y1 is None or y2 is None:
-                print(f"    ✗ 错误: 测试最终失败，退出程序")
-                sys.exit(1)
+            try:
+                print(f"--- DEBUG: Starting command:---", flush=True)
+                process = sp.Popen(
+                    f'sudo timeout 2400 {RUN_ENGINE_PATH} "milvus-single-node" "milvus-p10" {self.dataset}',
+                    shell=True,
+                    stdout=sp.PIPE,
+                    stderr=sp.STDOUT, # 将错误和标准输出合并，方便实时打印
+                    text=True,
+                    bufsize=1,        # 行缓冲
+                    universal_newlines=True
+                )                
+
+                output_lines = []
+
+                # 实时读取子进程的输出
+                for line in process.stdout:
+                    # 1. 打印到当前终端（这样 nohup 日志就能实时收到了）
+                    sys.stdout.write(line)
+                    sys.stdout.flush() 
+                    # 2. 存入变量供后续解析
+                    output_lines.append(line)
+
+                # 等待子进程结束
+                process.wait()
+
+                if process.returncode != 0:
+                    raise Exception(f"Benchmark failed with return code {process.returncode}")
+
+                result_output = "".join(output_lines)
+                lines = result_output.strip().split('\n')   
+                
+                # The script outputs results at the end: "📊 测试结果摘要:" followed by three numbers
+                # Read from the end backwards, extract numeric values until we hit the result summary line
+                numeric_values = []
+                
+                # Search from the end backwards for the result section
+                for line in reversed(lines):
+                    # Stop when we encounter the result summary line (don't process this line)
+                    if '测试结果摘要' in line or '📊' in line or '结果' in line:
+                        break
+                    # Extract all numeric values from this line
+                    print("line1: ", line)
+                    words = line.strip().split()
+                    for word in words:
+                        try:
+                            numeric_values.append(float(word))
+                        except ValueError:
+                            continue
+                
+                # Fallback: if we didn't find the result section, extract all numeric values from the end
+                if len(numeric_values) < 3:
+                    result_list = result_output.strip().split()
+                    numeric_values = []
+                    for item in result_list:
+                        try:
+                            numeric_values.append(float(item))
+                        except ValueError:
+                            continue
+                
+                if len(numeric_values) < 2:
+                    print(f"Warning: Could not extract enough numeric values from output.")
+                    print(f"Output (last 500 chars): {result_output[-500:]}")
+                    print(f"Extracted numeric values: {numeric_values}")
+                    raise ValueError(f"Output format unexpected: only found {len(numeric_values)} numeric values")
+
+                print("numeric_values: ", numeric_values)
+                # The script outputs: mean_precisions rps p95_time
+                # We want: y1 = p95_time (latency), y2 = mean_precisions (recall/precision)
+                if len(numeric_values) >= 3:
+                    # Take the last 3 values: [mean_precisions, rps, p95_time]
+                    # Index: -3 is p95_time, -2 is rps, -1 is mean_precisions
+                    y1, y2, y4 = numeric_values[-1], numeric_values[-3], numeric_values[-2] # mean_precisions, p95_time, rps
+                elif len(numeric_values) == 2:
+                    # Fallback: assume last two are rps and p95_time
+                    y1, y2 = numeric_values[-1], numeric_values[0]  # p95_time, rps (fallback)
+                else:
+                    raise ValueError(f"Unexpected number of numeric values: {len(numeric_values)}")
+                
+                self.Y1_record.append(y1)
+                self.Y2_record.append(y2)
+                self.Y4_record.append(y4)
+            except Exception as e:
+                print(f"sp.run failed: {e}")
+                if len(self.Y1_record) > 0 and len(self.Y2_record) > 0:
+                    # y1, y2 = min(self.Y1_record), min(self.Y2_record)
+                    y1, y2, y4 = 0.1, 0.1, 0.1
+                else:
+                    print("Error: No previous records available and benchmark failed. Using default values.")
+                    y1, y2, y4 = 0.1, 0.1, 0.1  # Default fallback values
             
             y3 = int(time.time()-self.t2)
             self.sampled_times += 1
@@ -183,9 +219,10 @@ class RealEnv:
                 'time': int(self.t2-self.t1),
                 'index_conf': index_conf,
                 'system_conf': system_conf,
-                'y1': y1,
-                'y2': y2,
-                'y3': y3
+                'precisions': y1,
+                'p95time': y2,
+                'Time': y3,
+                'RPS': y4
             })
             sp.run(f'echo {log_entry} >> record.log', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
 

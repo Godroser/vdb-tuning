@@ -50,14 +50,28 @@ fi
 # 2. 重置 Milvus 环境 (Down -> Clean -> Up)
 echo ">>> [Step 2] 重置 Milvus..."
 cd "$MILVUS_DIR"
-docker compose down -v  # 停止并删卷
-sleep 5                 # 稍微缓冲一下
+
+# 停止并删除容器和卷
+echo "    停止并删除容器..."
+docker compose down -v 2>/dev/null || true
+sleep 2
+
+# 清理 volumes 目录（确保完全清理 etcd 数据）
+if [ -d "volumes" ]; then
+    echo "    清理 volumes 目录..."
+    rm -rf volumes/etcd/* volumes/milvus/* volumes/minio/* 2>/dev/null || true
+fi
+
+# 确保没有残留容器
+docker rm -f milvus-standalone milvus-etcd milvus-minio 2>/dev/null || true
+sleep 2
 
 # 启动容器
+echo "    启动容器..."
 docker compose up -d
 
-# 3. 等待启动 (你的经验数据：90s，这里为了测试可以用短一点，比如 random-100 可能 30s 就够)
-echo ">>> [Step 3] 等待服务启动 (90s)..."
+# 3. 等待启动并检查健康状态
+echo ">>> [Step 3] 等待服务启动..."
 MAX_WAIT=120
 WAIT_COUNT=0
 while [ $WAIT_COUNT -lt $MAX_WAIT ]; do
@@ -96,7 +110,6 @@ if [ $WAIT_COUNT -ge $MAX_WAIT ]; then
     echo "    ⚠️  等待超时，但继续尝试运行测试..."
 fi
 
-
 # 4. 运行 Python 测试
 echo ">>> [Step 4] 运行 Benchmark..."
 # 代理设置
@@ -112,7 +125,7 @@ echo ">>> [Step 5] 收尾工作..."
 
 # 杀掉监控进程
 if [ -n "$MONITOR_PID" ]; then
-    kill $MONITOR_PID 2>/dev/null || true
+    kill $MONITOR_PID || true
     # 移动监控日志
     mkdir -p "$MONITOR_DIR/results"
     # 构造文件名

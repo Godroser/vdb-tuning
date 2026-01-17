@@ -8,16 +8,15 @@
       {
         "parallel": 10,
         "params": {
-          "nprobe": 5237,
-          "reorder_k": 568
+          "nprobe": 9000
         }
       }
     ],
     "upload_params": {
       "parallel": 32,
-      "index_type": "SCANN",
+      "index_type": "IVF_SQ8",
       "index_params": {
-        "nlist": 8183
+        "nlist": 10000
       }
     }
   }
