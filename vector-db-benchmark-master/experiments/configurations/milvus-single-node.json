@@ -7,17 +7,13 @@
     "search_params": [
       {
         "parallel": 10,
-        "params": {
-          "nprobe": 9000
-        }
+        "params": {}
       }
     ],
     "upload_params": {
       "parallel": 32,
-      "index_type": "IVF_SQ8",
-      "index_params": {
-        "nlist": 10000
-      }
+      "index_type": "FLAT",
+      "index_params": {}
     }
   }
 ]

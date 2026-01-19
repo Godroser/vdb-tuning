@@ -9,6 +9,8 @@ import time
 import subprocess as sp
 import random
 import threading
+import traceback
+from pathlib import Path
 from configure import *
 
 KNOB_PATH = r'/home/dzh/project/vdtuner/auto-configure/whole_param.json'
@@ -103,6 +105,7 @@ class RealEnv:
 
     def get_state(self, knob_vals_arr):
         Y1, Y2, Y3, Y4 = [], [], [], []
+        record_log_path = Path(__file__).resolve().parent / "record.log"
         for i,record in enumerate(knob_vals_arr):
             conf_value = [self.knob_stand.scale_back(self.names[j], knob_val)[1] for j,knob_val in enumerate(record)]
             
@@ -119,15 +122,15 @@ class RealEnv:
 
             try:
                 print(f"--- DEBUG: Starting command:---", flush=True)
+                # Avoid `shell=True` to prevent shell parsing errors and make args unambiguous.
                 process = sp.Popen(
-                    f'sudo timeout 2400 {RUN_ENGINE_PATH} "milvus-single-node" "milvus-p10" {self.dataset}',
-                    shell=True,
+                    ["sudo", "timeout", "2400", RUN_ENGINE_PATH, "milvus-single-node", "milvus-p10", str(self.dataset)],
                     stdout=sp.PIPE,
-                    stderr=sp.STDOUT, # 将错误和标准输出合并，方便实时打印
+                    stderr=sp.STDOUT,  # 将错误和标准输出合并，方便实时打印
                     text=True,
-                    bufsize=1,        # 行缓冲
-                    universal_newlines=True
-                )                
+                    bufsize=1,         # 行缓冲
+                    universal_newlines=True,
+                )
 
                 output_lines = []
 
@@ -200,6 +203,7 @@ class RealEnv:
                 self.Y4_record.append(y4)
             except Exception as e:
                 print(f"sp.run failed: {e}")
+                traceback.print_exc()
                 if len(self.Y1_record) > 0 and len(self.Y2_record) > 0:
                     # y1, y2 = min(self.Y1_record), min(self.Y2_record)
                     y1, y2, y4 = 0.1, 0.1, 0.1
@@ -224,7 +228,10 @@ class RealEnv:
                 'Time': y3,
                 'RPS': y4
             })
-            sp.run(f'echo {log_entry} >> record.log', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
+            # Write via Python to avoid `/bin/sh` syntax errors when log entry contains special chars.
+            record_log_path.parent.mkdir(parents=True, exist_ok=True)
+            with record_log_path.open("a", encoding="utf-8") as f:
+                f.write(log_entry + "\n")
 
             Y1.append(y1)
             Y2.append(y2)

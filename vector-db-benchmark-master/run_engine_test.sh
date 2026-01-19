@@ -53,6 +53,30 @@ cd "$MILVUS_DIR"
 docker compose down -v  # 停止并删卷
 sleep 5                 # 稍微缓冲一下
 
+# ⚠️ 重要：本项目的 docker-compose.yml 使用的是宿主机目录 bind mount（./volumes/...），
+# `docker compose down -v` 不会删除宿主机目录里的数据。
+# 如果不清理，反复跑可能导致 $MILVUS_DIR/volumes 持续增长占满磁盘。
+#
+# 默认清理宿主机 volumes，可通过 CLEAN_HOST_VOLUMES=0 关闭。
+CLEAN_HOST_VOLUMES=${CLEAN_HOST_VOLUMES:-1}
+if [ "$CLEAN_HOST_VOLUMES" = "1" ]; then
+    # 你这套环境 volumes 目录是固定的；如需改动，可通过 VOLUME_ROOT=/path/to/volumes 覆盖
+    DEFAULT_VOLUME_ROOT="/home/dzh/project/vdtuner/vector-db-benchmark-master/engine/servers/milvus-single-node/volumes"
+    VOLUME_ROOT="${VOLUME_ROOT:-$DEFAULT_VOLUME_ROOT}"
+    # 做个简单防呆：只允许删除固定目录（或以 .../milvus-single-node/volumes 结尾的目录）
+    VOLUME_ROOT_ABS="$(realpath -m "$VOLUME_ROOT" 2>/dev/null || echo "")"
+    if [ -n "$VOLUME_ROOT_ABS" ] && { [ "$VOLUME_ROOT_ABS" = "$DEFAULT_VOLUME_ROOT" ] || [[ "$VOLUME_ROOT_ABS" == */milvus-single-node/volumes ]]; }; then
+        echo "    🧹 清理宿主机数据目录: $VOLUME_ROOT_ABS"
+        sudo rm -rf "${VOLUME_ROOT_ABS:?}/"*
+    else
+        echo "    ⚠️  volumes 目录不符合预期（VOLUME_ROOT=$VOLUME_ROOT -> $VOLUME_ROOT_ABS），跳过清理。"
+    fi
+else
+    echo "    ℹ️  CLEAN_HOST_VOLUMES=0，跳过清理宿主机 volumes。"
+fi
+
+
+
 # 启动容器
 docker compose up -d
 

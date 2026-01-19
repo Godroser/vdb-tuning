@@ -1,4 +1,5 @@
 import torch
+from pathlib import Path
 from botorch.models import SingleTaskGP
 from botorch.models.model_list_gp_regression import ModelListGP
 from botorch.acquisition import ExpectedImprovement, LogExpectedImprovement, ConstrainedExpectedImprovement
@@ -227,7 +228,14 @@ class PollingBayesianOptimization:
     def step(self,):
         if len(self.remain_types) > 1:
             self.successive_abandon()
-        sp.run(f'echo {list(self.chosen_ref_whole)} {list(self.chosen_ref_k.values())}  {list(self.delta_hv.values())} {self.worst_type_record[-1]} {self.remain_types}>> pobo_record.log', shell=True, stdout=sp.PIPE)
+        # Avoid `shell=True` + echo to prevent `/bin/sh` syntax errors when values contain parentheses.
+        pobo_record_path = Path(__file__).resolve().parent / "pobo_record.log"
+        pobo_record_path.parent.mkdir(parents=True, exist_ok=True)
+        with pobo_record_path.open("a", encoding="utf-8") as f:
+            f.write(
+                f"{list(self.chosen_ref_whole)} {list(self.chosen_ref_k.values())} {list(self.delta_hv.values())} "
+                f"{self.worst_type_record[-1]} {self.remain_types}\n"
+            )
 
         polling_k, new_x = self.rr_polling()
         new_y = self.env.get_state(new_x)
