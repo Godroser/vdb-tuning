@@ -461,7 +461,7 @@ if __name__ == "__main__":
         ]
 
         # print(selected_train_files)
-        selected_train_files = [Path('/home/z78ding/project/vdb-tuning/auto-configure/vdtuner/perf-predict-model/200-glove-100-angular.xlsx')]
+        # selected_train_files = [Path('/home/z78ding/project/vdb-tuning/auto-configure/vdtuner/perf-predict-model/200-glove-100-angular.xlsx')]
 
         print("\n训练文件:")
         for path in selected_train_files:
