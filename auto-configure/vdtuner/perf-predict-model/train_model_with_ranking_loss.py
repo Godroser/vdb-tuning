@@ -19,35 +19,35 @@ from pathlib import Path
 # ==================== 配置区域 ====================
 # 指定训练文件列表
 TRAIN_FILES = [
-    "200-arxiv-titles-384-angular-no-filters.xlsx"
+    # "200-arxiv-titles-384-angular-no-filters.xlsx"
     # "200-deep-image-96-angular.xlsx"
-    # "200-glove-25-angular.xlsx"
-    # "200-glove-100-angular.xlsx"
-    # "200-random-match-keyword.xlsx"
+    # "glove-25-angular.xlsx"
+    # "glove-100-angular.xlsx"
+    "random-match-keyword-100-angular-no-filters.xlsx"
     # "200-random-100-match-kw-small-vocab-no-filters.xlsx"
     # "200-random-geo-radius-2048-angular-no-filters.xlsx"
-    # "200-random-match-int-2048-angular-no-filters.xlsx"
-    # "200-random-range-2048-angular-no-filters.xlsx"
+    # "random-match-int-2048-angular-no-filters.xlsx"
+    # "random-range-2048-angular-no-filters.xlsx"
 ]
 
 # 指定测试文件
 TEST_FILES = [
     # "200-arxiv-titles-384-angular-no-filters.xlsx"
     # "200-deep-image-96-angular.xlsx"
-    "200-glove-25-angular.xlsx"
-    # "200-glove-100-angular.xlsx"
-    # "200-random-match-keyword.xlsx"
+    "glove-25-angular.xlsx"
+    # "glove-100-angular.xlsx"
+    # "random-match-keyword-100-angular-no-filters.xlsx"
     # "200-random-100-match-kw-small-vocab-no-filters.xlsx"
     # "200-random-geo-radius-2048-angular-no-filters.xlsx"
-    # "200-random-match-int-2048-angular-no-filters.xlsx"
-    # "200-random-range-2048-angular-no-filters.xlsx"
+    # "random-match-int-2048-angular-no-filters.xlsx"
+    # "random-range-2048-angular-no-filters.xlsx"
 ]
 
 # 从测试文件中随机抽取的样本数量
-N_SAMPLES = 20
+N_SAMPLES = 30
 
 # 随机种子
-RANDOM_STATE = 41
+RANDOM_STATE = 42
 
 # 数据目录
 DATA_DIR = "/home/z78ding/project/vdb-tuning/auto-configure/vdtuner/perf-predict-model"
@@ -103,11 +103,21 @@ def load_performance_data_from_files(data_dir, file_names):
         
         try:
             df = pd.read_excel(file_path)
-            print(f"    数据形状: {df.shape}")
+            print(f"    原始数据形状: {df.shape}")
             print(f"    列名: {df.columns.tolist()}")
             
-            # 添加数据集名称列
-            df['dataset_name'] = dataset_name
+            # 先添加数据集名称列
+            df["dataset_name"] = dataset_name
+
+            # 丢弃包含任意缺失值的整行，确保这些行既不参与训练也不参与测试/抽样
+            before_drop = len(df)
+            df = df.dropna(how="any")
+            after_drop = len(df)
+            if after_drop < before_drop:
+                print(
+                    f"    发现缺失值行，已丢弃 {before_drop - after_drop} 行，"
+                    f"剩余 {after_drop} 行"
+                )
             
             all_data.append(df)
         except ImportError as e:
