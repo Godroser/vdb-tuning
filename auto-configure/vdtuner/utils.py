@@ -99,7 +99,11 @@ class RealEnv:
         self.Y_record = []
 
     def get_state(self, knob_vals_arr):
-        Y1, Y2, Y3 = [], [], []
+        # Return metrics in the following order (for the optimizer):
+        # - col 0: Precisions (larger is better)
+        # - col 1: RPS        (larger is better)
+        # - col 2: Time (optional bookkeeping; not used by current optimizer)
+        Y1, Y2, Y3, Y4 = [], [], [], []
         for i,record in enumerate(knob_vals_arr):
             conf_value = [self.knob_stand.scale_back(self.names[j], knob_val)[1] for j,knob_val in enumerate(record)]
             
@@ -226,8 +230,11 @@ class RealEnv:
             Y1.append(y1)
             Y2.append(y2)
             Y3.append(y3)
+            Y4.append(y4)
 
-        return np.array([Y1,Y2,Y3]).T
+        # NOTE: y2 is p95time (smaller is better), but we return RPS for optimization.
+        # Keep p95time only in logs; optimizer uses (Precisions, RPS).
+        return np.array([Y1, Y4, Y3]).T
 
     def default_conf(self):
         return [self.knob_stand.scale_forward(k, v['default']) for k,v in self.knob_stand.knobs_detail.items()]

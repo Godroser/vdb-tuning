@@ -241,30 +241,29 @@ class PollingBayesianOptimization:
 
     def reward_transform(self,):
         # to calculate within each index type set
-        # Y[0] = precision (越大越好), Y[1] = p95_time (越小越好)
-        # Transform p95_time to inverse (larger is better) for consistent optimization
+        # Y[0] = precision (越大越好), Y[1] = RPS (越大越好)
         Y = []
         self.chosen_ref_k = dict.fromkeys(self.polling_index.keys(), None)
         for k, Y_k in self.Y.items():
-            Y_k_arr = np.array(Y_k)[:,:2]
+            # Keep only (precision, RPS) as the two optimization objectives
+            Y_k_arr = np.array(Y_k)[:, [0, 1]]
             
-            # Transform p95_time to inverse (larger is better)
-            Y_k_arr_transformed = Y_k_arr.copy()
-            Y_k_arr_transformed[:, 1] = 1.0 / (Y_k_arr[:, 1] + 1e-6)  # Add small epsilon to avoid division by zero
-            
-            _, popu = fast_non_dominated_sort(Y_k_arr_transformed)
+            # Both objectives are already "larger is better"
+            _, popu = fast_non_dominated_sort(Y_k_arr)
 
-            fitness = -1 / (np.abs(Y_k_arr_transformed[:,0] / np.max(Y_k_arr_transformed[:,0]) - Y_k_arr_transformed[:,1] / np.max(Y_k_arr_transformed[:,1])) + 1e-6)
+            max0 = np.max(Y_k_arr[:, 0]) + 1e-12
+            max1 = np.max(Y_k_arr[:, 1]) + 1e-12
+            fitness = -1 / (np.abs(Y_k_arr[:,0] / max0 - Y_k_arr[:,1] / max1) + 1e-6)
             fitness[popu[0]] = - fitness[popu[0]]
 
             chosen_idx = np.argmax(fitness)
-            chosen_ref = Y_k_arr_transformed[chosen_idx,:]
+            chosen_ref = Y_k_arr[chosen_idx,:]
             self.chosen_ref_k[k] = chosen_ref.tolist()
 
-            # Normalize by reference point (both metrics are now "larger is better")
-            Y_k_arr_normalized = Y_k_arr_transformed.copy()
-            Y_k_arr_normalized[:,0] /= chosen_ref[0]
-            Y_k_arr_normalized[:,1] /= chosen_ref[1]
+            # Normalize by reference point (both metrics are "larger is better")
+            Y_k_arr_normalized = Y_k_arr.copy()
+            Y_k_arr_normalized[:,0] /= (chosen_ref[0] + 1e-12)
+            Y_k_arr_normalized[:,1] /= (chosen_ref[1] + 1e-12)
 
             # Y_k_arr[:,0] = (Y_k_arr[:,0] - nadir_y[0] + 1e-6) / (apex_y[0] - nadir_y[0] + 1e-6)
             # Y_k_arr[:,1] = (Y_k_arr[:,1] - nadir_y[1] + 1e-6) / (apex_y[1] - nadir_y[1] + 1e-6)
@@ -306,23 +305,18 @@ class PollingBayesianOptimization:
  
     def index_type_score(self, ):
         # to calculate within the whole set
-        # Y[0] = precision (越大越好), Y[1] = p95_time (越小越好)
-        # Need to transform p95_time to "larger is better" for consistent optimization
+        # Y[0] = precision (越大越好), Y[1] = RPS (越大越好)
         Y = [j for item in self.Y.values() for j in item]
-        Y_arr = np.array(Y)[:,:2]
-        
-        # Transform p95_time to inverse (larger is better)
-        # Use 1/p95_time to convert: smaller latency -> larger value -> better performance
-        Y_arr_transformed = Y_arr.copy()
-        Y_arr_transformed[:, 1] = 1.0 / (Y_arr[:, 1] + 1e-6)  # Add small epsilon to avoid division by zero
-        
-        _, popu = fast_non_dominated_sort(Y_arr_transformed)
+        Y_arr = np.array(Y)[:, [0, 1]]
+        _, popu = fast_non_dominated_sort(Y_arr)
 
-        fitness = -1 / (np.abs(Y_arr_transformed[:,0] / np.max(Y_arr_transformed[:,0]) - Y_arr_transformed[:,1] / np.max(Y_arr_transformed[:,1])) + 1e-6)
+        max0 = np.max(Y_arr[:, 0]) + 1e-12
+        max1 = np.max(Y_arr[:, 1]) + 1e-12
+        fitness = -1 / (np.abs(Y_arr[:,0] / max0 - Y_arr[:,1] / max1) + 1e-6)
         fitness[popu[0]] = - fitness[popu[0]]
 
         chosen_idx = np.argmax(fitness)
-        self.chosen_ref_whole = Y_arr_transformed[chosen_idx,:]
+        self.chosen_ref_whole = Y_arr[chosen_idx,:]
 
         self.delta_hv = dict.fromkeys(self.remain_types, -9999)
         # if we have not k, how much hv we can still get? 
@@ -331,13 +325,9 @@ class PollingBayesianOptimization:
         for k in self.remain_types:
             Y_nok = [j for i,item in self.Y.items() if i != k for j in item]
 
-            Y_nok_arr = np.array(Y_nok)[:,:2]
-            # Transform p95_time to inverse (larger is better)
-            Y_nok_arr_transformed = Y_nok_arr.copy()
-            Y_nok_arr_transformed[:, 1] = 1.0 / (Y_nok_arr[:, 1] + 1e-6)
-            
-            # Normalize by reference point (both metrics are now "larger is better")
-            Y_nok_arr_normalized = Y_nok_arr_transformed / self.chosen_ref_whole
+            Y_nok_arr = np.array(Y_nok)[:, [0, 1]]
+            # Normalize by reference point (both metrics are "larger is better")
+            Y_nok_arr_normalized = Y_nok_arr / (self.chosen_ref_whole + 1e-12)
             _, popu_nok = fast_non_dominated_sort(Y_nok_arr_normalized)
             popu0_nok = Y_nok_arr_normalized[popu_nok[0],:]
             # print(popu0_nok, ref_point,)

@@ -22,7 +22,10 @@ import json
 DATASET_FILE = "random-match-keyword-100-angular-no-filters.xlsx"
 
 # 输出JSON文件路径（如果为None则不保存）
-OUTPUT_JSON = None  # 例如: "analysis_results.json"
+OUTPUT_JSON = "random-match-keyword-100-angular-no-filters.json"  # 例如: "analysis_results.json"
+
+# Precisions阈值（用于分析旋钮范围时的过滤条件）
+PRECISION_THRESHOLD = 0.80  # 只统计Precisions大于此值的配置
 
 # 数据目录
 DATA_DIR = "/home/z78ding/project/vdb-tuning/auto-configure/vdtuner/perf-predict-model"
@@ -172,10 +175,18 @@ def analyze_important_knobs(df):
     return top_10_knobs, feature_importance
 
 
-def analyze_knob_ranges(df, important_knobs):
+def analyze_knob_ranges(df, important_knobs, precision_threshold=0.80):
     """
     分析旋钮范围
-    针对RPS在超出平均RPS 30%以上的配置下，统计重要旋钮的取值范围
+    1. 首先过滤出Precisions大于阈值的配置
+    2. 在这些配置中计算平均RPS
+    3. 找出RPS超出平均RPS 30%以上的配置
+    4. 统计这些配置中重要旋钮的取值范围
+    
+    Args:
+        df: 数据框
+        important_knobs: 重要旋钮列表
+        precision_threshold: Precisions阈值，默认0.80
     """
     print("\n" + "="*60)
     print("3. 分析重要旋钮的取值范围")
@@ -184,9 +195,13 @@ def analyze_knob_ranges(df, important_knobs):
     if 'RPS' not in df.columns:
         raise ValueError("未找到 'RPS' 列")
     
+    if 'Precisions' not in df.columns:
+        raise ValueError("未找到 'Precisions' 列")
+    
     # 过滤掉缺失值（如果一行中任何列有缺失值，则删除该行）
     before_drop = len(df)
-    df_clean = df[important_knobs + ['RPS']].dropna(how='any')
+    required_cols = important_knobs + ['RPS', 'Precisions']
+    df_clean = df[required_cols].dropna(how='any')
     after_drop = len(df_clean)
     
     if after_drop == 0:
@@ -195,29 +210,38 @@ def analyze_knob_ranges(df, important_knobs):
     if before_drop > after_drop:
         print(f"删除包含缺失值的行: {before_drop - after_drop} 行，剩余有效数据: {after_drop} 行")
     
-    # 计算平均RPS
-    avg_rps = df_clean['RPS'].mean()
-    print(f"平均RPS: {avg_rps:.2f}")
+    # 第一步：筛选Precisions大于阈值的配置
+    df_high_precision = df_clean[df_clean['Precisions'] > precision_threshold].copy()
+    print(f"\nPrecisions阈值: {precision_threshold}")
+    print(f"Precisions > {precision_threshold} 的配置数量: {len(df_high_precision)}")
     
-    # 筛选RPS超出平均RPS 30%以上的配置
-    threshold_rps = avg_rps * 1.3
-    df_high_rps = df_clean[df_clean['RPS'] >= threshold_rps].copy()
-    
-    print(f"RPS阈值 (平均RPS * 1.3): {threshold_rps:.2f}")
-    print(f"满足条件的配置数量: {len(df_high_rps)}")
-    
-    if len(df_high_rps) == 0:
-        print("警告: 没有配置满足RPS >= 平均RPS * 1.3的条件")
+    if len(df_high_precision) == 0:
+        print(f"警告: 没有配置满足 Precisions > {precision_threshold} 的条件")
         return {}
     
-    # 统计每个重要旋钮的取值范围
+    # 第二步：在这些配置中计算平均RPS
+    avg_rps = df_high_precision['RPS'].mean()
+    print(f"Precisions > {precision_threshold} 的配置中，平均RPS: {avg_rps:.2f}")
+    
+    # 第三步：筛选RPS超出平均RPS 30%以上的配置
+    threshold_rps = avg_rps * 1.3
+    df_filtered = df_high_precision[df_high_precision['RPS'] >= threshold_rps].copy()
+    
+    print(f"RPS阈值 (平均RPS * 1.3): {threshold_rps:.2f}")
+    print(f"满足条件的配置数量 (Precisions > {precision_threshold} 且 RPS >= {threshold_rps:.2f}): {len(df_filtered)}")
+    
+    if len(df_filtered) == 0:
+        print(f"警告: 没有配置满足 Precisions > {precision_threshold} 且 RPS >= {threshold_rps:.2f} 的条件")
+        return {}
+    
+    # 第四步：统计每个重要旋钮的取值范围
     knob_ranges = {}
     
     for knob in important_knobs:
-        if knob not in df_high_rps.columns:
+        if knob not in df_filtered.columns:
             continue
         
-        knob_values = df_high_rps[knob]
+        knob_values = df_filtered[knob]
         
         # 如果是数值型
         if pd.api.types.is_numeric_dtype(knob_values):
@@ -239,7 +263,7 @@ def analyze_knob_ranges(df, important_knobs):
             }
     
     # 打印结果
-    print(f"\n重要旋钮的取值范围 (RPS >= {threshold_rps:.2f}):")
+    print(f"\n重要旋钮的取值范围 (Precisions > {precision_threshold} 且 RPS >= {threshold_rps:.2f}):")
     for knob, range_info in knob_ranges.items():
         print(f"\n{knob}:")
         if range_info['type'] == 'numeric':
@@ -283,7 +307,7 @@ def main():
     important_knobs, feature_importance = analyze_important_knobs(df)
     
     # 3. 分析旋钮范围
-    knob_ranges = analyze_knob_ranges(df, important_knobs)
+    knob_ranges = analyze_knob_ranges(df, important_knobs, precision_threshold=PRECISION_THRESHOLD)
     
     # 汇总结果
     results = {
