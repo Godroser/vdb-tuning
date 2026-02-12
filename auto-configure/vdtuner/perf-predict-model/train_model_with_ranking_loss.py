@@ -22,10 +22,10 @@ TRAIN_FILES = [
     # "200-arxiv-titles-384-angular-no-filters.xlsx"
     # "200-deep-image-96-angular.xlsx"
     # "glove-25-angular.xlsx"
-    # "glove-100-angular.xlsx"
-    "random-match-keyword-100-angular-no-filters.xlsx"
+    "glove-100-angular.xlsx"
+    # "random-match-keyword-100-angular-no-filters.xlsx"
     # "200-random-100-match-kw-small-vocab-no-filters.xlsx"
-    # "200-random-geo-radius-2048-angular-no-filters.xlsx"
+    # "random-geo-radius-2048-angular-no-filters.xlsx"
     # "random-match-int-2048-angular-no-filters.xlsx"
     # "random-range-2048-angular-no-filters.xlsx"
 ]
@@ -34,11 +34,11 @@ TRAIN_FILES = [
 TEST_FILES = [
     # "200-arxiv-titles-384-angular-no-filters.xlsx"
     # "200-deep-image-96-angular.xlsx"
-    "glove-25-angular.xlsx"
+    # "glove-25-angular.xlsx"
     # "glove-100-angular.xlsx"
     # "random-match-keyword-100-angular-no-filters.xlsx"
     # "200-random-100-match-kw-small-vocab-no-filters.xlsx"
-    # "200-random-geo-radius-2048-angular-no-filters.xlsx"
+    "random-geo-radius-2048-angular-no-filters.xlsx"
     # "random-match-int-2048-angular-no-filters.xlsx"
     # "random-range-2048-angular-no-filters.xlsx"
 ]
