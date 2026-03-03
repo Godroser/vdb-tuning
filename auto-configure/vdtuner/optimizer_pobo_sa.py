@@ -1,4 +1,5 @@
 import torch
+from typing import Dict, Iterable, List, Optional, Sequence, Set
 from botorch.models import SingleTaskGP
 from botorch.models.model_list_gp_regression import ModelListGP
 from botorch.acquisition import ExpectedImprovement, LogExpectedImprovement, ConstrainedExpectedImprovement
@@ -185,7 +186,14 @@ class EHVIBO:
 
 
 class PollingBayesianOptimization:
-    def __init__(self, env, seed=1206, threshold=None) -> None:
+    def __init__(
+        self,
+        env,
+        seed: int = 1206,
+        threshold=None,
+        allowed_index_types: Optional[Sequence[str]] = None,
+        tune_knobs: Optional[Sequence[str]] = None,
+    ) -> None:
         self.env = env
         self.knob_num = len(env.names)
         self.default_conf = self.env.default_conf()
@@ -207,6 +215,35 @@ class PollingBayesianOptimization:
         }
 
         self.threshold = threshold
+        # Apply priors: restrict which index types participate in polling.
+        if allowed_index_types is not None:
+            allowed_set = set(allowed_index_types)
+            unknown = allowed_set.difference(self.polling_index.keys())
+            if unknown:
+                raise ValueError(f"Unknown index types in allowed_index_types: {sorted(unknown)}")
+            self.polling_index = {k: v for k, v in self.polling_index.items() if k in allowed_set}
+
+        # Apply priors: restrict which knobs are tunable (others fixed to default).
+        # Note: `index_type` itself is controlled by polling, not optimized as a continuous knob.
+        if tune_knobs is not None:
+            name_to_idx: Dict[str, int] = {n: i for i, n in enumerate(self.env.names)}
+            tune_set: Set[int] = set()
+            unknown_knobs: List[str] = []
+            for k in tune_knobs:
+                if k not in name_to_idx:
+                    unknown_knobs.append(k)
+                    continue
+                if k == "index_type":
+                    # Index type is selected via polling; don't treat it as a continuous tunable knob.
+                    continue
+                tune_set.add(name_to_idx[k])
+            if unknown_knobs:
+                raise ValueError(f"Unknown knob names in tune_knobs: {sorted(unknown_knobs)}")
+
+            # Filter the tunable sets.
+            self.polling_sys = [i for i in self.polling_sys if i in tune_set or i == 0]
+            self.polling_index = {t: [i for i in idxs if i in tune_set] for t, idxs in self.polling_index.items()}
+
         self.X = dict.fromkeys(self.polling_index.keys(), [])
         self.Y = dict.fromkeys(self.polling_index.keys(), [])
         
@@ -282,10 +319,18 @@ class PollingBayesianOptimization:
         polling_idx = self.polling_round_num % len(self.remain_types)
         polling_k = self.remain_types[polling_idx]
 
-        fixed_idxs = [i for i in range(self.knob_num) if i not in self.polling_sys+self.polling_index[polling_k]]
+        fixed_idxs = [i for i in range(self.knob_num) if i not in self.polling_sys + self.polling_index[polling_k]]
         fixed_features = dict(zip(fixed_idxs, np.array(self.default_conf)[fixed_idxs]))
         fixed_features[0] = self.env.knob_stand.scale_forward('index_type', polling_k)
-        new_x, ei, new_mean, new_std = self.vbo.recommend(fixed_features, 1, self.threshold)
+
+        # If all dimensions are fixed, skip acquisition optimization and just evaluate the fixed point.
+        if len(fixed_features) >= self.knob_num:
+            vec = np.array(self.default_conf, dtype=float)
+            for idx, val in fixed_features.items():
+                vec[int(idx)] = float(val)
+            new_x = vec.reshape(1, -1)
+        else:
+            new_x, ei, new_mean, new_std = self.vbo.recommend(fixed_features, 1, self.threshold)
 
         self.polling_round_num += 1
         # print(self.polling_round_num)

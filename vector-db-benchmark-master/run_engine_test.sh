@@ -14,14 +14,14 @@ MILVUS_DIR="$SOURCE_DIR/engine/servers/$SERVER_PATH"
 MONITOR_DIR="$SOURCE_DIR/monitoring"
 
 # Activate virtual environment if it exists
-VENV_PATH=${VENV_PATH:-"/home/z78ding/project/venv"}
+VENV_PATH=${VENV_PATH:-"/talas-pool/home/z78ding/venv"}
 if [ -f "$VENV_PATH/bin/activate" ]; then
     source "$VENV_PATH/bin/activate"
 fi
 
 # Use Python from virtual environment if available, otherwise use python3.11
-if [ -f "$VENV_PATH/bin/python3.11" ]; then
-    PYTHON_CMD="$VENV_PATH/bin/python3.11"
+if [ -f "$VENV_PATH/bin/python3.12" ]; then
+    PYTHON_CMD="$VENV_PATH/bin/python3.12"
 elif [ -f "$VENV_PATH/bin/python3" ]; then
     PYTHON_CMD="$VENV_PATH/bin/python3"
 else
@@ -50,7 +50,7 @@ fi
 # 2. 重置 Milvus 环境 (Down -> Clean -> Up)
 echo ">>> [Step 2] 重置 Milvus..."
 cd "$MILVUS_DIR"
-docker compose down -v  # 停止并删卷
+docker-compose down -v  # 停止并删卷
 sleep 5                 # 稍微缓冲一下
 
 # ⚠️ 重要：本项目的 docker-compose.yml 使用的是宿主机目录 bind mount（./volumes/...），
@@ -80,7 +80,12 @@ fi
 # 启动容器
 docker compose up -d
 
-# 3. 等待启动 (你的经验数据：90s，这里为了测试可以用短一点，比如 random-100 可能 30s 就够)
+
+
+# 启动容器
+docker-compose up -d
+
+#  3. 等待启动 (你的经验数据：90s，这里为了测试可以用短一点，比如 random-100 可能 30s 就够)
 echo ">>> [Step 3] 等待服务启动 (90s)..."
 MAX_WAIT=120
 WAIT_COUNT=0

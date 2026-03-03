@@ -9,9 +9,12 @@ import time
 import subprocess as sp
 import random
 from configure import *
+import threading
+import traceback
+from pathlib import Path
 
-KNOB_PATH = r'/home/z78ding/project/vdb-tuning/auto-configure/whole_param.json'
-RUN_ENGINE_PATH = r'/home/z78ding/project/vdb-tuning/vector-db-benchmark-master/run_engine_test.sh'
+KNOB_PATH = r'/talas-pool/home/z78ding/vdb-tuning/auto-configure/whole_param.json'
+RUN_ENGINE_PATH = r'/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/run_engine_test.sh'
 
 def LHS_sample(dimension, num_points, seed):
     sampler = qmc.LatinHypercube(d=dimension, seed=seed)
@@ -96,6 +99,7 @@ class RealEnv:
         self.X_record = []
         self.Y1_record = []
         self.Y2_record = []
+        self.Y4_record = []
         self.Y_record = []
 
     def get_state(self, knob_vals_arr):
@@ -120,15 +124,15 @@ class RealEnv:
 
             try:
                 print(f"--- DEBUG: Starting command:---", flush=True)
+                # Avoid `shell=True` to prevent shell parsing errors and make args unambiguous.
                 process = sp.Popen(
-                    f'sudo timeout 2400 {RUN_ENGINE_PATH} "milvus-single-node" "milvus-p10" {self.dataset}',
-                    shell=True,
+                    ["sudo", "timeout", "2000", RUN_ENGINE_PATH, "milvus-single-node", "milvus-p10", str(self.dataset)],
                     stdout=sp.PIPE,
-                    stderr=sp.STDOUT, # 将错误和标准输出合并，方便实时打印
+                    stderr=sp.STDOUT,  # 将错误和标准输出合并，方便实时打印
                     text=True,
-                    bufsize=1,        # 行缓冲
-                    universal_newlines=True
-                )                
+                    bufsize=1,         # 行缓冲
+                    universal_newlines=True,
+                )
 
                 output_lines = []
 
@@ -150,7 +154,7 @@ class RealEnv:
                 lines = result_output.strip().split('\n')   
                 
                 # The script outputs results at the end: "📊 测试结果摘要:" followed by three numbers
-                # Try to extract from the last few lines (after result markers)
+                # Read from the end backwards, extract numeric values until we hit the result summary line
                 numeric_values = []
                 
                 # Search from the end backwards for the result section
@@ -201,6 +205,7 @@ class RealEnv:
                 self.Y4_record.append(y4)
             except Exception as e:
                 print(f"sp.run failed: {e}")
+                traceback.print_exc()
                 if len(self.Y1_record) > 0 and len(self.Y2_record) > 0:
                     # y1, y2 = min(self.Y1_record), min(self.Y2_record)
                     y1, y2, y4 = 0.1, 0.1, 0.1
@@ -225,7 +230,10 @@ class RealEnv:
                 'Time': y3,
                 'RPS': y4
             })
-            sp.run(f'echo {log_entry} >> record.log', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
+            # Write via Python to avoid `/bin/sh` syntax errors when log entry contains special chars.
+            record_log_path.parent.mkdir(parents=True, exist_ok=True)
+            with record_log_path.open("a", encoding="utf-8") as f:
+                f.write(log_entry + "\n")
 
             Y1.append(y1)
             Y2.append(y2)

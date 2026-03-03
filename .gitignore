@@ -98,6 +98,7 @@ NOTES.md
 .env.local
 
 # Large data files
+*.jsonl
 *.h5
 *.hdf5
 *.pkl

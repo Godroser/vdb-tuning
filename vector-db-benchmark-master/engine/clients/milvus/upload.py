@@ -1,4 +1,6 @@
+import time
 import multiprocessing as mp
+import time
 from typing import List, Optional
 
 from pymilvus import (
@@ -7,6 +9,7 @@ from pymilvus import (
     connections,
     wait_for_index_building_complete,
 )
+from pymilvus.orm import utility
 
 from engine.base_client.upload import BaseUploader
 from engine.clients.milvus.config import (
@@ -86,4 +89,21 @@ class MilvusUploader(BaseUploader):
             )
 
         cls.collection.load()
-        return {}
+
+        time.sleep(50)
+        # Guard against a rare race where search starts before the collection is fully loaded
+        # on QueryNode(s), which can surface as internal bitset/data_count mismatches.
+        # # Prefer a bounded wait; fall back to a short sleep if the client/server doesn't support it.
+        # try:
+        #     # pymilvus versions differ in whether they accept `timeout`.
+        #     try:
+        #         utility.wait_for_loading_complete(
+        #             MILVUS_COLLECTION_NAME, using=MILVUS_DEFAULT_ALIAS, timeout=60
+        #         )
+        #     except TypeError:
+        #         utility.wait_for_loading_complete(
+        #             MILVUS_COLLECTION_NAME, using=MILVUS_DEFAULT_ALIAS
+        #         )
+        # except Exception:
+        #     time.sleep(30)
+        # return {}
