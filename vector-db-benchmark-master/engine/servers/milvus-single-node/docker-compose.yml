@@ -61,6 +61,21 @@ services:
       - "etcd"
       - "minio"
 
+  # 可选：与本栈一起启动 Prometheus，供 run_task_characterization.py 连接 http://127.0.0.1:9090
+  prometheus:
+    container_name: milvus-prometheus
+    image: prom/prometheus:v2.53.2
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.enable-lifecycle"
+    depends_on:
+      - standalone
+
 networks:
   default:
     name: milvus

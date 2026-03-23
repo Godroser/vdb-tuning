@@ -1,14 +1,11 @@
 {
-  "_comment": "Copy to metrics_prometheus.json and edit PromQL for your scrape labels (job, pod, namespace).",
+  "_comment": "可选：复制为 metrics_prometheus.json 并只保留你要改的项。若不传 --metrics-json，则使用 milvus_prometheus_collector.py 中的 DEFAULT_MILVUS_METRICS（约 30+ 维，含 process/go/proxy/querynode 等）。",
+  "_comment_fill": "默认对无数据的查询填 0，保证画像维度一致；若需旧行为（只保留有值的指标）请加 CLI --no-fill-missing。",
   "metrics": {
-    "query_nq": "sum(milvus_proxy_search_vectors_count_total)",
-    "search_latency_avg": "avg(milvus_proxy_search_latency_ms)",
-    "cache_hit_rate": "avg(milvus_querynode_cache_hit_ratio)",
-    "memory_usage_bytes": "sum(process_resident_memory_bytes{job=\"milvus\"})",
     "cpu_usage_percent": "avg(rate(process_cpu_seconds_total{job=\"milvus\"}[1m])) * 100",
-    "segment_count": "sum(milvus_datacoord_segment_count)",
-    "index_build_latency": "avg(milvus_rootcoord_index_build_latency_ms)",
-    "s3_read_bytes": "sum(rate(milvus_storage_download_size_bytes_total[1m]))",
-    "msg_size_in": "sum(rate(milvus_proxy_req_size_bytes_total[1m]))"
+    "memory_usage_bytes": "sum(process_resident_memory_bytes{job=\"milvus\"})",
+    "go_goroutines": "sum(go_goroutines{job=\"milvus\"})",
+    "proxy_search_vectors_total": "sum(milvus_proxy_search_vectors_count_total{job=\"milvus\"})",
+    "proxy_search_latency_p99_ms": "histogram_quantile(0.99, sum(rate(milvus_proxy_search_latency_ms_bucket{job=\"milvus\"}[1m])) by (le))"
   }
 }

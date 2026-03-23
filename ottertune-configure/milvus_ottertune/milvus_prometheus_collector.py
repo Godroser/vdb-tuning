@@ -18,17 +18,51 @@ import requests
 LOG = logging.getLogger(__name__)
 
 # Default PromQL snippets aligned with OtterTune-style numeric workload features (Sec. 4.1).
-# Adjust job labels / metric names to match your deployment (e.g. job="milvus", pod=...).
+# - Use {job='milvus'} when your prometheus.yml sets job_name: milvus (recommended).
+# - Some milvus_* names differ by Milvus version; unknown series return empty → filled with 0 if fill_missing=True.
+# - Go/process metrics usually exist on the same Milvus /metrics scrape.
 DEFAULT_MILVUS_METRICS: Dict[str, str] = {
-    "query_nq": "sum(milvus_proxy_search_vectors_count_total)",
-    "search_latency_avg": "avg(milvus_proxy_search_latency_ms)",
-    "cache_hit_rate": "avg(milvus_querynode_cache_hit_ratio)",
-    "memory_usage_bytes": "sum(process_resident_memory_bytes{job='milvus'})",
+    # --- CPU / memory / process (client_golang) ---
     "cpu_usage_percent": "avg(rate(process_cpu_seconds_total{job='milvus'}[1m])) * 100",
-    "segment_count": "sum(milvus_datacoord_segment_count)",
-    "index_build_latency": "avg(milvus_rootcoord_index_build_latency_ms)",
-    "s3_read_bytes": "sum(rate(milvus_storage_download_size_bytes_total[1m]))",
-    "msg_size_in": "sum(rate(milvus_proxy_req_size_bytes_total[1m]))",
+    "memory_usage_bytes": "sum(process_resident_memory_bytes{job='milvus'})",
+    "process_virtual_memory_bytes": "sum(process_virtual_memory_bytes{job='milvus'})",
+    "process_open_fds": "sum(process_open_fds{job='milvus'})",
+    "process_max_fds": "max(process_max_fds{job='milvus'})",
+    "process_start_time_seconds": "max(process_start_time_seconds{job='milvus'})",
+    # --- Go runtime ---
+    "go_goroutines": "sum(go_goroutines{job='milvus'})",
+    "go_threads": "sum(go_threads{job='milvus'})",
+    "go_memstats_heap_inuse_bytes": "sum(go_memstats_heap_inuse_bytes{job='milvus'})",
+    "go_memstats_heap_alloc_bytes": "sum(go_memstats_heap_alloc_bytes{job='milvus'})",
+    "go_memstats_stack_inuse_bytes": "sum(go_memstats_stack_inuse_bytes{job='milvus'})",
+    "go_memstats_sys_bytes": "sum(go_memstats_sys_bytes{job='milvus'})",
+    "go_memstats_alloc_bytes": "sum(go_memstats_alloc_bytes{job='milvus'})",
+    "go_memstats_mallocs_total_rate": "sum(rate(go_memstats_mallocs_total{job='milvus'}[1m]))",
+    "go_memstats_frees_total_rate": "sum(rate(go_memstats_frees_total{job='milvus'}[1m]))",
+    "go_gc_duration_seconds_rate": "sum(rate(go_gc_duration_seconds_sum{job='milvus'}[1m]))",
+    # --- Proxy / search / insert (counters; sum without rate for “stock” view) ---
+    "proxy_search_vectors_total": "sum(milvus_proxy_search_vectors_count_total{job='milvus'})",
+    "proxy_insert_vectors_total": "sum(milvus_proxy_insert_vectors_count_total{job='milvus'})",
+    "proxy_search_req_count_total": "sum(milvus_proxy_search_req_count{job='milvus'})",
+    "proxy_insert_req_count_total": "sum(milvus_proxy_insert_req_count{job='milvus'})",
+    "proxy_delete_req_count_total": "sum(milvus_proxy_delete_req_count{job='milvus'})",
+    "proxy_upsert_req_count_total": "sum(milvus_proxy_upsert_req_count{job='milvus'})",
+    "proxy_req_count_rate": "sum(rate(milvus_proxy_req_count{job='milvus'}[1m]))",
+    "proxy_req_size_bytes_rate": "sum(rate(milvus_proxy_req_size_bytes_total{job='milvus'}[1m]))",
+    "proxy_search_latency_p99_ms": (
+        "histogram_quantile(0.99, sum(rate(milvus_proxy_search_latency_ms_bucket{job='milvus'}[1m])) by (le))"
+    ),
+    "proxy_search_latency_avg_ms": "avg(milvus_proxy_search_latency_ms{job='milvus'})",
+    # --- Query node / data coord / root coord (often present in standalone) ---
+    "querynode_cache_hit_ratio": "avg(milvus_querynode_cache_hit_ratio{job='milvus'})",
+    "querynode_search_latency_p99_ms": (
+        "histogram_quantile(0.99, sum(rate(milvus_querynode_search_latency_ms_bucket{job='milvus'}[1m])) by (le))"
+    ),
+    "datacoord_segment_count": "sum(milvus_datacoord_segment_count{job='milvus'})",
+    "rootcoord_index_build_latency_ms": "avg(milvus_rootcoord_index_build_latency_ms{job='milvus'})",
+    # --- Storage I/O ---
+    "storage_download_bytes_rate": "sum(rate(milvus_storage_download_size_bytes_total{job='milvus'}[1m]))",
+    "storage_upload_bytes_rate": "sum(rate(milvus_storage_upload_size_bytes_total{job='milvus'}[1m]))",
 }
 
 
@@ -88,14 +122,46 @@ class MilvusMetricsCollector:
             LOG.warning("Error fetching %s: %s", prom_ql, e)
             return None
 
-    def collect_all_metrics(self) -> Dict[str, float]:
-        """One snapshot: all configured metrics that returned a value."""
+    def collect_all_metrics_with_fetch_status(
+        self,
+        *,
+        fill_missing: bool = True,
+        missing_value: float = 0.0,
+    ) -> tuple[Dict[str, float], Dict[str, bool]]:
+        """
+        Returns (values, fetch_ok) where fetch_ok[name] is True iff Prometheus returned a scalar
+        for that query (False when empty/error and value was filled or omitted).
+        """
         current: Dict[str, float] = {}
+        fetch_ok: Dict[str, bool] = {}
         for name, ql in self.metrics_map.items():
             v = self.fetch_metric(ql)
             if v is not None:
                 current[name] = v
-        return current
+                fetch_ok[name] = True
+            else:
+                fetch_ok[name] = False
+                if fill_missing:
+                    current[name] = missing_value
+                    LOG.debug("Metric %s empty; using fill value %s", name, missing_value)
+        return current, fetch_ok
+
+    def collect_all_metrics(
+        self,
+        *,
+        fill_missing: bool = True,
+        missing_value: float = 0.0,
+    ) -> Dict[str, float]:
+        """
+        One snapshot over all configured metric names.
+
+        If fill_missing is True, any PromQL that returns no series gets missing_value so that
+        task profiles keep a fixed feature dimension across runs (recommended for similarity).
+        """
+        d, _ = self.collect_all_metrics_with_fetch_status(
+            fill_missing=fill_missing, missing_value=missing_value
+        )
+        return d
 
     def observe_period(
         self,

@@ -65,6 +65,11 @@ def aggregate_observation(
     Build mean/std vectors over observation rows (DataFrame-like list of dicts).
 
     Keys like timestamp_epoch, sample_index are excluded from metrics.
+
+    ``raw_sample_count_per_metric`` (the returned counts dict): for each metric column, how many
+    sample rows contained a numeric value. If upstream uses fill_missing=True, every row has every
+    metric key, so **all counts equal the number of observation rows** — that does not mean each
+    metric had the same *Prometheus* data; see prometheus_query_success_samples_per_metric in meta.
     """
     exclude = set(exclude_keys or ("timestamp_epoch", "sample_index", "timestamp"))
     if not history:
