@@ -329,5 +329,19 @@
     "distance": "cosine",
     "type": "tar",
     "path": "adapt-restored/random-geo-radius-2048-angular-no-filters-drift-restored"
+  },
+  {
+    "name": "random-geo-radius-2048-angular-no-filters-drift-live-eval",
+    "vector_size": 2048,
+    "distance": "cosine",
+    "type": "tar",
+    "path": "adapt-restored/random-geo-radius-2048-angular-no-filters-drift-live-eval"
+  },
+  {
+    "name": "random-geo-radius-2048-angular-no-filters-drift-reload-eval",
+    "vector_size": 2048,
+    "distance": "cosine",
+    "type": "tar",
+    "path": "adapt-restored/random-geo-radius-2048-angular-no-filters-drift-reload-eval"
   }
 ]

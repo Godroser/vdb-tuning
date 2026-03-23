@@ -50,7 +50,13 @@ fi
 # 2. 重置 Milvus 环境 (Down -> Clean -> Up)
 echo ">>> [Step 2] 重置 Milvus..."
 cd "$MILVUS_DIR"
-docker-compose down -v  # 停止并删卷
+# 优先使用 docker compose (v2)，避免旧版 docker-compose 的 ContainerConfig 兼容性问题
+if docker compose version >/dev/null 2>&1; then
+    COMPOSE_CMD="docker compose"
+else
+    COMPOSE_CMD="docker-compose"
+fi
+$COMPOSE_CMD down -v  # 停止并删卷
 sleep 5                 # 稍微缓冲一下
 
 # ⚠️ 重要：本项目的 docker-compose.yml 使用的是宿主机目录 bind mount（./volumes/...），
@@ -60,8 +66,8 @@ sleep 5                 # 稍微缓冲一下
 # 默认清理宿主机 volumes，可通过 CLEAN_HOST_VOLUMES=0 关闭。
 CLEAN_HOST_VOLUMES=${CLEAN_HOST_VOLUMES:-1}
 if [ "$CLEAN_HOST_VOLUMES" = "1" ]; then
-    # 你这套环境 volumes 目录是固定的；如需改动，可通过 VOLUME_ROOT=/path/to/volumes 覆盖
-    DEFAULT_VOLUME_ROOT="/home/z78ding/project/vdb-tuning/vector-db-benchmark-master/engine/servers/milvus-single-node/volumes"
+    # 默认使用当前 Milvus 服务目录下的 volumes 目录；如需改动，可通过 VOLUME_ROOT=/path/to/volumes 覆盖
+    DEFAULT_VOLUME_ROOT="$MILVUS_DIR/volumes"
     VOLUME_ROOT="${VOLUME_ROOT:-$DEFAULT_VOLUME_ROOT}"
     # 做个简单防呆：只允许删除固定目录（或以 .../milvus-single-node/volumes 结尾的目录）
     VOLUME_ROOT_ABS="$(realpath -m "$VOLUME_ROOT" 2>/dev/null || echo "")"
@@ -78,12 +84,7 @@ fi
 
 
 # 启动容器
-docker compose up -d
-
-
-
-# 启动容器
-docker-compose up -d
+$COMPOSE_CMD up -d
 
 #  3. 等待启动 (你的经验数据：90s，这里为了测试可以用短一点，比如 random-100 可能 30s 就够)
 echo ">>> [Step 3] 等待服务启动 (90s)..."

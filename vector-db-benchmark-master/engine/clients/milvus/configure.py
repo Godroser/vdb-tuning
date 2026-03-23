@@ -71,11 +71,13 @@ class MilvusConfigurator(BaseConfigurator):
                 raise IncompatibilityError(e)
         schema = CollectionSchema(fields=fields, description=MILVUS_COLLECTION_NAME)
 
-        collection = Collection(
-            name=MILVUS_COLLECTION_NAME,
-            schema=schema,
-            using=MILVUS_DEFAULT_ALIAS,
-        )
+        # Create collection directly via handler to avoid pymilvus has_collection raising
+        # MilvusException (code=4 CollectionNotExists) when collection doesn't exist yet.
+        # The Collection() constructor calls has_collection internally, which raises in
+        # newer Milvus versions instead of returning False for non-existent collections.
+        handler = connections._fetch_handler(MILVUS_DEFAULT_ALIAS)
+        handler.create_collection(MILVUS_COLLECTION_NAME, schema, shards_num=2)
+        collection = Collection(name=MILVUS_COLLECTION_NAME, using=MILVUS_DEFAULT_ALIAS)
 
         for index in collection.indexes:
             index.drop()

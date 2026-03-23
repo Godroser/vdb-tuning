@@ -107,6 +107,7 @@ class RealEnv:
         # - col 0: Precisions (larger is better)
         # - col 1: RPS        (larger is better)
         # - col 2: Time (optional bookkeeping; not used by current optimizer)
+        record_log_path = Path(__file__).resolve().parent / "record.log"
         Y1, Y2, Y3, Y4 = [], [], [], []
         for i,record in enumerate(knob_vals_arr):
             conf_value = [self.knob_stand.scale_back(self.names[j], knob_val)[1] for j,knob_val in enumerate(record)]

@@ -1,0 +1,3 @@
+[submodule "ottertune-configure/ottertune"]
+	path = ottertune-configure/ottertune
+	url = https://github.com/cmu-db/ottertune.git

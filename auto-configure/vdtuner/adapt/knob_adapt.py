@@ -20,6 +20,7 @@ import traceback
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+import shutil
 
 import numpy as np
 from numpy.lib.format import open_memmap
@@ -35,6 +36,8 @@ RESULTS_DIR = BENCHMARK_ROOT / "results"
 CONF_PATH = BENCHMARK_ROOT / "experiments" / "configurations" / "milvus-single-node.json"
 WHOLE_PARAM_PATH = AUTO_CONFIGURE_ROOT / "whole_param.json"
 RUN_PY_PATH = BENCHMARK_ROOT / "run.py"
+MILVUS_SERVER_PATH = "milvus-single-node"
+RESET_MILVUS_SCRIPT = ADAPT_DIR / "reset_milvus_env.sh"
 DEFAULT_DRIFT_STATE_FILE = DRIFTING_DIR / ".drift_state.json"
 DEFAULT_BACKUP_DIR = RESULTS_DIR / "drift_vector_backups"
 DATASETS_JSON_PATH = BENCHMARK_ROOT / "datasets" / "datasets.json"
@@ -56,6 +59,43 @@ class BenchRunResult:
     result_json: dict[str, Any] | None
     result_path: Path | None
     error: str | None
+
+
+def reset_milvus_service(
+    clean_host_volumes: bool = True,
+    max_wait_sec: int = 120,
+    sudo_password: str = None  # 新增：如果需要，可以传入密码
+) -> tuple[bool, str | None]:
+    if not RESET_MILVUS_SCRIPT.exists():
+        return False, f"reset script not found: {RESET_MILVUS_SCRIPT}"
+
+    env = os.environ.copy()
+    env["CLEAN_HOST_VOLUMES"] = "1" if clean_host_volumes else "0"
+    
+    # 核心改进：如果环境需要 sudo 且脚本内有 sudo 操作
+    # 我们可以使用 ['sudo', '-S', str(RESET_MILVUS_SCRIPT), ...] 
+    # 或者直接确保执行 Python 的用户拥有免密权限（见方案二）
+    
+    try:
+        # 使用 input 参数将密码传给 sudo -S (如果脚本内部改写为支持 -S)
+        cp = subprocess.run(
+            [str(RESET_MILVUS_SCRIPT), MILVUS_SERVER_PATH, str(max_wait_sec)],
+            cwd=str(BENCHMARK_ROOT),
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=max_wait_sec + 180,
+            # 如果脚本里需要输密码，这里可以配合 sudo -S 传参
+        )
+    except Exception as exc:
+        return False, f"执行异常: {exc}"
+
+    if cp.returncode != 0:
+        # 这里就是你看到的“清理失败”报错的地方
+        msg = f"重置失败 (code={cp.returncode})\nError: {cp.stderr}"
+        return False, msg
+
+    return True, None
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -142,6 +182,39 @@ def _latest_result_file(pattern: str) -> Path | None:
     return max(files, key=lambda p: p.stat().st_mtime)
 
 
+def run_benchmark_full(dataset: str, engine: str, timeout_sec: int = 3600) -> tuple[bool, str | None]:
+    """运行完整 benchmark（含 upload），用于重置后创建 collection 并导入初始数据。"""
+    env = os.environ.copy()
+    env["no_proxy"] = "localhost,127.0.0.1,::1"
+    cmd = [
+        sys.executable,
+        str(RUN_PY_PATH),
+        "--engines",
+        engine,
+        "--datasets",
+        dataset,
+        "--host",
+        "127.0.0.1",
+        "--no-exit-on-error",
+    ]
+    try:
+        cp = subprocess.run(
+            cmd,
+            cwd=str(BENCHMARK_ROOT),
+            capture_output=True,
+            text=True,
+            timeout=timeout_sec,
+            env=env,
+        )
+    except subprocess.TimeoutExpired:
+        return False, f"benchmark timeout ({timeout_sec}s)"
+    except Exception as exc:
+        return False, f"benchmark exec error: {exc}"
+    if cp.returncode != 0:
+        return False, f"benchmark failed (code={cp.returncode})\n{(cp.stderr or '')[-800:]}"
+    return True, None
+
+
 def run_benchmark_skip_upload(dataset: str, engine: str, timeout_sec: int = 1800) -> BenchRunResult:
     pattern = f"{engine}-{dataset}-search"
     before_mtime = 0.0
@@ -198,8 +271,8 @@ def run_benchmark_skip_upload(dataset: str, engine: str, timeout_sec: int = 1800
     )
 
 
-def _init_drift_state_if_needed(dataset: str, state_file: Path) -> tuple[bool, str | None]:
-    if state_file.exists():
+def _init_drift_state_if_needed(dataset: str, state_file: Path, force: bool = False) -> tuple[bool, str | None]:
+    if state_file.exists() and not force:
         return True, None
     cmd = [sys.executable, str(DRIFT_CYCLE_PY), "--get-initial-count", dataset]
     try:
@@ -374,28 +447,110 @@ def _find_dataset_config(dataset_name: str) -> dict[str, Any] | None:
     return None
 
 
-def _build_restored_dataset_from_backup(
+def _metric_name(distance: str) -> str:
+    d = (distance or "").lower()
+    if d in ("cosine", "angular"):
+        return "cosine"
+    if d in ("l2", "euclidean"):
+        return "l2"
+    return "dot"
+
+
+def _compute_knn_positions_for_queries(
+    vectors: np.ndarray,
+    query_rows: list[dict[str, Any]],
+    distance: str,
+    chunk_size: int = 5000,
+) -> list[tuple[np.ndarray, np.ndarray]]:
+    metric = _metric_name(distance)
+    n = vectors.shape[0]
+    vector_norms = None
+    if metric == "cosine":
+        vector_norms = np.linalg.norm(vectors, axis=1) + 1e-12
+
+    results: list[tuple[np.ndarray, np.ndarray]] = []
+    for row in query_rows:
+        q = np.asarray(row["query"], dtype=np.float32)
+        top_k = max(1, int(len(row.get("closest_ids", [])) or 10))
+        top_k = min(top_k, n)
+
+        if metric == "cosine":
+            q_norm = float(np.linalg.norm(q) + 1e-12)
+
+        best_scores = np.full(top_k, -np.inf, dtype=np.float32)
+        best_pos = np.full(top_k, -1, dtype=np.int64)
+
+        for start in range(0, n, chunk_size):
+            end = min(start + chunk_size, n)
+            chunk = vectors[start:end]
+            if metric == "l2":
+                diff = chunk - q
+                scores = -np.einsum("ij,ij->i", diff, diff)
+            elif metric == "cosine":
+                scores = (chunk @ q) / (vector_norms[start:end] * q_norm)
+            else:
+                scores = chunk @ q
+
+            if scores.shape[0] > top_k:
+                local_idx = np.argpartition(scores, -top_k)[-top_k:]
+            else:
+                local_idx = np.arange(scores.shape[0], dtype=np.int64)
+            cand_scores = scores[local_idx]
+            cand_pos = (local_idx + start).astype(np.int64)
+
+            merged_scores = np.concatenate([best_scores, cand_scores.astype(np.float32)])
+            merged_pos = np.concatenate([best_pos, cand_pos])
+            keep = np.argpartition(merged_scores, -top_k)[-top_k:]
+            best_scores = merged_scores[keep]
+            best_pos = merged_pos[keep]
+
+        order = np.argsort(-best_scores)
+        results.append((best_pos[order], best_scores[order]))
+
+    return results
+
+
+def _write_tests_with_ids(
+    query_rows: list[dict[str, Any]],
+    knn_pos_scores: list[tuple[np.ndarray, np.ndarray]],
+    id_mapping: np.ndarray,
+    output_path: Path,
+) -> None:
+    with output_path.open("w", encoding="utf-8") as f:
+        for row, (pos, scores) in zip(query_rows, knn_pos_scores):
+            new_row = dict(row)
+            new_row["closest_ids"] = [int(id_mapping[int(i)]) for i in pos.tolist()]
+            new_row["closest_scores"] = [float(s) for s in scores.tolist()]
+            f.write(json.dumps(new_row, ensure_ascii=False) + "\n")
+
+
+def _prepare_eval_datasets_from_backup(
     source_dataset: str,
     backup_jsonl: Path,
-) -> tuple[bool, str | None, str]:
+) -> tuple[bool, str | None, str | None, str]:
     if not backup_jsonl.exists():
-        return False, None, f"backup jsonl not found: {backup_jsonl}"
+        return False, None, None, f"backup jsonl not found: {backup_jsonl}"
 
     src_cfg = _find_dataset_config(source_dataset)
     if not src_cfg:
-        return False, None, f"source dataset config not found: {source_dataset}"
+        return False, None, None, f"source dataset config not found: {source_dataset}"
     src_path = DATASETS_ROOT / src_cfg["path"]
     tests_src = src_path / "tests.jsonl"
     if not tests_src.exists():
-        return False, None, f"source tests.jsonl not found: {tests_src}"
+        return False, None, None, f"source tests.jsonl not found: {tests_src}"
 
-    restore_name = f"{source_dataset}-drift-restored"
-    restore_dir = RESTORED_DATASET_ROOT / restore_name
-    restore_dir.mkdir(parents=True, exist_ok=True)
+    live_eval_name = f"{source_dataset}-drift-live-eval"
+    reload_eval_name = f"{source_dataset}-drift-reload-eval"
+    live_dir = RESTORED_DATASET_ROOT / live_eval_name
+    reload_dir = RESTORED_DATASET_ROOT / reload_eval_name
+    live_dir.mkdir(parents=True, exist_ok=True)
+    reload_dir.mkdir(parents=True, exist_ok=True)
 
-    vectors_npy = restore_dir / "vectors.npy"
-    payloads_jsonl = restore_dir / "payloads.jsonl"
-    tests_dst = restore_dir / "tests.jsonl"
+    vectors_npy = reload_dir / "vectors.npy"
+    source_ids_npy = reload_dir / "source_ids.npy"
+    payloads_jsonl = reload_dir / "payloads.jsonl"
+    tests_live = live_dir / "tests.jsonl"
+    tests_reload = reload_dir / "tests.jsonl"
 
     row_count = 0
     vector_dim = 0
@@ -408,16 +563,17 @@ def _build_restored_dataset_from_backup(
             row = json.loads(line)
             vec = row.get("vector")
             if vec is None:
-                return False, None, "backup row missing vector field"
+                return False, None, None, "backup row missing vector field"
             if vector_dim == 0:
                 vector_dim = len(vec)
             row_count += 1
             if any(k not in ("id", "vector") for k in row.keys()):
                 has_payload = True
     if row_count == 0 or vector_dim == 0:
-        return False, None, "backup jsonl is empty"
+        return False, None, None, "backup jsonl is empty"
 
     mmap = open_memmap(vectors_npy, mode="w+", dtype=np.float32, shape=(row_count, vector_dim))
+    ids_mmap = open_memmap(source_ids_npy, mode="w+", dtype=np.int64, shape=(row_count,))
     payload_fp = payloads_jsonl.open("w", encoding="utf-8") if has_payload else None
     try:
         idx = 0
@@ -428,32 +584,70 @@ def _build_restored_dataset_from_backup(
                     continue
                 row = json.loads(line)
                 mmap[idx] = np.asarray(row["vector"], dtype=np.float32)
+                ids_mmap[idx] = int(row.get("id", idx))
                 if payload_fp is not None:
                     payload = {k: v for k, v in row.items() if k not in ("id", "vector")}
                     payload_fp.write(json.dumps(payload, ensure_ascii=False) + "\n")
                 idx += 1
     finally:
         del mmap
+        del ids_mmap
         if payload_fp is not None:
             payload_fp.close()
 
-    tests_dst.write_text(tests_src.read_text(encoding="utf-8"), encoding="utf-8")
+    query_rows: list[dict[str, Any]] = []
+    with tests_src.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                query_rows.append(json.loads(line))
+    if not query_rows:
+        return False, None, None, f"tests.jsonl has no queries: {tests_src}"
+
+    vectors = np.load(vectors_npy, mmap_mode="r")
+    source_ids = np.load(source_ids_npy, mmap_mode="r")
+    knn_pos_scores = _compute_knn_positions_for_queries(
+        vectors=vectors,
+        query_rows=query_rows,
+        distance=str(src_cfg.get("distance", "cosine")),
+    )
+    _write_tests_with_ids(query_rows, knn_pos_scores, np.asarray(source_ids, dtype=np.int64), tests_live)
+    _write_tests_with_ids(
+        query_rows,
+        knn_pos_scores,
+        np.arange(row_count, dtype=np.int64),
+        tests_reload,
+    )
 
     cfgs = _load_dataset_configs()
-    cfgs = [c for c in cfgs if c.get("name") != restore_name]
-    restored_cfg: dict[str, Any] = {
-        "name": restore_name,
+    cfgs = [c for c in cfgs if c.get("name") not in {live_eval_name, reload_eval_name}]
+    live_cfg: dict[str, Any] = {
+        "name": live_eval_name,
         "vector_size": src_cfg["vector_size"],
         "distance": src_cfg["distance"],
         "type": "tar",
-        "path": str(restore_dir.relative_to(DATASETS_ROOT)),
+        "path": str(live_dir.relative_to(DATASETS_ROOT)),
+    }
+    reload_cfg: dict[str, Any] = {
+        "name": reload_eval_name,
+        "vector_size": src_cfg["vector_size"],
+        "distance": src_cfg["distance"],
+        "type": "tar",
+        "path": str(reload_dir.relative_to(DATASETS_ROOT)),
     }
     if "schema" in src_cfg:
-        restored_cfg["schema"] = src_cfg["schema"]
-    cfgs.append(restored_cfg)
+        live_cfg["schema"] = src_cfg["schema"]
+        reload_cfg["schema"] = src_cfg["schema"]
+    cfgs.append(live_cfg)
+    cfgs.append(reload_cfg)
     _save_dataset_configs(cfgs)
 
-    return True, restore_name, f"restored dataset created: {restore_dir} (rows={row_count})"
+    return (
+        True,
+        live_eval_name,
+        reload_eval_name,
+        f"recomputed KNN and prepared datasets: live={live_dir}, reload={reload_dir}, rows={row_count}, queries={len(query_rows)}",
+    )
 
 
 def _real_knob_conf(env: Any, x_vec: list[float]) -> dict[str, Any]:
@@ -573,9 +767,8 @@ def _check_bo_success(model: Any, index_type: str, baseline: dict[str, Any]) -> 
 def strategy2_bayesian_optimization(
     index_type: str,
     baseline: dict[str, Any],
-    dataset: str,
+    dataset_for_tuning: str,
     max_rounds: int,
-    backup_jsonl: Path | None,
 ) -> bool:
     try:
         from adapt.optimizer_pobo_sa_adapt import PollingBayesianOptimization
@@ -585,22 +778,19 @@ def strategy2_bayesian_optimization(
         print(f"导入错误: {exc}", flush=True)
         return False
 
-    if backup_jsonl is None:
-        print("Strategy 2 需要备份 JSONL，但当前没有可用备份，跳过。", flush=True)
-        return False
-
-    ok, restored_dataset_name, msg = _build_restored_dataset_from_backup(
-        source_dataset=dataset,
-        backup_jsonl=backup_jsonl,
-    )
-    if not ok or not restored_dataset_name:
-        print(f"Strategy 2 数据恢复失败: {msg}", flush=True)
-        return False
-    print(f"Strategy 2 使用恢复数据集: {restored_dataset_name}", flush=True)
-    print(f"  {msg}", flush=True)
-
     try:
-        env = RealEnv(dataset=restored_dataset_name)
+        print(f"Strategy 2 使用恢复数据集: {dataset_for_tuning}", flush=True)
+        
+        # 定义内部函数：在 RealEnv 交互前重置环境
+        def env_with_reset_wrapper(dataset_name):
+            # 每次评估前清理 Milvus 容器和 Volume
+            # 注意：此处 clean_host_volumes=True 确保彻底删除旧索引文件
+            success, err = reset_milvus_service(clean_host_volumes=True)
+            if not success:
+                print(f"警告: Strategy 2 迭代中重置 Milvus 失败: {err}")
+            return RealEnv(dataset=dataset_name)
+
+        env = env_with_reset_wrapper(dataset_for_tuning)
         tune_knobs = [k for k in env.names if k != "index_type"]
         model = PollingBayesianOptimization(
             env,
@@ -665,18 +855,22 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--dataset", default="random-geo-radius-2048-angular-no-filters")
     parser.add_argument("--engine", default="milvus-p10")
     parser.add_argument("--strategy1-tries", type=int, default=5)
-    parser.add_argument("--strategy2-rounds", type=int, default=50)
+    parser.add_argument("--strategy2-rounds", type=int, default=30)
     parser.add_argument("--skip-strategy", choices=["1", "2", "none"], default="none")
     parser.add_argument("--detect-only", action="store_true")
     parser.add_argument("--simulate-drift-before-adapt", action="store_true", default=True)
     parser.add_argument("--no-simulate-drift-before-adapt", action="store_false", dest="simulate_drift_before_adapt")
-    parser.add_argument("--drift-batch-size", type=int, default=5000)
+    parser.add_argument("--drift-batch-size", type=int, default=3000)
     parser.add_argument("--drift-state-file", default=str(DEFAULT_DRIFT_STATE_FILE))
     parser.add_argument("--drift-host", default="127.0.0.1")
     parser.add_argument("--drift-port", type=int, default=19530)
     parser.add_argument("--backup-vectors-before-adapt", action="store_true", default=True)
     parser.add_argument("--no-backup-vectors-before-adapt", action="store_false", dest="backup_vectors_before_adapt")
     parser.add_argument("--backup-dir", default=str(DEFAULT_BACKUP_DIR))
+    parser.add_argument("--reset-milvus-first", action="store_true", default=True)
+    parser.add_argument("--no-reset-milvus-first", action="store_false", dest="reset_milvus_first")
+    parser.add_argument("--no-clean-host-volumes", action="store_true", default=False)
+    parser.add_argument("--milvus-max-wait-sec", type=int, default=120)
     return parser
 
 
@@ -689,6 +883,30 @@ def main(argv: list[str] | None = None) -> int:
     print("Knob Adapt: 数据漂移检测与自适应")
     print("=" * 50)
 
+    # --- 新增清理逻辑 ---
+    backup_dir = Path(args.backup_dir)
+    if backup_dir.exists():
+        print(f">>> 清理旧的备份目录: {backup_dir}")
+        try:
+            # 清理目录下的所有文件，但保留目录本身
+            for item in backup_dir.iterdir():
+                if item.is_file():
+                    item.unlink()
+                elif item.is_dir():
+                    shutil.rmtree(item)
+        except Exception as e:
+            print(f"警告: 清理备份目录时出错: {e}")
+    # ------------------    
+
+    if args.reset_milvus_first:
+        ok, err = reset_milvus_service(
+            clean_host_volumes=not args.no_clean_host_volumes,
+            max_wait_sec=args.milvus_max_wait_sec,
+        )
+        if not ok:
+            print(f"Milvus 重置失败: {err}", flush=True)
+            return 1
+
     baseline, current_from_file, _current_cycle = get_baseline_and_current(results_file)
     if baseline is None:
         print("错误: 无法加载 drift 结果，请先运行 run_drift_test.sh")
@@ -697,8 +915,24 @@ def main(argv: list[str] | None = None) -> int:
     current = current_from_file
     current_cycle: int | str | None = _current_cycle
 
-    effective_state_file = Path(args.drift_state_file)
+    effective_state_file, state_warn = _resolve_writable_state_file(Path(args.drift_state_file))
+    if state_warn:
+        print(f"漂移状态文件: {state_warn}", flush=True)
     if args.simulate_drift_before_adapt:
+        # 重置后 Milvus 为空，需先完整导入以创建 collection，否则 run_drift_cycle 会报 SchemaNotReadyException
+        print(">>> 预处理: 初始导入数据（创建 collection）...", flush=True)
+        ok, err = run_benchmark_full(dataset=args.dataset, engine=args.engine)
+        if not ok:
+            print(f"初始导入失败: {err}", flush=True)
+            return 1
+        print("    初始导入完成", flush=True)
+        # 初始化漂移状态（与 run_drift_test.sh 一致，强制覆盖以匹配刚导入的数据）
+        init_ok, init_err = _init_drift_state_if_needed(
+            dataset=args.dataset, state_file=effective_state_file, force=True
+        )
+        if not init_ok:
+            print(f"漂移状态初始化失败: {init_err}", flush=True)
+            return 1
         print(">>> 预处理: 执行一轮 run_drift_cycle.py 以模拟最新数据漂移", flush=True)
         ok, err, effective_state_file = simulate_drift_once(
             dataset=args.dataset,
@@ -746,6 +980,8 @@ def main(argv: list[str] | None = None) -> int:
     print("检测到 data drifting，开始 Knob Adapt...")
 
     backup_jsonl_path: Path | None = None
+    strategy1_dataset = args.dataset
+    strategy2_dataset: str | None = None
     if args.backup_vectors_before_adapt:
         ok, msg = backup_current_vectors(
             dataset=args.dataset,
@@ -757,6 +993,18 @@ def main(argv: list[str] | None = None) -> int:
         if ok:
             print(f"当前向量数据已备份: {msg}", flush=True)
             backup_jsonl_path = Path(msg)
+            prep_ok, live_ds, reload_ds, prep_msg = _prepare_eval_datasets_from_backup(
+                source_dataset=args.dataset,
+                backup_jsonl=backup_jsonl_path,
+            )
+            if prep_ok and live_ds and reload_ds:
+                strategy1_dataset = live_ds
+                strategy2_dataset = reload_ds
+                print(f"已重算 query KNN: {prep_msg}", flush=True)
+                print(f"  Strategy 1 dataset: {strategy1_dataset}", flush=True)
+                print(f"  Strategy 2 dataset: {strategy2_dataset}", flush=True)
+            else:
+                print(f"KNN 重算失败（使用原 dataset）: {prep_msg}", flush=True)
         else:
             print(f"向量备份失败（继续执行 adapt）: {msg}", flush=True)
 
@@ -770,7 +1018,7 @@ def main(argv: list[str] | None = None) -> int:
             index_type=index_type,
             current_params=current_params,
             baseline=baseline,
-            dataset=args.dataset,
+            dataset=strategy1_dataset,
             engine=args.engine,
             max_tries=args.strategy1_tries,
         ):
@@ -779,12 +1027,13 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.skip_strategy != "2":
         print("\n>>> Strategy 2: 贝叶斯优化 (固定索引类型)")
-        if strategy2_bayesian_optimization(
+        if strategy2_dataset is None:
+            print("Strategy 2 跳过：未准备好恢复数据集（请开启备份并确保 KNN 重算成功）。", flush=True)
+        elif strategy2_bayesian_optimization(
             index_type=index_type,
             baseline=baseline,
-            dataset=args.dataset,
+            dataset_for_tuning=strategy2_dataset,
             max_rounds=args.strategy2_rounds,
-            backup_jsonl=backup_jsonl_path,
         ):
             print("Knob Adapt 成功 (Strategy 2)")
             return 0
