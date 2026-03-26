@@ -8,7 +8,7 @@
       {
         "parallel": 10,
         "params": {
-          "nprobe": 1177
+          "nprobe": 695
         }
       }
     ],
@@ -16,7 +16,7 @@
       "parallel": 32,
       "index_type": "IVF_SQ8",
       "index_params": {
-        "nlist": 7853
+        "nlist": 9934
       }
     }
   }

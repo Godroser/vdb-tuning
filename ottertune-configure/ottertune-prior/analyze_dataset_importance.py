@@ -32,7 +32,7 @@ PRECISION_THRESHOLD = 0.90  # 只统计Precisions大于此值的配置
 RPS_THRESHOLD = 1.1
 
 # 数据目录
-DATA_DIR = "/talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/prior"
+DATA_DIR = "/talas-pool/home/z78ding/vdb-tuning/ottertune-configure/ottertune-prior"
 # ==================================================
 
 

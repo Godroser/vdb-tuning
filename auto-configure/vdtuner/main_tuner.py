@@ -37,7 +37,7 @@ if __name__ == '__main__':
     # ============================================
     # 配置参数：在这里指定要测试的数据集
     # ============================================
-    DATASET = "glove-25-angular"
+    DATASET = "random-match-int-2048-angular-no-filters"
     
     # prepare the environment
     env = RealEnv(dataset=DATASET)

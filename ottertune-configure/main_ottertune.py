@@ -1,8 +1,11 @@
 #!/usr/bin/env python
+import json
 import os
 import sys
-import numpy as np
 import time
+from pathlib import Path
+
+import numpy as np
 import subprocess as sp
 
 # Add OtterTune server path to Python path
@@ -25,18 +28,31 @@ KNOB_PATH = '/talas-pool/home/z78ding/vdb-tuning/auto-configure/whole_param.json
 RUN_ENGINE_PATH = '/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/run_engine_test.sh'
 USE_SUDO = True  # Set False if user has docker group (sudo usermod -aG docker $USER)
 
-# Log file
-LOG_FILE = 'glove-100-angular_new.log'
+# Dataset name passed to run_engine_test.sh (same as vector-db-benchmark datasets)
+DATASET = "random-match-int-100-angular-no-filters"
 
-def run_engine_test(use_sudo=None):
-    """Run the engine test and return performance metrics.
-    use_sudo: Set False if user has docker group (no sudo needed). Defaults to USE_SUDO.
-    Parsing logic follows auto-configure/vdtuner/utils.py RealEnv.get_state.
+# Main tuning log (under ottertune-configure)
+_LOG_DIR = "/talas-pool/home/z78ding/vdb-tuning/ottertune-configure/log"
+LOG_FILE = os.path.join(_LOG_DIR, f"{DATASET}_ottertune.log")
+
+# Per-iteration JSON lines (same style as vdtuner_interface RealEnv.get_state)
+RECORD_LOG_PATH = Path(_LOG_DIR) / "record.log"
+# Set True to empty record.log once at program start (default: append for a continuous log)
+CLEAR_RECORD_LOG_ON_START = False
+
+
+def run_engine_test(dataset=None, use_sudo=None):
+    """Run the engine test and return (rps, precision, p95_time) or (None, None, None).
+
+    Parsing matches run_engine_test.sh summary: three numbers with indices depending on scan order;
+    see comments below (aligned with vdtuner_interface RealEnv.get_state).
     """
+    if dataset is None:
+        dataset = DATASET
     if use_sudo is None:
         use_sudo = USE_SUDO
     try:
-        cmd = ["timeout", "900", RUN_ENGINE_PATH, "milvus-single-node", "milvus-p10", "glove-100-angular"]
+        cmd = ["timeout", "900", RUN_ENGINE_PATH, "milvus-single-node", "milvus-p10", str(dataset)]
         if use_sudo:
             cmd = ["sudo"] + cmd
         result = sp.run(
@@ -49,7 +65,7 @@ def run_engine_test(use_sudo=None):
         lines = result_output.strip().split('\n')
 
         # Search backwards for result section (ref: auto-configure RealEnv.get_state)
-        # Script outputs "📊 测试结果摘要:" then mean_precisions rps p95_time
+        # Script prints one number per line after "📊 测试结果摘要:" (mean_precisions, rps, p95 order from grep)
         numeric_values = []
         for line in reversed(lines):
             if '测试结果摘要' in line or '📊' in line or '结果' in line:
@@ -71,18 +87,31 @@ def run_engine_test(use_sudo=None):
                     continue
 
         if len(numeric_values) < 2:
-            return None, None
+            return None, None, None
 
-        # Reversed: [p95_time, rps, mean_precisions]; Fallback: [..., mean_precisions, rps, p95_time]
-        rps = numeric_values[-2]
-        precision = numeric_values[-1] if from_reversed else (numeric_values[-3] if len(numeric_values) >= 3 else numeric_values[-1])
+        # Same indexing as historical main_ottertune / reversed-block convention:
+        # from_reversed: [-3]=p95, [-2]=rps, [-1]=precision
+        # fallback full scan: [-3]=precision, [-2]=rps, [-1]=p95
+        if len(numeric_values) >= 3:
+            if from_reversed:
+                p95_time = numeric_values[-3]
+                rps = numeric_values[-2]
+                precision = numeric_values[-1]
+            else:
+                precision = numeric_values[-3]
+                rps = numeric_values[-2]
+                p95_time = numeric_values[-1]
+        else:
+            rps = numeric_values[-2]
+            precision = numeric_values[-1]
+            p95_time = None
 
         if 0 <= precision <= 1 and rps > 0:
-            return rps, precision
-        return None, None
+            return rps, precision, p95_time
+        return None, None, None
     except Exception as e:
         print(f"Error running engine test: {e}")
-        return None, None
+        return None, None, None
 
 def log(message):
     """Log message to file and print"""
@@ -92,12 +121,50 @@ def log(message):
     with open(LOG_FILE, 'a') as f:
         f.write(log_entry + '\n')
 
+
+def append_record_line(
+    *,
+    iteration: int,
+    time_cumulative_sec: int,
+    index_conf: dict,
+    system_conf: dict,
+    precisions,
+    p95time,
+    bench_duration_sec: int,
+    rps,
+):
+    """Append one JSON line to record.log (same schema as vdtuner/record.log lines)."""
+    RECORD_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    # Key order matches typical tooling / human reading
+    row = {
+        "iteration": int(iteration),
+        "time": int(time_cumulative_sec),
+        "index_conf": index_conf,
+        "system_conf": system_conf,
+        "precisions": None if precisions is None else float(precisions),
+        "p95time": None if p95time is None else float(p95time),
+        "Time": int(bench_duration_sec),
+        "RPS": None if rps is None else float(rps),
+    }
+    with RECORD_LOG_PATH.open("a", encoding="utf-8") as f:
+        # default=str: tolerate numpy scalars inside index_conf / system_conf if any
+        f.write(json.dumps(row, ensure_ascii=False, default=str) + "\n")
+
+
 def main():
+    t_main_start = time.time()
+    if CLEAR_RECORD_LOG_ON_START:
+        RECORD_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        RECORD_LOG_PATH.write_text("", encoding="utf-8")
+        log(f"Truncated {RECORD_LOG_PATH} (CLEAR_RECORD_LOG_ON_START=True)")
     log("--- OtterTune VDTuner Integration ---\n")
+    log(f"Dataset: {DATASET} | record.log: {RECORD_LOG_PATH}")
+
+    record_iter = 0  # 1-based global line counter for record.log (initial + GPRGD rounds)
 
     # 1. Initialize environment and knob stand
     log("Initializing environment...")
-    env = RealEnv(bench_path=RUN_ENGINE_PATH, knob_path=KNOB_PATH)
+    env = RealEnv(bench_path=RUN_ENGINE_PATH, knob_path=KNOB_PATH, dataset=DATASET, use_sudo=USE_SUDO)
     knob_stand = KnobStand(KNOB_PATH)
     num_knobs = len(knob_stand.knobs_detail.keys())
     log(f"Number of knobs: {num_knobs}")
@@ -131,19 +198,38 @@ def main():
         configure_system(filter_system_rule(system_conf))
         
         # Run engine test
-        rps, precision = run_engine_test()
+        t_bm = time.time()
+        rps, precision, p95_time = run_engine_test()
+        bench_dur = int(time.time() - t_bm)
+        objective = None
         if rps is not None and precision is not None:
             # Single objective: maximize RPS when precision >= 0.9, else penalize
             if precision >= 0.9:
                 objective = -rps  # We want to minimize, so negative RPS
             else:
                 objective = 1e6  # Large penalty for low precision
-            
+
             X_success.append(sample)
             y_success.append(objective)
-            log(f"Performance: RPS = {rps:.4f}, Precision = {precision:.4f}, Objective = {objective:.4f}")
+            p95_str = f"{p95_time:.6f}" if p95_time is not None else "n/a"
+            log(
+                f"Performance: RPS = {rps:.4f}, Precision = {precision:.4f}, "
+                f"p95_time = {p95_str}, Objective = {objective:.4f}"
+            )
         else:
             log("Engine test failed, skipping this sample")
+
+        record_iter += 1
+        append_record_line(
+            iteration=record_iter,
+            time_cumulative_sec=int(time.time() - t_main_start),
+            index_conf=index_conf,
+            system_conf=system_conf,
+            precisions=precision,
+            p95time=p95_time,
+            bench_duration_sec=bench_dur,
+            rps=rps,
+        )
     
     X_train = np.array(X_success, dtype=np.float32) if X_success else np.zeros((0, num_knobs), dtype=np.float32)
     y_train = np.array(y_success, dtype=np.float32).reshape(-1, 1) if y_success else np.zeros((0, 1), dtype=np.float32)
@@ -219,27 +305,46 @@ def main():
         
         # Run engine test
         log("Running engine test with best candidate...")
-        rps, precision = run_engine_test()
-        
+        t_bm = time.time()
+        rps, precision, p95_time = run_engine_test()
+        bench_dur = int(time.time() - t_bm)
+        objective = None
+
         if rps is not None and precision is not None:
             # Calculate objective
             if precision >= 0.8:
                 objective = -rps
             else:
                 objective = 1e6
-            
+
             # Scale objective
             objective_scaled = (objective - y_min) / (y_max - y_min) if y_max > y_min else objective
-            
+
             # Add to training data
             X_train = np.vstack((X_train, best_candidate.reshape(1, -1)))
             y_train = np.vstack((y_train, np.array([[objective]])))
             y_train_scaled = np.vstack((y_train_scaled, np.array([[objective_scaled]])))
-            
-            log(f"Performance: RPS = {rps:.4f}, Precision = {precision:.4f}, Objective = {objective:.4f}")
+
+            p95_str = f"{p95_time:.6f}" if p95_time is not None else "n/a"
+            log(
+                f"Performance: RPS = {rps:.4f}, Precision = {precision:.4f}, "
+                f"p95_time = {p95_str}, Objective = {objective:.4f}"
+            )
             log(f"Updated training data shape: X={X_train.shape}, y={y_train.shape}")
         else:
             log("Engine test failed, skipping this candidate")
+
+        record_iter += 1
+        append_record_line(
+            iteration=record_iter,
+            time_cumulative_sec=int(time.time() - t_main_start),
+            index_conf=index_conf,
+            system_conf=system_conf,
+            precisions=precision,
+            p95time=p95_time,
+            bench_duration_sec=bench_dur,
+            rps=rps,
+        )
         
         # Update min and max for scaling
         y_min = np.min(y_train)

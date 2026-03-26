@@ -21,7 +21,7 @@ import json
 
 # ==================== 配置区域 ====================
 # 指定要分析的数据集文件
-DATASET_FILE = "random-100-match-kw-small-vocab-no-filters.xlsx"
+DATASET_FILE = "random-match-int-2048-angular-no-filters.xlsx"
 # "random-geo-radius-2048-angular-no-filters.xlsx"
 
 # 输出JSON文件路径（如果为None则不保存）
@@ -29,7 +29,7 @@ OUTPUT_JSON = None  #"random-geo-radius-2048-angular-no-filters.json"
 # 例如: "analysis_results.json"
 
 # Precisions阈值（用于分析旋钮范围时的过滤条件）
-PRECISION_THRESHOLD = 0.92  # 只统计Precisions大于此值的配置
+PRECISION_THRESHOLD = 0.9  # 只统计Precisions大于此值的配置
 
 #高于平均RPS比例, 在此之上的才作为旋钮范围的依据
 RPS_THRESHOLD = 1.1
