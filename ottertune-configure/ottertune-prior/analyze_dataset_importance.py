@@ -19,7 +19,7 @@ import json
 
 # ==================== 配置区域 ====================
 # 指定要分析的数据集文件
-DATASET_FILE = "random-100-match-kw-small-vocab-no-filters.xlsx"
+DATASET_FILE = "random-100-match-kw-small-vocab-no-filters-new-onlyprior.xlsx"
 
 # 输出JSON文件路径（如果为None则不保存）
 OUTPUT_JSON = None

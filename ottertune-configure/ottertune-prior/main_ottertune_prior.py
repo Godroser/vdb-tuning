@@ -5,6 +5,10 @@ OtterTune with prior: warm-start GPRGD from historical JSON records.
 Supports prior files like log/*_ottertune.json (fractional sealProportion, optional p95time,
 null precisions/RPS skipped) and legacy flat logs (integer percent, no p95time).
 Skips LHS initial design and benchmark runs for prior points.
+
+Optimization target matches VDTuner (auto-configure/vdtuner/optimizer_pobo_sa.py reward_transform):
+per index_type, nondominated sort and the same reference-point normalization for
+(precision, RPS); GPRGD fits a scalar — we minimize -(min(norm_precision, norm_RPS)).
 """
 import argparse
 import json
@@ -12,7 +16,7 @@ import os
 import subprocess as sp
 import sys
 import time
-from typing import List, Optional, Tuple
+from typing import List, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -117,10 +121,107 @@ def run_engine_test(dataset: str, use_sudo=None):
         return None, None, None
 
 
-def objective_from_metrics(precision: float, rps: float, prec_threshold: float = 0.8):
-    if precision >= prec_threshold:
-        return -rps
-    return 1e6
+def fast_non_dominated_sort(P: np.ndarray):
+    """
+    Same 2-D dominance rule as auto-configure/vdtuner/optimizer_pobo_sa.py.
+    P: (n, 2), larger is better on both axes.
+    Returns (rank, fronts) where fronts[0] is the Pareto front indices.
+    """
+
+    def compare(p1, p2):
+        p1_dom_p2 = True
+        p2_dom_p1 = True
+        for i in range(len(p1)):
+            if p1[i] < p2[i]:
+                p1_dom_p2 = False
+            if p1[i] > p2[i]:
+                p2_dom_p1 = False
+        if p1_dom_p2 == p2_dom_p1:
+            return 0
+        return 1 if p1_dom_p2 else -1
+
+    p_size = len(P)
+    n_dom = np.zeros(p_size, dtype=int)
+    s_list = []
+    fronts = []
+    rank = np.full(p_size, -1)
+
+    f0 = []
+    for p in range(p_size):
+        n_p = 0
+        s_p = []
+        for q in range(p_size):
+            if p == q:
+                continue
+            cmp = compare(P[p], P[q])
+            if cmp == 1:
+                s_p.append(q)
+            elif cmp == -1:
+                n_p += 1
+        s_list.append(s_p)
+        n_dom[p] = n_p
+        if n_p == 0:
+            rank[p] = 0
+            f0.append(p)
+    fronts.append(f0)
+    i = 0
+    while len(fronts[i]) != 0:
+        q_next = []
+        for p in fronts[i]:
+            for q in s_list[p]:
+                n_dom[q] -= 1
+                if n_dom[q] == 0:
+                    rank[q] = i + 1
+                    q_next.append(q)
+        i += 1
+        fronts.append(q_next)
+    return rank, fronts
+
+
+def _vdtuner_normalize_per_index_type(
+    prec: np.ndarray, rps: np.ndarray, index_types: Sequence[str]
+) -> np.ndarray:
+    """
+    Match PollingBayesianOptimization.reward_transform normalization:
+    per index_type group, pick chosen_ref via the same fitness tie-break,
+    then divide (precision, RPS) by chosen_ref (both larger-is-better).
+    Returns (N, 2) normalized metrics.
+    """
+    prec = np.asarray(prec, dtype=np.float64).ravel()
+    rps = np.asarray(rps, dtype=np.float64).ravel()
+    n = prec.shape[0]
+    norm = np.zeros((n, 2), dtype=np.float64)
+    by_type: dict = {}
+    for i in range(n):
+        by_type.setdefault(index_types[i], []).append(i)
+    for idxs in by_type.values():
+        idx_arr = np.array(idxs, dtype=int)
+        y_k = np.stack([prec[idx_arr], rps[idx_arr]], axis=1)
+        _, popu = fast_non_dominated_sort(y_k)
+        max0 = np.max(y_k[:, 0]) + 1e-12
+        max1 = np.max(y_k[:, 1]) + 1e-12
+        fitness = -1.0 / (np.abs(y_k[:, 0] / max0 - y_k[:, 1] / max1) + 1e-6)
+        front = popu[0]
+        fitness[front] = -fitness[front]
+        chosen_idx = int(np.argmax(fitness))
+        chosen_ref = y_k[chosen_idx, :]
+        y_norm = y_k.copy()
+        y_norm[:, 0] /= chosen_ref[0] + 1e-12
+        y_norm[:, 1] /= chosen_ref[1] + 1e-12
+        norm[idx_arr] = y_norm
+    return norm
+
+
+def scalar_objective_vdtuner_style(
+    prec: np.ndarray, rps: np.ndarray, index_types: Sequence[str]
+) -> np.ndarray:
+    """
+    VDTuner fits a 2-objective GP (precision, RPS); GPRGD is scalar, so we minimize
+    -(min of normalized objectives) to seek Pareto-aligned trade-offs like EHVI.
+    """
+    norm = _vdtuner_normalize_per_index_type(prec, rps, index_types)
+    m = np.minimum(norm[:, 0], norm[:, 1])
+    return (-m).astype(np.float32).reshape(-1, 1)
 
 
 def rescaled_y(y_train: np.ndarray) -> Tuple[np.ndarray, float, float]:
@@ -243,15 +344,14 @@ def load_prior_from_json(
     path: str,
     knob_stand: KnobStand,
     names: List[str],
-    prec_threshold: float,
     log,
-) -> Tuple[np.ndarray, np.ndarray, List[dict]]:
+) -> Tuple[np.ndarray, np.ndarray, List[float], List[float], List[str], List[dict]]:
     with open(path, "r") as f:
         raw = json.load(f)
     if not isinstance(raw, list):
         raise ValueError(f"Prior JSON must be a JSON array, got {type(raw)}")
 
-    xs, ys = [], []
+    xs, prec_list, rps_list, idx_types = [], [], [], []
     skipped = 0
     for i, rec in enumerate(raw):
         if rec.get("RPS") is None or rec.get("precisions") is None:
@@ -265,9 +365,14 @@ def load_prior_from_json(
             continue
         prec = float(rec.get("precisions", rec.get("precision", 0)))
         rps = float(rec["RPS"])
-        y = objective_from_metrics(prec, rps, prec_threshold)
+        ic = rec.get("index_conf") if isinstance(rec.get("index_conf"), dict) else {}
+        idx = ic.get("index_type") if isinstance(ic, dict) else None
+        if not idx:
+            idx = "UNKNOWN"
         xs.append(v)
-        ys.append(y)
+        prec_list.append(prec)
+        rps_list.append(rps)
+        idx_types.append(str(idx))
 
     if not xs:
         raise RuntimeError("No valid prior records loaded; check knob names and JSON schema.")
@@ -278,8 +383,10 @@ def load_prior_from_json(
         log(f"Loaded {len(xs)} prior points.")
 
     X = np.stack(xs, axis=0)
-    y = np.array(ys, dtype=np.float32).reshape(-1, 1)
-    return X, y, raw
+    prec_a = np.array(prec_list, dtype=np.float64)
+    rps_a = np.array(rps_list, dtype=np.float64)
+    y = scalar_objective_vdtuner_style(prec_a, rps_a, idx_types)
+    return X, y, prec_list, rps_list, idx_types, raw
 
 
 def log_default(message, log_file=None):
@@ -321,8 +428,8 @@ def main():
     parser.add_argument(
         "--prec-threshold",
         type=float,
-        default=0.8,
-        help="Precision threshold for objective -RPS vs penalty (iterative phase default in main_ottertune).",
+        default=0.93,
+        help="Ignored (legacy). Objective matches VDTuner reward_transform; see module docstring.",
     )
     args = parser.parse_args()
 
@@ -334,15 +441,22 @@ def main():
             f.write("")
 
     log("--- OtterTune prior (GPRGD warm-start) ---")
+    log(
+        "Objective aligns with VDTuner: per index_type same normalization as reward_transform; "
+        "scalar for GPRGD = -(min(norm_precision, norm_RPS)) (minimize)."
+    )
 
     env = RealEnv(bench_path=RUN_ENGINE_PATH, knob_path=KNOB_PATH, dataset=args.dataset)
     knob_stand = KnobStand(KNOB_PATH)
     num_knobs = len(env.names)
     log(f"Dataset={args.dataset}, knobs={num_knobs}")
 
-    X_train, y_train, prior_records = load_prior_from_json(
-        args.prior_json, knob_stand, env.names, args.prec_threshold, log
+    X_train, y_train, prec_hist, rps_hist, idx_hist, prior_records = load_prior_from_json(
+        args.prior_json, knob_stand, env.names, log
     )
+    prec_hist = list(prec_hist)
+    rps_hist = list(rps_hist)
+    idx_hist = list(idx_hist)
     y_train_scaled, _, _ = rescaled_y(y_train)
     log(f"Prior training shape: X={X_train.shape}, y={y_train.shape}")
 
@@ -407,9 +521,16 @@ def main():
         next_iteration = max_iter + it + 1
 
         if rps is not None and precision is not None:
-            objective = objective_from_metrics(precision, rps, args.prec_threshold)
+            prec_hist.append(float(precision))
+            rps_hist.append(float(rps))
+            idx_hist.append(str(index_conf.get("index_type", "UNKNOWN")))
             X_train = np.vstack((X_train, best_candidate.reshape(1, -1)))
-            y_train = np.vstack((y_train, np.array([[objective]], dtype=np.float32)))
+            y_train = scalar_objective_vdtuner_style(
+                np.array(prec_hist, dtype=np.float64),
+                np.array(rps_hist, dtype=np.float64),
+                idx_hist,
+            )
+            objective = float(y_train[-1, 0])
 
             rec = build_output_record(
                 next_iteration,
