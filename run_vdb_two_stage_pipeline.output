@@ -1,0 +1,2 @@
+nohup: ignoring input
+python: can't open file '/talas-pool/home/z78ding/vdb-tuning/run_vdb_two_stage_pipeline.py': [Errno 2] No such file or directory

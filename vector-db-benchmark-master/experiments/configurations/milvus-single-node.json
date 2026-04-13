@@ -8,7 +8,7 @@
       {
         "parallel": 10,
         "params": {
-          "ef": 600
+          "ef": 188
         }
       }
     ],
@@ -16,8 +16,8 @@
       "parallel": 32,
       "index_type": "HNSW",
       "index_params": {
-        "M": 32,
-        "efConstruction": 200
+        "M": 52,
+        "efConstruction": 121
       }
     }
   }
