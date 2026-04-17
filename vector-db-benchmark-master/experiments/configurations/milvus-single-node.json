@@ -8,16 +8,16 @@
       {
         "parallel": 10,
         "params": {
-          "ef": 188
+          "nprobe": 1500,
+          "reorder_k": 104
         }
       }
     ],
     "upload_params": {
       "parallel": 32,
-      "index_type": "HNSW",
+      "index_type": "SCANN",
       "index_params": {
-        "M": 52,
-        "efConstruction": 121
+        "nlist": 7955
       }
     }
   }
