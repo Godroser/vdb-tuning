@@ -9,7 +9,7 @@ services:
       - ETCD_AUTO_COMPACTION_RETENTION=1000
       - ETCD_QUOTA_BACKEND_BYTES=4294967296
     volumes:
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/etcd:/etcd
+      - ${DOCKER_VOLUME_DIRECTORY:-/talas-store1-pool/z78ding/docker}/volumes/etcd:/etcd
     logging:
       driver: "json-file"
       options:
@@ -29,7 +29,7 @@ services:
         max-file: 1
         max-size: 10m
     volumes:
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/minio:/minio_data
+      - ${DOCKER_VOLUME_DIRECTORY:-/talas-store1-pool/z78ding/docker}/volumes/minio:/minio_data
     command: minio server /minio_data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]

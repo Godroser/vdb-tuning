@@ -1,5 +1,0 @@
-nohup: ignoring input
-[2026-03-25 01:49:13] 等待 PID 3399333 结束（期望: python -u main_ottertune.py）…
-[2026-03-25 10:23:45] PID 3399333 已退出。
-[2026-03-25 10:23:45] 已在后台启动: python -u main_tuner.py
-[2026-03-25 10:23:45] 日志文件: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/random-match-int-2048-angular-no-filters.log

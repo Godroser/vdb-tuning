@@ -9,6 +9,7 @@ SERVER_HOST=${SERVER_HOST:-"localhost"}
 # SERVER_USERNAME=${SERVER_USERNAME:-"qdrant"}
 
 SOURCE_DIR=$(cd $(dirname ${BASH_SOURCE[0]}); pwd)
+DEFAULT_DOCKER_VOLUME_PARENT="/talas-store1-pool/z78ding/docker"
 
 # Detect Python interpreter - prefer venv if available
 if [ -n "$VIRTUAL_ENV" ]; then
@@ -26,9 +27,11 @@ fi
 function run_exp() {
     # sync 
     # sudo bash -c "echo 1 > /proc/sys/vm/drop_caches" 
+    export DOCKER_VOLUME_DIRECTORY="${DOCKER_VOLUME_DIRECTORY:-$DEFAULT_DOCKER_VOLUME_PARENT}"
     # Stop containers first to avoid "Device or resource busy" errors
     cd $SOURCE_DIR/engine/servers/milvus-single-node 2>/dev/null && docker-compose down > /dev/null 2>&1 || true
     # sudo rm -rf $SOURCE_DIR/results/* 2>/dev/null || true
+    sudo rm -rf "${DOCKER_VOLUME_DIRECTORY}/volumes" 2>/dev/null || true
     sudo rm -rf $SOURCE_DIR/engine/servers/milvus-single-node/volumes 2>/dev/null || true
 
     SERVER_PATH=$1

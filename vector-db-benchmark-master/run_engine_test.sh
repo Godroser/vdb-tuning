@@ -13,6 +13,10 @@ SERVER_HOST="127.0.0.1"
 MILVUS_DIR="$SOURCE_DIR/engine/servers/$SERVER_PATH"
 MONITOR_DIR="$SOURCE_DIR/monitoring"
 
+# compose 中 ${DOCKER_VOLUME_DIRECTORY}/volumes/{etcd,minio,milvus}；默认放到大盘，避免占满代码仓所在分区
+DEFAULT_DOCKER_VOLUME_PARENT="/talas-store1-pool/z78ding/docker"
+export DOCKER_VOLUME_DIRECTORY="${DOCKER_VOLUME_DIRECTORY:-$DEFAULT_DOCKER_VOLUME_PARENT}"
+
 # Activate virtual environment if it exists
 VENV_PATH=${VENV_PATH:-"/talas-pool/home/z78ding/venv"}
 if [ -f "$VENV_PATH/bin/activate" ]; then
@@ -59,19 +63,26 @@ fi
 $COMPOSE_CMD down -v  # 停止并删卷
 sleep 5                 # 稍微缓冲一下
 
-# ⚠️ 重要：本项目的 docker-compose.yml 使用的是宿主机目录 bind mount（./volumes/...），
+# ⚠️ 重要：本项目的 docker-compose.yml 使用的是宿主机目录 bind mount（$DOCKER_VOLUME_DIRECTORY/volumes/...），
 # `docker compose down -v` 不会删除宿主机目录里的数据。
-# 如果不清理，反复跑可能导致 $MILVUS_DIR/volumes 持续增长占满磁盘。
+# 如果不清理，反复跑可能导致该目录持续增长占满磁盘。
 #
 # 默认清理宿主机 volumes，可通过 CLEAN_HOST_VOLUMES=0 关闭。
 CLEAN_HOST_VOLUMES=${CLEAN_HOST_VOLUMES:-1}
 if [ "$CLEAN_HOST_VOLUMES" = "1" ]; then
-    # 默认使用当前 Milvus 服务目录下的 volumes 目录；如需改动，可通过 VOLUME_ROOT=/path/to/volumes 覆盖
-    DEFAULT_VOLUME_ROOT="$MILVUS_DIR/volumes"
+    # 默认与 compose 一致：$DOCKER_VOLUME_DIRECTORY/volumes；可设 VOLUME_ROOT 覆盖
+    DEFAULT_VOLUME_ROOT="${DOCKER_VOLUME_DIRECTORY}/volumes"
     VOLUME_ROOT="${VOLUME_ROOT:-$DEFAULT_VOLUME_ROOT}"
-    # 做个简单防呆：只允许删除固定目录（或以 .../milvus-single-node/volumes 结尾的目录）
     VOLUME_ROOT_ABS="$(realpath -m "$VOLUME_ROOT" 2>/dev/null || echo "")"
-    if [ -n "$VOLUME_ROOT_ABS" ] && { [ "$VOLUME_ROOT_ABS" = "$DEFAULT_VOLUME_ROOT" ] || [[ "$VOLUME_ROOT_ABS" == */milvus-single-node/volumes ]]; }; then
+    DEFAULT_VOLUME_ROOT_ABS="$(realpath -m "$DEFAULT_VOLUME_ROOT" 2>/dev/null || echo "$DEFAULT_VOLUME_ROOT")"
+    LEGACY_VOLUME_ROOT="$MILVUS_DIR/volumes"
+    LEGACY_VOLUME_ROOT_ABS="$(realpath -m "$LEGACY_VOLUME_ROOT" 2>/dev/null || echo "")"
+    # 防呆：仅允许默认路径、旧版仓库内路径、或显式与二者之一一致
+    if [ -n "$VOLUME_ROOT_ABS" ] && {
+        [ "$VOLUME_ROOT_ABS" = "$DEFAULT_VOLUME_ROOT_ABS" ] ||
+        [[ "$VOLUME_ROOT_ABS" == */milvus-single-node/volumes ]] ||
+        { [ -n "$LEGACY_VOLUME_ROOT_ABS" ] && [ "$VOLUME_ROOT_ABS" = "$LEGACY_VOLUME_ROOT_ABS" ]; };
+    }; then
         echo "    🧹 清理宿主机数据目录: $VOLUME_ROOT_ABS"
         sudo rm -rf "${VOLUME_ROOT_ABS:?}/"*
     else

@@ -7,7 +7,10 @@ SERVER_PATH=${1:-milvus-single-node}
 MAX_WAIT=${2:-120}
 
 MILVUS_DIR="$BENCHMARK_ROOT/engine/servers/$SERVER_PATH"
-DEFAULT_VOLUME_ROOT="$MILVUS_DIR/volumes"
+DEFAULT_DOCKER_VOLUME_PARENT="/talas-store1-pool/z78ding/docker"
+export DOCKER_VOLUME_DIRECTORY="${DOCKER_VOLUME_DIRECTORY:-$DEFAULT_DOCKER_VOLUME_PARENT}"
+DEFAULT_VOLUME_ROOT="${DOCKER_VOLUME_DIRECTORY}/volumes"
+LEGACY_VOLUME_ROOT="$MILVUS_DIR/volumes"
 
 DOCKER_BIN=(docker)
 if ! docker info >/dev/null 2>&1; then
@@ -44,7 +47,13 @@ CLEAN_HOST_VOLUMES=${CLEAN_HOST_VOLUMES:-1}
 if [ "$CLEAN_HOST_VOLUMES" = "1" ]; then
     VOLUME_ROOT="${VOLUME_ROOT:-$DEFAULT_VOLUME_ROOT}"
     VOLUME_ROOT_ABS="$(realpath -e "$VOLUME_ROOT" 2>/dev/null || realpath -m "$VOLUME_ROOT")"
-    if [ -n "$VOLUME_ROOT_ABS" ] && { [ "$VOLUME_ROOT_ABS" = "$DEFAULT_VOLUME_ROOT" ] || [[ "$VOLUME_ROOT_ABS" == */milvus-single-node/volumes ]]; }; then
+    DEFAULT_VOLUME_ROOT_ABS="$(realpath -m "$DEFAULT_VOLUME_ROOT" 2>/dev/null || echo "$DEFAULT_VOLUME_ROOT")"
+    LEGACY_VOLUME_ROOT_ABS="$(realpath -m "$LEGACY_VOLUME_ROOT" 2>/dev/null || echo "")"
+    if [ -n "$VOLUME_ROOT_ABS" ] && {
+        [ "$VOLUME_ROOT_ABS" = "$DEFAULT_VOLUME_ROOT_ABS" ] ||
+        [[ "$VOLUME_ROOT_ABS" == */milvus-single-node/volumes ]] ||
+        { [ -n "$LEGACY_VOLUME_ROOT_ABS" ] && [ "$VOLUME_ROOT_ABS" = "$LEGACY_VOLUME_ROOT_ABS" ]; };
+    }; then
         echo "    🧹 清理宿主机数据目录: $VOLUME_ROOT_ABS"
         if ! rm -rf "${VOLUME_ROOT_ABS:?}/"* "${VOLUME_ROOT_ABS:?}"/.[!.]* "${VOLUME_ROOT_ABS:?}"/..?* 2>/dev/null; then
             echo "    ⚠️ 普通权限清理失败，尝试 sudo -n"

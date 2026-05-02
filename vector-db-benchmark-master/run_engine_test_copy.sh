@@ -12,6 +12,8 @@ SERVER_HOST="127.0.0.1"
 # 定义 Milvus 目录
 MILVUS_DIR="$SOURCE_DIR/engine/servers/$SERVER_PATH"
 MONITOR_DIR="$SOURCE_DIR/monitoring"
+DEFAULT_DOCKER_VOLUME_PARENT="/talas-store1-pool/z78ding/docker"
+export DOCKER_VOLUME_DIRECTORY="${DOCKER_VOLUME_DIRECTORY:-$DEFAULT_DOCKER_VOLUME_PARENT}"
 
 # Activate virtual environment if it exists
 VENV_PATH=${VENV_PATH:-"/home/z78ding/project/venv"}

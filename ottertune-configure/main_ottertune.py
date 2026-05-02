@@ -29,7 +29,7 @@ RUN_ENGINE_PATH = '/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-maste
 USE_SUDO = True  # Set False if user has docker group (sudo usermod -aG docker $USER)
 
 # Dataset name passed to run_engine_test.sh (same as vector-db-benchmark datasets)
-DATASET = "random-match-int-100-angular-no-filters"
+DATASET = "random-100-match-kw-small-vocab-no-filters"
 
 # Main tuning log (under ottertune-configure)
 _LOG_DIR = "/talas-pool/home/z78ding/vdb-tuning/ottertune-configure/log"

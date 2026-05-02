@@ -21,7 +21,7 @@ import json
 
 # ==================== 配置区域 ====================
 # 指定要分析的数据集文件
-DATASET_FILE = "random-match-int-2048-angular-no-filters.xlsx"
+DATASET_FILE = "arxiv-titles-384-angular-no-filters.xlsx"
 # "random-geo-radius-2048-angular-no-filters.xlsx"
 
 # 输出JSON文件路径（如果为None则不保存）

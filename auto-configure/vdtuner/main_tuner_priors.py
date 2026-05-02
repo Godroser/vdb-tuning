@@ -105,7 +105,7 @@ def _parse_args() -> argparse.Namespace:
     ap.add_argument(
         "--prior-config",
         type=str,
-        default=None,
+        default="prior/glove-100-angular copy.json",
         help="Path to a JSON config file with priors (index_types/tune_knobs/overrides).",
     )
     ap.add_argument(

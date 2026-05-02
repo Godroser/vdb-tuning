@@ -65,7 +65,7 @@ def main():
     df = df[output_columns]
 
     # 保存为 Excel
-    output_filename = "benchmark_results.xlsx"
+    output_filename = "arxiv-titles-384-angular-no-filters.xlsx"
     df.to_excel(output_filename, index=False)
     
     print(f"\n处理完成！{len(data_list)} 行数据已保存至: {output_filename}", file=sys.stderr)

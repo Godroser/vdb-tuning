@@ -33,6 +33,8 @@ SERVER_HOST="127.0.0.1"
 
 MILVUS_DIR="$BENCHMARK_ROOT/engine/servers/$SERVER_PATH"
 MONITOR_DIR="$BENCHMARK_ROOT/monitoring"
+DEFAULT_DOCKER_VOLUME_PARENT="/talas-store1-pool/z78ding/docker"
+export DOCKER_VOLUME_DIRECTORY="${DOCKER_VOLUME_DIRECTORY:-$DEFAULT_DOCKER_VOLUME_PARENT}"
 DRIFT_STATE_FILE="$DRIFTING_DIR/.drift_state.json"
 DRIFT_RESULTS_FILE="$BENCHMARK_ROOT/results/drift_test_results.jsonl"
 DRIFT_SEGMENT_STATS_DIR="$BENCHMARK_ROOT/results/drift_segment_stats"
@@ -76,10 +78,17 @@ sleep 5
 
 CLEAN_HOST_VOLUMES=${CLEAN_HOST_VOLUMES:-1}
 if [ "$CLEAN_HOST_VOLUMES" = "1" ]; then
-    DEFAULT_VOLUME_ROOT="$BENCHMARK_ROOT/engine/servers/$SERVER_PATH/volumes"
+    DEFAULT_VOLUME_ROOT="${DOCKER_VOLUME_DIRECTORY}/volumes"
     VOLUME_ROOT="${VOLUME_ROOT:-$DEFAULT_VOLUME_ROOT}"
     VOLUME_ROOT_ABS="$(realpath -m "$VOLUME_ROOT" 2>/dev/null || echo "")"
-    if [ -n "$VOLUME_ROOT_ABS" ] && { [ "$VOLUME_ROOT_ABS" = "$DEFAULT_VOLUME_ROOT" ] || [[ "$VOLUME_ROOT_ABS" == */milvus-single-node/volumes ]]; }; then
+    DEFAULT_VOLUME_ROOT_ABS="$(realpath -m "$DEFAULT_VOLUME_ROOT" 2>/dev/null || echo "$DEFAULT_VOLUME_ROOT")"
+    LEGACY_VOLUME_ROOT="$MILVUS_DIR/volumes"
+    LEGACY_VOLUME_ROOT_ABS="$(realpath -m "$LEGACY_VOLUME_ROOT" 2>/dev/null || echo "")"
+    if [ -n "$VOLUME_ROOT_ABS" ] && {
+        [ "$VOLUME_ROOT_ABS" = "$DEFAULT_VOLUME_ROOT_ABS" ] ||
+        [[ "$VOLUME_ROOT_ABS" == */milvus-single-node/volumes ]] ||
+        { [ -n "$LEGACY_VOLUME_ROOT_ABS" ] && [ "$VOLUME_ROOT_ABS" = "$LEGACY_VOLUME_ROOT_ABS" ]; };
+    }; then
         echo "    🧹 清理宿主机数据目录: $VOLUME_ROOT_ABS"
         sudo rm -rf "${VOLUME_ROOT_ABS:?}/"*
     fi
