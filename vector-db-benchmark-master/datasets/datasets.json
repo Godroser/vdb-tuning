@@ -343,5 +343,33 @@
     "distance": "cosine",
     "type": "tar",
     "path": "adapt-restored/random-geo-radius-2048-angular-no-filters-drift-reload-eval"
+  },
+  {
+    "name": "random-geo-radius-2048-angular-no-filters-snapshot-eval-20260514-001657",
+    "vector_size": 2048,
+    "distance": "cosine",
+    "type": "tar",
+    "path": "../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_5"
+  },
+  {
+    "name": "random-geo-radius-2048-angular-no-filters-snapshot-eval-20260514-002634",
+    "vector_size": 2048,
+    "distance": "cosine",
+    "type": "tar",
+    "path": "../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_5"
+  },
+  {
+    "name": "random-geo-radius-2048-angular-no-filters-snapshot-eval-20260514-004546",
+    "vector_size": 2048,
+    "distance": "cosine",
+    "type": "tar",
+    "path": "../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_5"
+  },
+  {
+    "name": "random-geo-radius-2048-angular-no-filters-snapshot-eval-20260514-004633",
+    "vector_size": 2048,
+    "distance": "cosine",
+    "type": "tar",
+    "path": "../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_5"
   }
 ]

@@ -27,7 +27,7 @@ common:
   defaultPartitionName: _default
   entityExpiration: -1
   gracefulStopTimeout: 1800
-  gracefulTime: 13464
+  gracefulTime: 65284
   indexSliceSize: 16
   locks:
     metrics:
@@ -90,9 +90,9 @@ dataCoord:
     maxBinlogFileNumber: 32
     maxIdleTime: 600
     maxLife: 86400
-    maxSize: 8455
+    maxSize: 10000
     minSizeFromIdleToSealed: 16
-    sealProportion: 0
+    sealProportion: 0.99
     smallProportion: 0.5
 dataNode:
   dataSync:
@@ -113,7 +113,7 @@ dataNode:
   port: 21124
   segment:
     deleteBufBytes: 67108864
-    insertBufSize: 7940000000
+    insertBufSize: 10000000000
     syncPeriod: 600
   timetick:
     byRPC: true
@@ -158,7 +158,7 @@ indexCoord:
     nodeID: 0
     withCred: false
   segment:
-    minSegmentNumRowsToEnableIndex: 1024
+    minSegmentNumRowsToEnableIndex: 10000
 indexNode:
   enableDisk: true
   grpc:
@@ -251,7 +251,7 @@ pulsar:
   tenant: public
   webport: 80
 queryCoord:
-  autoBalance: true
+  autoBalance: false
   autoHandoff: true
   balanceIntervalSeconds: 60
   balancer: ScoreBasedBalancer

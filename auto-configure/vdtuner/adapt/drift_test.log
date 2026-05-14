@@ -1,0 +1,200 @@
+nohup: ignoring input
+=======================================
+📊 数据漂移性能测试
+Engine: milvus-p10 | Dataset: random-geo-radius-2048-angular-no-filters
+Batch: 4000 向量/轮 | 漂移轮数: 5
+漂移快照: 每轮导出 → /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_*
+最终导出: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/final
+=======================================
+>>> [Step 1] 启动后台监控...
+    监控进程 PID: 142252
+>>> [Step 2] 重置 Milvus...
+Stopping milvus-prometheus ... 
+Stopping milvus-standalone ... 
+Stopping milvus-minio      ... 
+Stopping milvus-etcd       ... 
+Stopping milvus-prometheus ... done
+Stopping milvus-standalone ... done
+Stopping milvus-etcd       ... done
+Stopping milvus-minio      ... done
+Removing milvus-prometheus ... 
+Removing milvus-standalone ... 
+Removing milvus-minio      ... 
+Removing milvus-etcd       ... 
+Removing milvus-etcd       ... done
+Removing milvus-standalone ... done
+Removing milvus-prometheus ... done
+Removing milvus-minio      ... done
+Removing network milvus
+    🧹 清理宿主机数据目录: /talas-store1-pool/z78ding/docker/volumes
+Creating network "milvus" with the default driver
+Creating milvus-minio ... 
+Creating milvus-etcd  ... 
+Creating milvus-etcd  ... done
+Creating milvus-minio ... done
+Creating milvus-standalone ... 
+Creating milvus-standalone ... done
+Creating milvus-prometheus ... 
+Creating milvus-prometheus ... done
+>>> [Step 3] 等待 Milvus 启动 (最多 120s)...
+    等待中... (10s/120s)
+    ✅ Milvus 已就绪
+>>> [Step 4] 导入数据并评测 cycle 0 ...
+Running experiment: milvus-p10 - random-geo-radius-2048-angular-no-filters
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/random-geo-radius-2048-angular/random_geo_100k_no_filters already exists
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]64it [00:00, 64.55it/s]1088it [00:01, 1339.12it/s]1984it [00:01, 2477.56it/s]2690it [00:01, 2666.51it/s]3840it [00:01, 4168.57it/s]4928it [00:01, 5452.91it/s]6016it [00:01, 6565.62it/s]7040it [00:01, 7374.49it/s]8064it [00:01, 8036.83it/s]9077it [00:02, 8584.80it/s]10054it [00:02, 8844.21it/s]11072it [00:02, 9122.54it/s]12045it [00:02, 9262.20it/s]13015it [00:02, 9291.29it/s]13975it [00:02, 9233.30it/s]14976it [00:02, 9369.63it/s]15936it [00:02, 9382.93it/s]16885it [00:02, 9362.77it/s]17829it [00:02, 9338.17it/s]18768it [00:03, 9351.43it/s]19776it [00:03, 9463.51it/s]20800it [00:03, 9629.16it/s]21765it [00:03, 9590.08it/s]22726it [00:03, 9195.84it/s]23650it [00:03, 9170.79it/s]24570it [00:03, 9045.51it/s]25536it [00:03, 9133.12it/s]26458it [00:03, 9158.31it/s]27456it [00:04, 9372.89it/s]28395it [00:04, 9209.45it/s]29318it [00:04, 9029.86it/s]30223it [00:04, 8899.14it/s]31168it [00:04, 9029.77it/s]32072it [00:04, 7131.38it/s]32847it [00:04, 5698.35it/s]33792it [00:04, 6481.62it/s]34688it [00:05, 7031.13it/s]35520it [00:05, 7328.49it/s]36480it [00:05, 7855.08it/s]37440it [00:05, 8273.11it/s]38400it [00:05, 8584.79it/s]39317it [00:05, 8750.10it/s]40309it [00:05, 9086.08it/s]41233it [00:05, 9019.02it/s]42146it [00:05, 8949.24it/s]43184it [00:05, 9366.12it/s]44222it [00:06, 9663.63it/s]45194it [00:06, 9636.13it/s]46221it [00:06, 9823.55it/s]47229it [00:06, 9899.24it/s]48221it [00:06, 9833.48it/s]49228it [00:06, 9903.42it/s]50240it [00:06, 9925.31it/s]51264it [00:06, 10005.31it/s]52288it [00:06, 10043.57it/s]53376it [00:06, 10157.05it/s]54392it [00:07, 9959.16it/s] 55389it [00:07, 9828.83it/s]56384it [00:07, 9784.76it/s]57408it [00:07, 9856.69it/s]58431it [00:07, 9966.08it/s]59429it [00:07, 9938.66it/s]60480it [00:07, 10009.45it/s]61482it [00:07, 9939.64it/s] 62477it [00:08, 6922.25it/s]63294it [00:08, 6506.36it/s]64192it [00:08, 7054.16it/s]65152it [00:08, 7583.21it/s]66228it [00:08, 8396.90it/s]67200it [00:08, 8718.70it/s]68224it [00:08, 9121.31it/s]69248it [00:08, 9347.77it/s]70272it [00:08, 9470.64it/s]71237it [00:09, 9289.09it/s]72192it [00:09, 9331.11it/s]73135it [00:09, 9038.75it/s]74112it [00:09, 9143.42it/s]75052it [00:09, 9215.83it/s]75978it [00:09, 8835.75it/s]76928it [00:09, 8942.51it/s]77888it [00:09, 9044.28it/s]78848it [00:09, 9088.39it/s]79760it [00:09, 8936.07it/s]80656it [00:10, 8473.38it/s]81509it [00:10, 8392.60it/s]82432it [00:10, 8591.48it/s]83456it [00:10, 8991.59it/s]84390it [00:10, 9091.99it/s]85312it [00:10, 9124.68it/s]86336it [00:10, 9324.72it/s]87296it [00:10, 9393.52it/s]88256it [00:10, 9356.23it/s]89280it [00:10, 9574.63it/s]90240it [00:11, 9507.42it/s]91264it [00:11, 9600.79it/s]92225it [00:11, 7670.76it/s]93184it [00:11, 8137.61it/s]94080it [00:11, 7259.04it/s]95104it [00:11, 7943.06it/s]96064it [00:11, 8316.91it/s]97024it [00:11, 8633.16it/s]98048it [00:12, 9034.69it/s]99087it [00:12, 9416.92it/s]100000it [00:12, 8165.12it/s]
+Upload time: 12.794249108061194
+Total import time: 101.63295729737729
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    初始向量数: 100000
+    [Cycle 0] 统计各 segment 向量数量...
+Segment 数量: 8, 总向量数: 100000
+  Segment 1: segment_id=466277806494652857, num_rows=14748, state=3
+  Segment 2: segment_id=466277806494762889, num_rows=14986, state=3
+  Segment 3: segment_id=466277806496454891, num_rows=15484, state=3
+  Segment 4: segment_id=466277806495734105, num_rows=15633, state=3
+  Segment 5: segment_id=466277806496924982, num_rows=5339, state=3
+  Segment 6: segment_id=466277806496814980, num_rows=3960, state=3
+  Segment 7: segment_id=466277806496094779, num_rows=14677, state=3
+  Segment 8: segment_id=466277806495373863, num_rows=15173, state=3
+    [Cycle 0] 导出基线快照并重算 KNN...
+Snapshot export OK: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_0
+updated dataset config: random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412 -> ../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_0
+    [Cycle 0] 使用重算 KNN 的 tests.jsonl 评测初始性能...
+Running experiment: milvus-p10 - random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_0 already exists
+Experiment stage: Search
+0it [00:00, ?it/s]4it [00:00,  4.99it/s]14it [00:00, 18.85it/s]74it [00:01, 119.78it/s]196it [00:01, 337.98it/s]314it [00:01, 523.54it/s]434it [00:01, 685.51it/s]562it [00:01, 835.58it/s]684it [00:01, 936.81it/s]800it [00:01, 998.00it/s]918it [00:01, 1049.36it/s]1033it [00:01, 1076.97it/s]1149it [00:01, 1098.51it/s]1264it [00:02, 1100.71it/s]1384it [00:02, 1129.04it/s]1502it [00:02, 1143.28it/s]1619it [00:02, 1110.90it/s]1739it [00:02, 1136.27it/s]1860it [00:02, 1156.79it/s]1979it [00:02, 1164.50it/s]2105it [00:02, 1189.95it/s]2228it [00:02, 1200.94it/s]2349it [00:02, 1200.19it/s]2471it [00:03, 1202.70it/s]2604it [00:03, 1239.37it/s]2737it [00:03, 1263.61it/s]2866it [00:03, 1270.81it/s]2996it [00:03, 1278.57it/s]3126it [00:03, 1282.79it/s]3255it [00:03, 1282.90it/s]3385it [00:03, 1285.67it/s]3514it [00:03, 1266.17it/s]3641it [00:03, 1265.57it/s]3768it [00:04, 1241.08it/s]3893it [00:04, 1231.04it/s]4019it [00:04, 1239.45it/s]4146it [00:04, 1246.48it/s]4274it [00:04, 1253.10it/s]4400it [00:04, 1248.28it/s]4527it [00:04, 1252.38it/s]4653it [00:04, 1197.56it/s]4774it [00:04, 1161.60it/s]4895it [00:04, 1173.55it/s]5015it [00:05, 1180.83it/s]5140it [00:05, 1196.03it/s]5265it [00:05, 1209.90it/s]5390it [00:05, 1220.94it/s]5513it [00:05, 1222.54it/s]5637it [00:05, 1225.45it/s]5761it [00:05, 1228.69it/s]5890it [00:05, 1245.35it/s]6018it [00:05, 1255.16it/s]6144it [00:06, 1238.52it/s]6268it [00:06, 1215.98it/s]6391it [00:06, 1219.57it/s]6527it [00:06, 1260.87it/s]6661it [00:06, 1282.32it/s]6790it [00:06, 1266.77it/s]6917it [00:06, 1242.91it/s]7042it [00:06, 1243.77it/s]7168it [00:06, 1246.61it/s]7293it [00:06, 1244.48it/s]7418it [00:07, 1225.76it/s]7545it [00:07, 1238.17it/s]7671it [00:07, 1244.06it/s]7802it [00:07, 1261.21it/s]7929it [00:07, 1263.68it/s]8056it [00:07, 1256.39it/s]8182it [00:07, 1257.19it/s]8308it [00:07, 1255.70it/s]8434it [00:07, 1253.91it/s]8560it [00:07, 1241.18it/s]8687it [00:08, 1248.25it/s]8812it [00:08, 1244.44it/s]8937it [00:08, 1228.17it/s]9060it [00:08, 1215.89it/s]9182it [00:08, 1166.90it/s]9306it [00:08, 1187.18it/s]9436it [00:08, 1218.93it/s]9559it [00:08, 1213.36it/s]9681it [00:08, 1197.26it/s]9801it [00:08, 1196.78it/s]9927it [00:09, 1212.25it/s]10000it [00:09, 1094.58it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+>>> [Step 5] 开始数据漂移循环 (5 轮)...
+
+--- 漂移轮次 1/5 ---
+    [1] 插入 4000 新向量，删除 4000 旧向量...
+Drift cycle done: inserted 4000, deleted 4000
+New state: base_id=4000, max_id=103999
+Snapshot export OK: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_1
+updated dataset config: random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412 -> ../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_1
+    [1] 使用重算 KNN 的 tests.jsonl 运行性能测试...
+Running experiment: milvus-p10 - random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_1 already exists
+Experiment stage: Search
+0it [00:00, ?it/s]4it [00:00,  4.72it/s]14it [00:00, 17.35it/s]66it [00:01, 98.79it/s]184it [00:01, 301.77it/s]294it [00:01, 470.39it/s]421it [00:01, 655.86it/s]543it [00:01, 796.18it/s]655it [00:01, 879.51it/s]773it [00:01, 960.61it/s]900it [00:01, 1046.47it/s]1023it [00:01, 1098.69it/s]1143it [00:01, 1127.28it/s]1263it [00:02, 1147.50it/s]1387it [00:02, 1172.07it/s]1510it [00:02, 1184.98it/s]1637it [00:02, 1209.88it/s]1760it [00:02, 1181.65it/s]1880it [00:02, 1159.24it/s]2006it [00:02, 1186.30it/s]2131it [00:02, 1203.23it/s]2252it [00:02, 1022.92it/s]2360it [00:03, 840.91it/s] 2453it [00:03, 620.68it/s]2528it [00:03, 515.95it/s]2591it [00:03, 458.55it/s]2645it [00:03, 469.26it/s]2698it [00:04, 399.07it/s]2743it [00:04, 392.59it/s]2786it [00:04, 394.65it/s]2828it [00:04, 362.77it/s]2869it [00:04, 373.04it/s]2908it [00:04, 340.35it/s]2952it [00:04, 363.95it/s]2990it [00:04, 360.54it/s]3033it [00:05, 371.58it/s]3071it [00:05, 362.22it/s]3116it [00:05, 385.73it/s]3174it [00:05, 437.07it/s]3258it [00:05, 551.08it/s]3374it [00:05, 726.51it/s]3497it [00:05, 872.22it/s]3617it [00:05, 967.26it/s]3740it [00:05, 1042.66it/s]3861it [00:06, 1090.95it/s]3980it [00:06, 1119.69it/s]4095it [00:06, 1126.34it/s]4211it [00:06, 1135.83it/s]4325it [00:06, 1130.43it/s]4441it [00:06, 1138.60it/s]4556it [00:06, 1141.53it/s]4676it [00:06, 1156.50it/s]4798it [00:06, 1173.99it/s]4918it [00:06, 1179.20it/s]5036it [00:07, 1170.56it/s]5157it [00:07, 1181.51it/s]5280it [00:07, 1195.54it/s]5401it [00:07, 1198.49it/s]5521it [00:07, 1185.05it/s]5642it [00:07, 1191.06it/s]5762it [00:07, 1186.02it/s]5881it [00:07, 1186.21it/s]6000it [00:07, 1182.54it/s]6119it [00:07, 1164.46it/s]6237it [00:08, 1166.14it/s]6354it [00:08, 1165.40it/s]6471it [00:08, 1155.87it/s]6587it [00:08, 1099.22it/s]6698it [00:08, 1075.25it/s]6824it [00:08, 1127.36it/s]6940it [00:08, 1136.20it/s]7057it [00:08, 1145.16it/s]7180it [00:08, 1168.02it/s]7304it [00:08, 1188.44it/s]7424it [00:09, 1166.39it/s]7541it [00:09, 1167.02it/s]7667it [00:09, 1191.99it/s]7788it [00:09, 1195.79it/s]7915it [00:09, 1217.02it/s]8037it [00:09, 1208.57it/s]8158it [00:09, 1194.67it/s]8282it [00:09, 1207.14it/s]8404it [00:09, 1209.67it/s]8526it [00:09, 1199.22it/s]8646it [00:10, 1178.61it/s]8764it [00:10, 1163.55it/s]8881it [00:10, 1154.47it/s]8999it [00:10, 1160.48it/s]9116it [00:10, 1151.16it/s]9236it [00:10, 1162.83it/s]9359it [00:10, 1182.59it/s]9478it [00:10, 1183.90it/s]9597it [00:10, 1180.39it/s]9716it [00:11, 1163.46it/s]9836it [00:11, 1171.97it/s]9955it [00:11, 1175.94it/s]10000it [00:11, 888.43it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [1] 统计各 segment 向量数量...
+Segment 数量: 6, 总向量数: 104000
+  Segment 1: segment_id=466277806498606017, num_rows=1979, state=3
+  Segment 2: segment_id=466277806495373863, num_rows=15173, state=3
+  Segment 3: segment_id=466277806497205177, num_rows=34764, state=3
+  Segment 4: segment_id=466277806498756021, num_rows=2021, state=3
+  Segment 5: segment_id=466277806497315177, num_rows=46103, state=3
+  Segment 6: segment_id=466277806496814980, num_rows=3960, state=3
+
+--- 漂移轮次 2/5 ---
+    [2] 插入 4000 新向量，删除 4000 旧向量...
+Drift cycle done: inserted 4000, deleted 4000
+New state: base_id=8000, max_id=107999
+Snapshot export OK: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_2
+updated dataset config: random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412 -> ../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_2
+    [2] 使用重算 KNN 的 tests.jsonl 运行性能测试...
+Running experiment: milvus-p10 - random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_2 already exists
+Experiment stage: Search
+0it [00:00, ?it/s]4it [00:00,  4.79it/s]14it [00:00, 17.57it/s]117it [00:01, 183.45it/s]242it [00:01, 385.08it/s]362it [00:01, 558.47it/s]486it [00:01, 716.91it/s]611it [00:01, 850.04it/s]730it [00:01, 937.91it/s]849it [00:01, 1004.60it/s]970it [00:01, 1061.25it/s]1087it [00:01, 1082.87it/s]1204it [00:01, 1106.91it/s]1326it [00:02, 1136.44it/s]1451it [00:02, 1167.37it/s]1571it [00:02, 1171.32it/s]1691it [00:02, 1177.33it/s]1815it [00:02, 1195.80it/s]1936it [00:02, 1188.72it/s]2062it [00:02, 1209.72it/s]2184it [00:02, 1195.71it/s]2304it [00:02, 1193.05it/s]2426it [00:02, 1200.31it/s]2547it [00:03, 1196.78it/s]2667it [00:03, 1155.31it/s]2783it [00:03, 1118.06it/s]2907it [00:03, 1151.24it/s]3029it [00:03, 1170.01it/s]3157it [00:03, 1199.38it/s]3278it [00:03, 1150.47it/s]3394it [00:03, 1113.87it/s]3516it [00:03, 1140.21it/s]3638it [00:04, 1160.74it/s]3759it [00:04, 1174.99it/s]3877it [00:04, 1150.79it/s]4000it [00:04, 1173.47it/s]4127it [00:04, 1200.06it/s]4253it [00:04, 1215.40it/s]4383it [00:04, 1237.85it/s]4511it [00:04, 1249.01it/s]4637it [00:04, 1238.85it/s]4765it [00:04, 1249.53it/s]4891it [00:05, 1248.60it/s]5018it [00:05, 1252.69it/s]5144it [00:05, 1237.25it/s]5275it [00:05, 1257.49it/s]5404it [00:05, 1266.52it/s]5531it [00:05, 1258.86it/s]5657it [00:05, 1250.61it/s]5784it [00:05, 1254.43it/s]5910it [00:05, 1237.40it/s]6039it [00:05, 1252.85it/s]6165it [00:06, 1253.36it/s]6294it [00:06, 1261.93it/s]6421it [00:06, 1236.29it/s]6554it [00:06, 1262.36it/s]6684it [00:06, 1273.19it/s]6814it [00:06, 1279.92it/s]6946it [00:06, 1289.16it/s]7075it [00:06, 1275.09it/s]7203it [00:06, 1261.66it/s]7331it [00:07, 1265.34it/s]7458it [00:07, 1257.39it/s]7587it [00:07, 1265.44it/s]7714it [00:07, 1245.88it/s]7849it [00:07, 1273.40it/s]7978it [00:07, 1276.06it/s]8106it [00:07, 1264.20it/s]8233it [00:07, 1258.14it/s]8359it [00:07, 1239.99it/s]8492it [00:07, 1265.92it/s]8619it [00:08, 1257.71it/s]8745it [00:08, 1256.00it/s]8872it [00:08, 1259.49it/s]8998it [00:08, 1254.49it/s]9126it [00:08, 1260.22it/s]9254it [00:08, 1263.70it/s]9381it [00:08, 1263.04it/s]9508it [00:08, 1256.79it/s]9634it [00:08, 1248.94it/s]9763it [00:08, 1258.31it/s]9889it [00:09, 1256.09it/s]10000it [00:09, 1095.19it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [2] 统计各 segment 向量数量...
+Segment 数量: 4, 总向量数: 104000
+  Segment 1: segment_id=466277806499216492, num_rows=49926, state=3
+  Segment 2: segment_id=466277806499636607, num_rows=2015, state=3
+  Segment 3: segment_id=466277806499526604, num_rows=1985, state=3
+  Segment 4: segment_id=466277806499106492, num_rows=50074, state=3
+
+--- 漂移轮次 3/5 ---
+    [3] 插入 4000 新向量，删除 4000 旧向量...
+Drift cycle done: inserted 4000, deleted 4000
+New state: base_id=12000, max_id=111999
+Snapshot export OK: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_3
+updated dataset config: random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412 -> ../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_3
+    [3] 使用重算 KNN 的 tests.jsonl 运行性能测试...
+Running experiment: milvus-p10 - random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_3 already exists
+Experiment stage: Search
+0it [00:00, ?it/s]4it [00:00,  4.82it/s]14it [00:00, 18.67it/s]93it [00:01, 151.55it/s]222it [00:01, 376.18it/s]335it [00:01, 541.81it/s]458it [00:01, 705.00it/s]585it [00:01, 847.66it/s]702it [00:01, 932.50it/s]824it [00:01, 1010.34it/s]944it [00:01, 1061.63it/s]1064it [00:01, 1100.41it/s]1182it [00:01, 1120.76it/s]1303it [00:02, 1145.29it/s]1423it [00:02, 1161.18it/s]1547it [00:02, 1183.39it/s]1668it [00:02, 1167.21it/s]1787it [00:02, 1168.70it/s]1910it [00:02, 1185.67it/s]2031it [00:02, 1191.99it/s]2156it [00:02, 1207.01it/s]2278it [00:02, 1201.47it/s]2402it [00:02, 1211.47it/s]2528it [00:03, 1224.94it/s]2657it [00:03, 1243.89it/s]2788it [00:03, 1263.45it/s]2915it [00:03, 1199.57it/s]3036it [00:03, 1201.44it/s]3158it [00:03, 1204.82it/s]3287it [00:03, 1226.99it/s]3410it [00:03, 1184.83it/s]3539it [00:03, 1211.90it/s]3661it [00:03, 1209.00it/s]3783it [00:04, 1195.78it/s]3905it [00:04, 1202.05it/s]4027it [00:04, 1205.60it/s]4158it [00:04, 1235.91it/s]4284it [00:04, 1240.16it/s]4409it [00:04, 1231.77it/s]4533it [00:04, 1226.91it/s]4656it [00:04, 1219.64it/s]4780it [00:04, 1223.73it/s]4903it [00:05, 1222.58it/s]5026it [00:05, 1182.04it/s]5145it [00:05, 1155.10it/s]5261it [00:05, 1151.03it/s]5394it [00:05, 1201.44it/s]5527it [00:05, 1235.53it/s]5651it [00:05, 1208.53it/s]5773it [00:05, 1196.01it/s]5893it [00:05, 1195.74it/s]6014it [00:05, 1197.51it/s]6137it [00:06, 1204.24it/s]6258it [00:06, 1196.55it/s]6378it [00:06, 1160.04it/s]6495it [00:06, 1100.72it/s]6613it [00:06, 1121.21it/s]6733it [00:06, 1143.29it/s]6857it [00:06, 1170.41it/s]6984it [00:06, 1198.79it/s]7110it [00:06, 1216.07it/s]7232it [00:06, 1210.94it/s]7354it [00:07, 1210.47it/s]7480it [00:07, 1224.91it/s]7609it [00:07, 1242.33it/s]7738it [00:07, 1256.37it/s]7869it [00:07, 1271.28it/s]8000it [00:07, 1280.25it/s]8129it [00:07, 1239.39it/s]8254it [00:07, 1241.75it/s]8379it [00:07, 1210.06it/s]8501it [00:08, 1205.75it/s]8622it [00:08, 1200.83it/s]8750it [00:08, 1223.52it/s]8873it [00:08, 1222.01it/s]8998it [00:08, 1227.51it/s]9128it [00:08, 1247.15it/s]9253it [00:08, 1214.29it/s]9375it [00:08, 1214.89it/s]9497it [00:08, 1214.44it/s]9619it [00:08, 1198.61it/s]9745it [00:09, 1214.98it/s]9867it [00:09, 1179.99it/s]9986it [00:09, 1121.56it/s]10000it [00:09, 1079.04it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [3] 统计各 segment 向量数量...
+Segment 数量: 6, 总向量数: 108000
+  Segment 1: segment_id=466277806499106492, num_rows=50074, state=3
+  Segment 2: segment_id=466277806499216492, num_rows=49926, state=3
+  Segment 3: segment_id=466277806499967189, num_rows=2007, state=3
+  Segment 4: segment_id=466277806499636607, num_rows=2015, state=3
+  Segment 5: segment_id=466277806500077191, num_rows=1993, state=3
+  Segment 6: segment_id=466277806499526604, num_rows=1985, state=3
+
+--- 漂移轮次 4/5 ---
+    [4] 插入 4000 新向量，删除 4000 旧向量...
+Drift cycle done: inserted 4000, deleted 4000
+New state: base_id=16000, max_id=115999
+Snapshot export OK: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_4
+updated dataset config: random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412 -> ../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_4
+    [4] 使用重算 KNN 的 tests.jsonl 运行性能测试...
+Running experiment: milvus-p10 - random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_4 already exists
+Experiment stage: Search
+0it [00:00, ?it/s]4it [00:00,  5.13it/s]16it [00:00, 22.62it/s]93it [00:00, 156.37it/s]208it [00:01, 358.28it/s]325it [00:01, 540.65it/s]448it [00:01, 707.82it/s]569it [00:01, 836.62it/s]683it [00:01, 918.19it/s]810it [00:01, 1014.31it/s]924it [00:01, 1042.23it/s]1043it [00:01, 1082.39it/s]1169it [00:01, 1131.06it/s]1293it [00:01, 1162.65it/s]1415it [00:02, 1178.84it/s]1536it [00:02, 1186.51it/s]1659it [00:02, 1199.01it/s]1781it [00:02, 1199.48it/s]1906it [00:02, 1213.40it/s]2038it [00:02, 1244.77it/s]2170it [00:02, 1264.45it/s]2304it [00:02, 1285.35it/s]2436it [00:02, 1291.42it/s]2566it [00:03, 1251.86it/s]2692it [00:03, 1229.01it/s]2817it [00:03, 1233.34it/s]2944it [00:03, 1243.10it/s]3069it [00:03, 1239.96it/s]3194it [00:03, 1232.30it/s]3319it [00:03, 1234.38it/s]3449it [00:03, 1252.87it/s]3575it [00:03, 1254.16it/s]3704it [00:03, 1261.82it/s]3835it [00:04, 1273.60it/s]3968it [00:04, 1289.59it/s]4097it [00:04, 1285.98it/s]4226it [00:04, 1266.95it/s]4353it [00:04, 1258.49it/s]4481it [00:04, 1264.20it/s]4612it [00:04, 1276.86it/s]4740it [00:04, 1271.62it/s]4869it [00:04, 1276.64it/s]4997it [00:04, 1269.14it/s]5125it [00:05, 1271.75it/s]5259it [00:05, 1291.53it/s]5391it [00:05, 1299.43it/s]5521it [00:05, 1287.82it/s]5650it [00:05, 1282.73it/s]5779it [00:05, 1283.56it/s]5908it [00:05, 1279.86it/s]6036it [00:05, 1270.92it/s]6164it [00:05, 1243.07it/s]6289it [00:05, 1197.76it/s]6410it [00:06, 1119.30it/s]6525it [00:06, 1126.99it/s]6652it [00:06, 1166.74it/s]6770it [00:06, 1165.50it/s]6888it [00:06, 1168.76it/s]7008it [00:06, 1177.75it/s]7127it [00:06, 1178.63it/s]7246it [00:06, 1173.50it/s]7371it [00:06, 1194.60it/s]7491it [00:07, 1188.32it/s]7616it [00:07, 1204.17it/s]7745it [00:07, 1227.72it/s]7875it [00:07, 1248.77it/s]8003it [00:07, 1257.37it/s]8133it [00:07, 1267.14it/s]8260it [00:07, 1252.84it/s]8386it [00:07, 1249.35it/s]8513it [00:07, 1252.03it/s]8640it [00:07, 1255.04it/s]8769it [00:08, 1264.57it/s]8896it [00:08, 1251.90it/s]9022it [00:08, 1252.56it/s]9153it [00:08, 1268.02it/s]9280it [00:08, 1267.04it/s]9407it [00:08, 1267.59it/s]9534it [00:08, 1265.76it/s]9661it [00:08, 1254.19it/s]9788it [00:08, 1252.42it/s]9914it [00:08, 1231.43it/s]10000it [00:09, 1110.55it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [4] 统计各 segment 向量数量...
+Segment 数量: 4, 总向量数: 104000
+  Segment 1: segment_id=466277806500597505, num_rows=50092, state=3
+  Segment 2: segment_id=466277806500927777, num_rows=2009, state=3
+  Segment 3: segment_id=466277806501037780, num_rows=1991, state=3
+  Segment 4: segment_id=466277806500487505, num_rows=49908, state=3
+
+--- 漂移轮次 5/5 ---
+    [5] 插入 4000 新向量，删除 4000 旧向量...
+Drift cycle done: inserted 4000, deleted 4000
+New state: base_id=20000, max_id=119999
+Snapshot export OK: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_5
+updated dataset config: random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412 -> ../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_5
+    [5] 使用重算 KNN 的 tests.jsonl 运行性能测试...
+Running experiment: milvus-p10 - random-geo-radius-2048-angular-no-filters-drift-live-eval-20260513-214412
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_5 already exists
+Experiment stage: Search
+0it [00:00, ?it/s]4it [00:00,  5.09it/s]14it [00:00, 18.52it/s]57it [00:01, 88.99it/s]171it [00:01, 295.53it/s]287it [00:01, 484.61it/s]402it [00:01, 642.93it/s]516it [00:01, 767.66it/s]635it [00:01, 879.66it/s]753it [00:01, 960.35it/s]870it [00:01, 1018.82it/s]986it [00:01, 1056.68it/s]1105it [00:01, 1094.60it/s]1228it [00:02, 1130.74it/s]1350it [00:02, 1152.61it/s]1468it [00:02, 1159.24it/s]1586it [00:02, 1142.99it/s]1702it [00:02, 1144.42it/s]1823it [00:02, 1162.78it/s]1940it [00:02, 1000.90it/s]2045it [00:02, 912.21it/s] 2141it [00:03, 721.41it/s]2222it [00:03, 604.92it/s]2291it [00:03, 500.43it/s]2349it [00:03, 461.52it/s]2404it [00:03, 475.84it/s]2456it [00:03, 450.48it/s]2511it [00:03, 472.77it/s]2561it [00:04, 431.82it/s]2608it [00:04, 440.71it/s]2662it [00:04, 464.36it/s]2714it [00:04, 477.50it/s]2764it [00:04, 481.21it/s]2814it [00:04, 473.02it/s]2862it [00:04, 471.33it/s]2919it [00:04, 498.41it/s]2982it [00:04, 536.06it/s]3070it [00:05, 635.39it/s]3197it [00:05, 821.83it/s]3321it [00:05, 945.41it/s]3437it [00:05, 1005.95it/s]3555it [00:05, 1057.65it/s]3674it [00:05, 1096.65it/s]3790it [00:05, 1114.59it/s]3907it [00:05, 1130.06it/s]4021it [00:05, 1118.32it/s]4141it [00:05, 1140.32it/s]4256it [00:06, 1136.89it/s]4376it [00:06, 1154.86it/s]4493it [00:06, 1159.20it/s]4609it [00:06, 1151.19it/s]4729it [00:06, 1163.09it/s]4849it [00:06, 1170.41it/s]4973it [00:06, 1188.42it/s]5096it [00:06, 1199.56it/s]5216it [00:06, 1191.46it/s]5336it [00:06, 1183.30it/s]5455it [00:07, 1181.98it/s]5579it [00:07, 1197.73it/s]5703it [00:07, 1206.30it/s]5824it [00:07, 1186.01it/s]5944it [00:07, 1189.78it/s]6064it [00:07, 1179.79it/s]6186it [00:07, 1191.05it/s]6307it [00:07, 1194.96it/s]6427it [00:07, 1154.05it/s]6543it [00:07, 1132.34it/s]6660it [00:08, 1140.64it/s]6777it [00:08, 1146.32it/s]6894it [00:08, 1153.11it/s]7010it [00:08, 1153.67it/s]7126it [00:08, 1153.38it/s]7242it [00:08, 1143.20it/s]7357it [00:08, 1131.34it/s]7471it [00:08, 1132.59it/s]7600it [00:08, 1178.74it/s]7719it [00:08, 1179.66it/s]7838it [00:09, 1149.16it/s]7954it [00:09, 1070.30it/s]8063it [00:09, 1060.11it/s]8179it [00:09, 1088.09it/s]8297it [00:09, 1111.58it/s]8409it [00:09, 1107.07it/s]8522it [00:09, 1112.10it/s]8641it [00:09, 1132.20it/s]8764it [00:09, 1160.51it/s]8884it [00:10, 1171.75it/s]9002it [00:10, 1136.67it/s]9116it [00:10, 1113.14it/s]9228it [00:10, 1056.16it/s]9335it [00:10, 1024.45it/s]9441it [00:10, 1031.47it/s]9545it [00:10, 973.20it/s] 9644it [00:10, 974.70it/s]9766it [00:10, 1043.50it/s]9887it [00:11, 1090.95it/s]9997it [00:11, 1079.55it/s]10000it [00:11, 898.72it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [5] 统计各 segment 向量数量...
+Segment 数量: 6, 总向量数: 108000
+  Segment 1: segment_id=466277806501518361, num_rows=2010, state=3
+  Segment 2: segment_id=466277806501037780, num_rows=1991, state=3
+  Segment 3: segment_id=466277806500487505, num_rows=49908, state=3
+  Segment 4: segment_id=466277806500597505, num_rows=50092, state=3
+  Segment 5: segment_id=466277806501368357, num_rows=1990, state=3
+  Segment 6: segment_id=466277806500927777, num_rows=2009, state=3
+
+>>> [Step 6] 收尾...
+    导出 final 快照（全部漂移结束后的向量与测试集）...
+Snapshot export OK: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/final
+
+=======================================
+📊 数据漂移测试完成
+结果文件: /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results/drift_cycle_metrics/20260513-214412/drift_test_results.jsonl
+性能指标归档: /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results/drift_cycle_metrics/20260513-214412/cycle_*.json
+指标汇总(JSONL): /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results/drift_cycle_metrics/20260513-214412/metrics_summary.jsonl
+漂移快照(KNN): /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_*
+最终导出(KNN): /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/final
+Segment 统计: /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results/drift_segment_stats/20260513-214412/cycle_*.json
+=======================================

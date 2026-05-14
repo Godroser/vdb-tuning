@@ -30,15 +30,14 @@ VDTUNER_DIR = ADAPT_DIR.parent
 AUTO_CONFIGURE_ROOT = VDTUNER_DIR.parent
 VDB_ROOT = AUTO_CONFIGURE_ROOT.parent
 BENCHMARK_ROOT = VDB_ROOT / "vector-db-benchmark-master"
-DRIFTING_DIR = BENCHMARK_ROOT / "drifting"
-DRIFT_CYCLE_PY = DRIFTING_DIR / "run_drift_cycle.py"
+DRIFT_CYCLE_PY = ADAPT_DIR / "run_drift_cycle.py"
 RESULTS_DIR = BENCHMARK_ROOT / "results"
 CONF_PATH = BENCHMARK_ROOT / "experiments" / "configurations" / "milvus-single-node.json"
 WHOLE_PARAM_PATH = AUTO_CONFIGURE_ROOT / "whole_param.json"
 RUN_PY_PATH = BENCHMARK_ROOT / "run.py"
 MILVUS_SERVER_PATH = "milvus-single-node"
 RESET_MILVUS_SCRIPT = ADAPT_DIR / "reset_milvus_env.sh"
-DEFAULT_DRIFT_STATE_FILE = DRIFTING_DIR / ".drift_state.json"
+DEFAULT_DRIFT_STATE_FILE = ADAPT_DIR / ".drift_state.json"
 DEFAULT_BACKUP_DIR = RESULTS_DIR / "drift_vector_backups"
 DATASETS_JSON_PATH = BENCHMARK_ROOT / "datasets" / "datasets.json"
 DATASETS_ROOT = BENCHMARK_ROOT / "datasets"
@@ -909,7 +908,7 @@ def main(argv: list[str] | None = None) -> int:
 
     baseline, current_from_file, _current_cycle = get_baseline_and_current(results_file)
     if baseline is None:
-        print("错误: 无法加载 drift 结果，请先运行 run_drift_test.sh")
+        print("错误: 无法加载 drift 结果，请先运行 auto-configure/vdtuner/adapt/run_drift_test.sh")
         return 1
 
     current = current_from_file

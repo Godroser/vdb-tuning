@@ -8,13 +8,16 @@
       {
         "parallel": 10,
         "params": {
+          "nprobe": 200,
+          "reorder_k": 200
         }
       }
     ],
     "upload_params": {
       "parallel": 32,
-      "index_type": "AUTOINDEX",
+      "index_type": "SCANN",
       "index_params": {
+        "nlist": 10000
       }
     }
   }
