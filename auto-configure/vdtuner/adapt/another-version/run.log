@@ -1,0 +1,187 @@
+nohup: ignoring input
+=======================================
+📊 数据漂移性能测试 (another-version)
+Engine: milvus-p10 | Dataset: glove-100-angular
+漂移: 每轮插入 55000 / 删除 5000 | 轮数: 5
+漂移插入分布 DRIFT_INSERT_DIST=laplace（与基准 Gaussian 稠密设定刻意区分）
+每轮净增向量约 50000，累计约 +250000（不计 cycle 0）
+运行时仅更新: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl
+收尾导出: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/final_export/20260515-012234/{vectors.npy,tests.jsonl}
+=======================================
+>>> [Step 1] 启动后台监控...
+    监控进程 PID: 866498
+>>> [Step 2] 重置 Milvus...
+Stopping milvus-prometheus ... 
+Stopping milvus-standalone ... 
+Stopping milvus-minio      ... 
+Stopping milvus-etcd       ... 
+Stopping milvus-prometheus ... done
+Stopping milvus-standalone ... done
+Stopping milvus-etcd       ... done
+Stopping milvus-minio      ... done
+Removing milvus-prometheus ... 
+Removing milvus-standalone ... 
+Removing milvus-minio      ... 
+Removing milvus-etcd       ... 
+Removing milvus-etcd       ... done
+Removing milvus-minio      ... done
+Removing milvus-prometheus ... done
+Removing milvus-standalone ... done
+Removing network milvus
+    🧹 清理宿主机数据目录: /talas-store1-pool/z78ding/docker/volumes
+Creating network "milvus" with the default driver
+Creating milvus-minio ... 
+Creating milvus-etcd  ... 
+Creating milvus-minio ... done
+Creating milvus-etcd  ... done
+Creating milvus-standalone ... 
+Creating milvus-standalone ... done
+Creating milvus-prometheus ... 
+Creating milvus-prometheus ... done
+>>> [Step 3] 等待 Milvus 启动 (最多 120s)...
+    等待中... (10s/120s)
+    ✅ Milvus 已就绪
+>>> [Step 4] 导入数据并评测 cycle 0 ...
+Running experiment: milvus-p10 - glove-100-angular
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/glove-100-angular/glove-100-angular.hdf5 already exists
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:01, 125.20it/s]2176it [00:01, 1751.46it/s]4224it [00:01, 3347.32it/s]6272it [00:01, 4827.48it/s]8320it [00:02, 6086.87it/s]10368it [00:02, 7117.25it/s]12416it [00:02, 7908.24it/s]14464it [00:02, 8570.65it/s]16512it [00:02, 9010.29it/s]18560it [00:03, 9361.02it/s]20608it [00:03, 9614.27it/s]22656it [00:03, 9798.02it/s]24704it [00:03, 9903.19it/s]26752it [00:03, 10012.90it/s]28800it [00:04, 10078.98it/s]30848it [00:04, 10106.42it/s]32896it [00:04, 10117.82it/s]34944it [00:04, 10108.17it/s]36992it [00:04, 10186.06it/s]39040it [00:05, 10195.84it/s]41088it [00:05, 10199.99it/s]43136it [00:05, 10210.84it/s]45184it [00:05, 10202.12it/s]47232it [00:05, 10184.32it/s]49280it [00:06, 10225.98it/s]51328it [00:06, 10211.73it/s]53376it [00:06, 10204.68it/s]55424it [00:06, 10231.07it/s]57472it [00:06, 10215.12it/s]59520it [00:07, 10196.82it/s]61568it [00:07, 10169.89it/s]63616it [00:07, 10156.25it/s]65664it [00:07, 10248.26it/s]67712it [00:07, 10215.87it/s]69760it [00:08, 10208.66it/s]71808it [00:08, 10200.01it/s]73856it [00:08, 10210.37it/s]75904it [00:08, 10220.75it/s]77952it [00:08, 10206.00it/s]80000it [00:09, 10161.55it/s]82048it [00:09, 10220.52it/s]84096it [00:09, 10242.67it/s]86144it [00:09, 10231.62it/s]88192it [00:09, 10222.58it/s]90240it [00:10, 10197.81it/s]92288it [00:10, 10208.64it/s]94336it [00:10, 10214.97it/s]96384it [00:10, 10221.55it/s]98432it [00:10, 10188.91it/s]100480it [00:11, 10198.39it/s]102528it [00:11, 10207.47it/s]104576it [00:11, 10211.78it/s]106624it [00:11, 10161.88it/s]108672it [00:11, 10220.76it/s]110720it [00:12, 10143.42it/s]112768it [00:12, 10231.71it/s]114816it [00:12, 10248.92it/s]116864it [00:12, 10229.43it/s]118912it [00:12, 10217.36it/s]120960it [00:13, 10203.52it/s]123008it [00:13, 10200.44it/s]125056it [00:13, 10232.43it/s]127104it [00:13, 10213.38it/s]129152it [00:13, 10214.87it/s]131200it [00:14, 10195.12it/s]133248it [00:14, 10215.33it/s]135296it [00:14, 10205.65it/s]137344it [00:14, 10213.27it/s]139392it [00:14, 10200.72it/s]141440it [00:15, 10175.94it/s]143488it [00:15, 10223.62it/s]145536it [00:15, 10213.01it/s]147584it [00:15, 10215.84it/s]149632it [00:15, 10206.34it/s]151680it [00:16, 10214.78it/s]153728it [00:16, 10255.01it/s]155776it [00:16, 10220.90it/s]157824it [00:16, 10208.71it/s]159872it [00:16, 10215.62it/s]161920it [00:17, 10202.12it/s]163968it [00:17, 10216.33it/s]166016it [00:17, 10222.87it/s]168064it [00:17, 10203.35it/s]170112it [00:17, 10208.46it/s]172160it [00:18, 10234.30it/s]174208it [00:18, 10206.92it/s]176256it [00:18, 10197.31it/s]178304it [00:18, 10227.45it/s]180352it [00:18, 10181.97it/s]182400it [00:19, 10203.07it/s]184448it [00:19, 10152.17it/s]186496it [00:19, 10170.96it/s]188544it [00:19, 10206.96it/s]190592it [00:19, 10178.14it/s]192640it [00:20, 10176.50it/s]194688it [00:20, 10192.46it/s]196736it [00:20, 10193.97it/s]198784it [00:20, 10239.36it/s]200832it [00:20, 10241.90it/s]202880it [00:21, 10208.03it/s]204928it [00:21, 10228.95it/s]206976it [00:21, 10193.48it/s]209024it [00:21, 10205.26it/s]211072it [00:21, 10216.15it/s]213120it [00:22, 10218.87it/s]215168it [00:22, 10217.93it/s]217216it [00:22, 10223.30it/s]219264it [00:22, 10228.30it/s]221312it [00:22, 10207.29it/s]223360it [00:23, 10093.70it/s]225408it [00:23, 10246.89it/s]227456it [00:23, 10225.34it/s]229504it [00:23, 10228.55it/s]231552it [00:23, 10224.08it/s]233600it [00:24, 10226.07it/s]235648it [00:24, 10209.69it/s]237696it [00:24, 10207.21it/s]239744it [00:24, 10209.48it/s]241792it [00:25, 10087.25it/s]243840it [00:25, 10265.64it/s]245888it [00:25, 10232.98it/s]247936it [00:25, 10224.61it/s]249984it [00:25, 10226.77it/s]252032it [00:26, 10234.15it/s]254080it [00:26, 10227.99it/s]256128it [00:26, 10202.41it/s]258176it [00:26, 10199.91it/s]260224it [00:26, 10204.92it/s]262272it [00:27, 10220.26it/s]264320it [00:27, 10195.70it/s]266368it [00:27, 10210.53it/s]268416it [00:27, 10185.21it/s]270464it [00:27, 10212.54it/s]272512it [00:28, 10197.07it/s]274560it [00:28, 10203.80it/s]276608it [00:28, 10063.99it/s]278656it [00:28, 10245.42it/s]280704it [00:28, 10231.92it/s]282752it [00:29, 10224.90it/s]284800it [00:29, 10204.61it/s]286848it [00:29, 10207.77it/s]288896it [00:29, 10224.51it/s]290944it [00:29, 10225.10it/s]292992it [00:30, 10212.17it/s]295040it [00:30, 10194.98it/s]297088it [00:30, 10206.64it/s]299136it [00:30, 10195.77it/s]301184it [00:30, 10203.37it/s]303232it [00:31, 10192.09it/s]305280it [00:31, 10139.24it/s]307328it [00:31, 10231.87it/s]309376it [00:31, 10073.24it/s]311424it [00:31, 10263.37it/s]313472it [00:32, 10264.86it/s]315520it [00:32, 10229.08it/s]317568it [00:32, 10231.17it/s]319616it [00:32, 10220.99it/s]321664it [00:32, 10122.81it/s]323712it [00:33, 10273.00it/s]325760it [00:33, 10248.51it/s]327808it [00:33, 10230.32it/s]329856it [00:33, 10217.22it/s]331904it [00:33, 10222.97it/s]333952it [00:34, 10195.61it/s]336000it [00:34, 10142.31it/s]338048it [00:34, 10207.76it/s]340096it [00:34, 10229.19it/s]342144it [00:34, 10225.41it/s]344192it [00:35, 10199.38it/s]346240it [00:35, 10223.63it/s]348288it [00:35, 10223.38it/s]350336it [00:35, 10214.16it/s]352384it [00:35, 10234.35it/s]354432it [00:36, 10222.17it/s]356480it [00:36, 10227.01it/s]358528it [00:36, 10224.37it/s]360576it [00:36, 10227.24it/s]362624it [00:36, 10213.07it/s]364672it [00:37, 10225.08it/s]366720it [00:37, 10228.00it/s]368768it [00:37, 10219.19it/s]370816it [00:37, 10120.49it/s]372864it [00:37, 10254.45it/s]374912it [00:38, 10261.64it/s]376960it [00:38, 10226.00it/s]379008it [00:38, 10213.36it/s]381056it [00:38, 10213.64it/s]383104it [00:38, 10210.56it/s]385152it [00:39, 10218.84it/s]387200it [00:39, 10194.95it/s]389248it [00:39, 10203.56it/s]391296it [00:39, 10212.85it/s]393344it [00:39, 10209.28it/s]395392it [00:40, 10210.05it/s]397440it [00:40, 10226.81it/s]399488it [00:40, 10215.82it/s]401536it [00:40, 10209.20it/s]403584it [00:40, 10114.08it/s]405632it [00:41, 10240.98it/s]407680it [00:41, 10236.10it/s]409728it [00:41, 10209.08it/s]411776it [00:41, 10235.14it/s]413824it [00:41, 10235.67it/s]415872it [00:42, 10221.48it/s]417920it [00:42, 10219.94it/s]419968it [00:42, 10181.18it/s]422016it [00:42, 10206.78it/s]424064it [00:42, 10205.22it/s]426112it [00:43, 10183.56it/s]428160it [00:43, 10208.04it/s]430208it [00:43, 10194.77it/s]432256it [00:43, 10207.25it/s]434304it [00:43, 10198.70it/s]436352it [00:44, 10146.64it/s]438400it [00:44, 10154.37it/s]440448it [00:44, 10168.62it/s]442496it [00:44, 10174.59it/s]444544it [00:44, 10167.29it/s]446592it [00:45, 10223.20it/s]448640it [00:45, 10240.93it/s]450688it [00:45, 10209.82it/s]452736it [00:45, 10206.21it/s]454784it [00:45, 10230.60it/s]456832it [00:46, 10230.03it/s]458880it [00:46, 10185.88it/s]460928it [00:46, 10218.34it/s]462976it [00:46, 10216.76it/s]465024it [00:46, 10208.76it/s]467072it [00:47, 10194.61it/s]469120it [00:47, 10209.16it/s]471168it [00:47, 10201.90it/s]473216it [00:47, 10205.57it/s]475264it [00:47, 10215.12it/s]477312it [00:48, 10229.79it/s]479360it [00:48, 10257.17it/s]481408it [00:48, 10146.25it/s]483456it [00:48, 10234.22it/s]485504it [00:48, 10251.71it/s]487552it [00:49, 10236.65it/s]489600it [00:49, 10219.52it/s]491648it [00:49, 10209.93it/s]493696it [00:49, 10241.16it/s]495744it [00:49, 10233.09it/s]497792it [00:50, 10143.88it/s]499840it [00:50, 10227.34it/s]501888it [00:50, 10231.77it/s]503936it [00:50, 10220.08it/s]505984it [00:50, 10213.08it/s]508032it [00:51, 10097.42it/s]510080it [00:51, 10228.19it/s]512128it [00:51, 10232.72it/s]514176it [00:51, 10214.25it/s]516224it [00:51, 10214.16it/s]518272it [00:52, 10190.37it/s]520320it [00:52, 10201.40it/s]522368it [00:52, 10211.56it/s]524416it [00:52, 10225.27it/s]526464it [00:52, 10219.02it/s]528512it [00:53, 10223.75it/s]530560it [00:53, 10198.10it/s]532608it [00:53, 10218.18it/s]534656it [00:53, 10207.12it/s]536704it [00:53, 10213.51it/s]538752it [00:54, 10199.47it/s]540800it [00:54, 10198.36it/s]542848it [00:54, 10204.85it/s]544896it [00:54, 10218.66it/s]546944it [00:54, 10225.35it/s]548992it [00:55, 10203.98it/s]550912it [00:55, 10020.55it/s]552960it [00:55, 10065.21it/s]555008it [00:55, 10120.84it/s]557056it [00:55, 10146.38it/s]558071it [00:56, 8478.98it/s] 559744it [00:56, 8563.39it/s]561792it [00:56, 9068.44it/s]563840it [00:56, 9440.03it/s]565888it [00:56, 9640.53it/s]567936it [00:57, 9798.10it/s]569984it [00:57, 9917.95it/s]572032it [00:57, 10022.00it/s]574080it [00:57, 10057.28it/s]576128it [00:57, 9993.80it/s] 578176it [00:58, 10181.06it/s]580224it [00:58, 10203.29it/s]582272it [00:58, 9971.51it/s] 584320it [00:58, 10272.85it/s]586368it [00:58, 10138.81it/s]588416it [00:59, 10088.25it/s]590464it [00:59, 10009.14it/s]592512it [00:59, 10242.89it/s]594560it [00:59, 10168.48it/s]596608it [00:59, 10189.16it/s]598656it [01:00, 10182.22it/s]600704it [01:00, 10217.85it/s]602752it [01:00, 10205.55it/s]604800it [01:00, 10204.66it/s]606848it [01:00, 10207.08it/s]608896it [01:01, 10214.81it/s]610944it [01:01, 10200.29it/s]612992it [01:01, 10190.72it/s]615040it [01:01, 10215.63it/s]617088it [01:01, 10174.14it/s]619136it [01:02, 10197.67it/s]621184it [01:02, 10186.30it/s]623232it [01:02, 10218.45it/s]625280it [01:02, 10195.73it/s]627328it [01:02, 10110.75it/s]629376it [01:03, 10226.33it/s]631424it [01:03, 10262.67it/s]633472it [01:03, 10214.21it/s]635520it [01:03, 10247.02it/s]637568it [01:03, 10211.54it/s]639616it [01:04, 10123.62it/s]641664it [01:04, 10271.88it/s]643712it [01:04, 10234.73it/s]645760it [01:04, 10236.59it/s]647808it [01:04, 10218.09it/s]649856it [01:05, 10216.88it/s]651904it [01:05, 10232.16it/s]653952it [01:05, 10199.24it/s]656000it [01:05, 10196.67it/s]658048it [01:05, 10213.04it/s]660096it [01:06, 10199.28it/s]662144it [01:06, 10221.03it/s]664192it [01:06, 10207.93it/s]666240it [01:06, 10215.64it/s]668288it [01:06, 10218.97it/s]670336it [01:07, 10225.74it/s]672384it [01:07, 10209.11it/s]674432it [01:07, 10219.58it/s]676480it [01:07, 10200.31it/s]678528it [01:07, 10207.14it/s]680576it [01:08, 10106.49it/s]682624it [01:08, 10235.54it/s]684672it [01:08, 10230.96it/s]686720it [01:08, 10225.44it/s]688768it [01:08, 10203.41it/s]690816it [01:09, 10205.82it/s]692864it [01:09, 10201.52it/s]694912it [01:09, 10213.65it/s]696960it [01:09, 10209.95it/s]699008it [01:09, 10205.28it/s]701056it [01:10, 10196.78it/s]703104it [01:10, 10200.67it/s]705152it [01:10, 10197.66it/s]707200it [01:10, 10203.25it/s]709248it [01:10, 10209.11it/s]711296it [01:11, 10190.34it/s]713344it [01:11, 10239.61it/s]715392it [01:11, 10197.82it/s]717440it [01:11, 10189.73it/s]719488it [01:11, 10204.49it/s]721536it [01:12, 10198.83it/s]723584it [01:12, 10204.27it/s]725632it [01:12, 10202.76it/s]727680it [01:12, 10198.19it/s]729728it [01:12, 10217.51it/s]731776it [01:13, 10207.68it/s]733824it [01:13, 10189.26it/s]735872it [01:13, 10211.78it/s]737920it [01:13, 10210.25it/s]739968it [01:13, 10203.68it/s]742016it [01:14, 10212.63it/s]744064it [01:14, 10193.40it/s]746112it [01:14, 10186.66it/s]748160it [01:14, 10203.53it/s]750208it [01:14, 10186.23it/s]752256it [01:15, 10201.06it/s]754304it [01:15, 10106.01it/s]756352it [01:15, 10221.76it/s]758400it [01:15, 10212.86it/s]760448it [01:15, 10217.92it/s]762496it [01:16, 10199.72it/s]764544it [01:16, 10211.29it/s]766592it [01:16, 10210.21it/s]768640it [01:16, 10223.83it/s]770688it [01:16, 10227.23it/s]772736it [01:17, 10198.03it/s]774784it [01:17, 10198.85it/s]776832it [01:17, 10208.53it/s]778880it [01:17, 10212.46it/s]780928it [01:17, 10203.34it/s]782976it [01:18, 10207.60it/s]785024it [01:18, 10115.48it/s]787072it [01:18, 10189.14it/s]789120it [01:18, 10207.95it/s]791168it [01:18, 10257.50it/s]793216it [01:19, 10241.09it/s]795264it [01:19, 10218.38it/s]797312it [01:19, 10218.07it/s]799360it [01:19, 10201.59it/s]801408it [01:19, 10195.82it/s]803456it [01:20, 10208.04it/s]805504it [01:20, 10194.78it/s]807552it [01:20, 10209.71it/s]809600it [01:20, 10199.34it/s]811648it [01:20, 10203.68it/s]813696it [01:21, 10193.26it/s]815744it [01:21, 10202.30it/s]817792it [01:21, 10200.47it/s]819840it [01:21, 10193.36it/s]821888it [01:21, 10211.68it/s]823936it [01:22, 10201.16it/s]825984it [01:22, 10212.14it/s]828032it [01:22, 10206.11it/s]830080it [01:22, 10211.77it/s]832128it [01:22, 10188.41it/s]834176it [01:23, 10199.22it/s]836224it [01:23, 10223.05it/s]838272it [01:23, 10189.81it/s]840320it [01:23, 10197.84it/s]842368it [01:23, 10227.44it/s]844416it [01:24, 10196.54it/s]846464it [01:24, 10172.01it/s]848512it [01:24, 10121.72it/s]850560it [01:24, 10133.23it/s]852608it [01:25, 10245.58it/s]854656it [01:25, 10227.35it/s]856704it [01:25, 10216.51it/s]858752it [01:25, 10213.46it/s]860800it [01:25, 10207.91it/s]862848it [01:26, 10220.37it/s]864896it [01:26, 10209.65it/s]866944it [01:26, 10197.49it/s]868992it [01:26, 10216.17it/s]871040it [01:26, 10208.15it/s]873088it [01:27, 10203.37it/s]875136it [01:27, 10219.17it/s]877184it [01:27, 10229.61it/s]879232it [01:27, 10204.68it/s]881280it [01:27, 10189.00it/s]883328it [01:28, 10193.37it/s]885376it [01:28, 10208.63it/s]887424it [01:28, 10211.38it/s]889472it [01:28, 10095.04it/s]891520it [01:28, 10251.51it/s]893568it [01:29, 10249.86it/s]895616it [01:29, 10233.93it/s]897664it [01:29, 10218.86it/s]899712it [01:29, 10200.09it/s]901760it [01:29, 10210.09it/s]903808it [01:30, 10205.62it/s]905856it [01:30, 10206.52it/s]907904it [01:30, 10208.92it/s]909952it [01:30, 10191.50it/s]912000it [01:30, 10089.79it/s]914048it [01:31, 10243.34it/s]916096it [01:31, 10206.34it/s]918144it [01:31, 10200.91it/s]920192it [01:31, 10199.74it/s]922240it [01:31, 10219.49it/s]924288it [01:32, 10217.98it/s]926336it [01:32, 10215.60it/s]928384it [01:32, 10205.39it/s]930432it [01:32, 10206.83it/s]932480it [01:32, 10205.46it/s]934528it [01:33, 10192.77it/s]936576it [01:33, 10205.26it/s]938624it [01:33, 10210.43it/s]940672it [01:33, 10185.73it/s]942720it [01:33, 10183.43it/s]944768it [01:34, 10200.91it/s]946816it [01:34, 10163.82it/s]948864it [01:34, 10212.88it/s]950912it [01:34, 10219.99it/s]952960it [01:34, 10209.20it/s]955008it [01:35, 10206.46it/s]957056it [01:35, 10197.03it/s]959104it [01:35, 10217.62it/s]961152it [01:35, 10173.56it/s]963200it [01:35, 10194.02it/s]965248it [01:36, 10185.24it/s]967296it [01:36, 10198.62it/s]969344it [01:36, 10200.51it/s]971392it [01:36, 10199.01it/s]973440it [01:36, 10211.97it/s]975488it [01:37, 10239.93it/s]977536it [01:37, 10192.00it/s]979584it [01:37, 10232.90it/s]981632it [01:37, 10204.03it/s]983680it [01:37, 10213.44it/s]985728it [01:38, 10215.05it/s]987776it [01:38, 10209.05it/s]989824it [01:38, 10214.81it/s]991872it [01:38, 10217.51it/s]993920it [01:38, 10200.25it/s]995968it [01:39, 10190.69it/s]998016it [01:39, 10201.59it/s]1000064it [01:39, 10189.64it/s]1002112it [01:39, 10206.69it/s]1004160it [01:39, 10183.33it/s]1006208it [01:40, 10222.15it/s]1008256it [01:40, 10209.46it/s]1010304it [01:40, 10216.13it/s]1012352it [01:40, 10104.60it/s]1014400it [01:40, 10269.87it/s]1016448it [01:41, 10240.55it/s]1018496it [01:41, 10211.25it/s]1020544it [01:41, 10199.76it/s]1022592it [01:41, 10204.96it/s]1024640it [01:41, 10178.70it/s]1026688it [01:42, 10189.06it/s]1028736it [01:42, 10098.08it/s]1030784it [01:42, 10228.24it/s]1032832it [01:42, 10221.82it/s]1034880it [01:42, 10223.07it/s]1036928it [01:43, 10193.66it/s]1038976it [01:43, 10188.12it/s]1041024it [01:43, 10203.47it/s]1043072it [01:43, 10212.80it/s]1045120it [01:43, 10226.59it/s]1047168it [01:44, 10203.42it/s]1049216it [01:44, 10196.91it/s]1051264it [01:44, 10200.78it/s]1053312it [01:44, 10198.51it/s]1055360it [01:44, 10145.05it/s]1057408it [01:45, 10224.99it/s]1059456it [01:45, 10215.93it/s]1061504it [01:45, 10221.71it/s]1063552it [01:45, 10215.63it/s]1065600it [01:45, 10211.19it/s]1067648it [01:46, 10222.61it/s]1069696it [01:46, 10202.09it/s]1071744it [01:46, 10208.24it/s]1073792it [01:46, 10197.93it/s]1075840it [01:46, 10200.76it/s]1077888it [01:47, 10198.88it/s]1079936it [01:47, 10188.38it/s]1081984it [01:47, 10203.25it/s]1084032it [01:47, 10198.51it/s]1086080it [01:47, 10211.00it/s]1088128it [01:48, 10221.30it/s]1090176it [01:48, 10203.70it/s]1092224it [01:48, 10209.71it/s]1094272it [01:48, 10183.99it/s]1096320it [01:48, 10191.84it/s]1098368it [01:49, 10209.52it/s]1100416it [01:49, 10205.60it/s]1102464it [01:49, 10202.62it/s]1104512it [01:49, 10190.51it/s]1106560it [01:49, 10182.96it/s]1108608it [01:50, 10193.23it/s]1110656it [01:50, 10201.06it/s]1112704it [01:50, 10205.35it/s]1114752it [01:50, 10216.56it/s]1116800it [01:50, 10217.13it/s]1118848it [01:51, 10192.76it/s]1120896it [01:51, 10184.38it/s]1122944it [01:51, 10206.64it/s]1124992it [01:51, 10205.51it/s]1127040it [01:51, 10206.17it/s]1129088it [01:52, 10208.34it/s]1131136it [01:52, 10198.70it/s]1133184it [01:52, 10218.23it/s]1135232it [01:52, 10212.86it/s]1137280it [01:52, 10224.89it/s]1138303it [01:53, 8495.85it/s] 1139840it [01:53, 8409.91it/s]1140736it [01:53, 7256.13it/s]1142784it [01:53, 8083.42it/s]1144832it [01:53, 8773.75it/s]1146880it [01:54, 9133.14it/s]1148928it [01:54, 9536.72it/s]1150976it [01:54, 9720.65it/s]1153024it [01:54, 9883.67it/s]1155072it [01:54, 9966.31it/s]1157120it [01:55, 9972.98it/s]1159168it [01:55, 10069.72it/s]1161216it [01:55, 10088.67it/s]1163264it [01:55, 10120.06it/s]1165312it [01:55, 10125.19it/s]1167360it [01:56, 10161.16it/s]1169408it [01:56, 10165.16it/s]1171456it [01:56, 10187.60it/s]1173504it [01:56, 10168.25it/s]1175552it [01:56, 10183.56it/s]1177600it [01:57, 10176.03it/s]1179648it [01:57, 10187.10it/s]1181696it [01:57, 10186.59it/s]1183514it [01:57, 10066.59it/s]
+Upload time: 117.88848317135125
+Total import time: 177.2624076725915
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    初始向量数: 1183514
+    [Cycle 0] 统计各 segment 向量数量...
+Segment 数: 6, 各 segment num_rows 之和=1183514, collection.num_entities=1183514
+  Segment 1: segment_id=466303890302835742, num_rows=23841, state=3
+  Segment 2: segment_id=466303890301025980, num_rows=277344, state=3
+  Segment 3: segment_id=466303890302004432, num_rows=293191, state=3
+  Segment 4: segment_id=466303890302725739, num_rows=22609, state=3
+  Segment 5: segment_id=466303890300695827, num_rows=274772, state=3
+  Segment 6: segment_id=466303890302364539, num_rows=291757, state=3
+    重算 KNN → /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl（不写 vectors.npy）...
+Wrote live tests (KNN only): /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl
+updated dataset config: glove-100-angular-another-version-live-20260515-012234 -> ../../auto-configure/vdtuner/adapt/another-version/live_eval
+    [Cycle 0] 搜索评测（skip-upload，precision 对应当前语料 KNN）...
+Running experiment: milvus-p10 - glove-100-angular-another-version-live-20260515-012234
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/another-version/live_eval already exists
+Experiment stage: Search
+0it [00:00, ?it/s]17it [00:00, 21.99it/s]27it [00:00, 32.93it/s]453it [00:00, 779.85it/s]922it [00:01, 1567.95it/s]1303it [00:01, 2067.67it/s]1759it [00:01, 2670.39it/s]2133it [00:01, 2936.50it/s]2537it [00:01, 3229.53it/s]2937it [00:01, 3442.03it/s]3357it [00:01, 3655.10it/s]3761it [00:01, 3765.02it/s]4186it [00:01, 3906.11it/s]4594it [00:02, 3863.40it/s]5055it [00:02, 4079.03it/s]5472it [00:02, 4008.92it/s]5912it [00:02, 4122.22it/s]6330it [00:02, 3997.56it/s]6769it [00:02, 4109.37it/s]7184it [00:02, 3982.21it/s]7615it [00:02, 4076.05it/s]8026it [00:02, 4019.52it/s]8480it [00:02, 4169.42it/s]8899it [00:03, 3977.42it/s]9353it [00:03, 4137.51it/s]9770it [00:03, 4021.97it/s]10000it [00:03, 3007.06it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+>>> [Step 5] 漂移循环 (5 轮)...
+
+--- 漂移轮次 1/5 ---
+    [1] 插入 55000 / 删除 5000（dist=laplace）...
+Drift cycle done: inserted 55000, deleted 5000, insert_dist=laplace
+New state: base_id=5000, max_id=1238513
+    重算 KNN → /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl（不写 vectors.npy）...
+Wrote live tests (KNN only): /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl
+    [1] 搜索评测（skip-upload）...
+Running experiment: milvus-p10 - glove-100-angular-another-version-live-20260515-012234
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/another-version/live_eval already exists
+Experiment stage: Search
+0it [00:00, ?it/s]17it [00:00, 21.97it/s]27it [00:00, 32.56it/s]384it [00:01, 652.20it/s]847it [00:01, 1443.40it/s]1208it [00:01, 1922.30it/s]1634it [00:01, 2482.57it/s]2077it [00:01, 2979.41it/s]2466it [00:01, 3222.68it/s]2902it [00:01, 3535.98it/s]3301it [00:01, 3548.65it/s]3720it [00:01, 3726.30it/s]4116it [00:01, 3689.13it/s]4540it [00:02, 3842.56it/s]4937it [00:02, 3733.92it/s]5341it [00:02, 3818.68it/s]5747it [00:02, 3887.94it/s]6141it [00:02, 3887.82it/s]6552it [00:02, 3950.09it/s]6950it [00:02, 3910.56it/s]7406it [00:02, 4100.58it/s]7818it [00:02, 4022.58it/s]8264it [00:02, 4149.87it/s]8681it [00:03, 3947.39it/s]9082it [00:03, 3960.81it/s]9490it [00:03, 3993.31it/s]9891it [00:03, 3952.36it/s]10000it [00:03, 2936.15it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [1] segment 统计...
+Segment 数: 4, 各 segment num_rows 之和=1238514, collection.num_entities=1238514
+  Segment 1: segment_id=466303890303136038, num_rows=591710, state=3
+  Segment 2: segment_id=466303890304737204, num_rows=27453, state=3
+  Segment 3: segment_id=466303890304627202, num_rows=27547, state=3
+  Segment 4: segment_id=466303890303026038, num_rows=591804, state=3
+
+--- 漂移轮次 2/5 ---
+    [2] 插入 55000 / 删除 5000（dist=laplace）...
+Drift cycle done: inserted 55000, deleted 5000, insert_dist=laplace
+New state: base_id=10000, max_id=1293513
+    重算 KNN → /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl（不写 vectors.npy）...
+Wrote live tests (KNN only): /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl
+    [2] 搜索评测（skip-upload）...
+Running experiment: milvus-p10 - glove-100-angular-another-version-live-20260515-012234
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/another-version/live_eval already exists
+Experiment stage: Search
+0it [00:00, ?it/s]17it [00:00, 20.70it/s]27it [00:00, 30.17it/s]381it [00:01, 607.23it/s]830it [00:01, 1345.05it/s]1182it [00:01, 1806.63it/s]1606it [00:01, 2374.35it/s]2008it [00:01, 2774.09it/s]2381it [00:01, 3024.89it/s]2803it [00:01, 3350.34it/s]3186it [00:01, 3384.28it/s]3575it [00:01, 3524.94it/s]3952it [00:01, 3510.59it/s]4350it [00:02, 3641.74it/s]4761it [00:02, 3760.02it/s]5175it [00:02, 3869.78it/s]5598it [00:02, 3975.16it/s]6001it [00:02, 3836.93it/s]6407it [00:02, 3900.46it/s]6801it [00:02, 3861.84it/s]7213it [00:02, 3936.67it/s]7609it [00:02, 3925.31it/s]8003it [00:03, 3887.84it/s]8442it [00:03, 4035.19it/s]8847it [00:03, 3858.05it/s]9273it [00:03, 3968.33it/s]9672it [00:03, 3899.30it/s]10000it [00:03, 2839.58it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [2] segment 统计...
+Segment 数: 2, 各 segment num_rows 之和=1288514, collection.num_entities=1288514
+  Segment 1: segment_id=466303890305368617, num_rows=644274, state=3
+  Segment 2: segment_id=466303890305478617, num_rows=644240, state=3
+
+--- 漂移轮次 3/5 ---
+    [3] 插入 55000 / 删除 5000（dist=laplace）...
+Drift cycle done: inserted 55000, deleted 5000, insert_dist=laplace
+New state: base_id=15000, max_id=1348513
+    重算 KNN → /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl（不写 vectors.npy）...
+Wrote live tests (KNN only): /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl
+    [3] 搜索评测（skip-upload）...
+Running experiment: milvus-p10 - glove-100-angular-another-version-live-20260515-012234
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/another-version/live_eval already exists
+Experiment stage: Search
+0it [00:00, ?it/s]17it [00:00, 21.45it/s]27it [00:00, 31.85it/s]345it [00:01, 573.20it/s]764it [00:01, 1284.76it/s]1136it [00:01, 1815.10it/s]1541it [00:01, 2347.31it/s]1903it [00:01, 2655.85it/s]2302it [00:01, 3009.04it/s]2697it [00:01, 3267.17it/s]3067it [00:01, 3337.85it/s]3497it [00:01, 3610.31it/s]3882it [00:01, 3641.18it/s]4301it [00:02, 3798.14it/s]4693it [00:02, 3649.95it/s]5106it [00:02, 3767.75it/s]5490it [00:02, 3700.73it/s]5900it [00:02, 3814.80it/s]6286it [00:02, 3595.48it/s]6692it [00:02, 3725.35it/s]7069it [00:02, 3674.02it/s]7495it [00:02, 3841.60it/s]7883it [00:03, 3646.22it/s]8301it [00:03, 3796.65it/s]8685it [00:03, 3680.79it/s]9105it [00:03, 3828.15it/s]9491it [00:03, 3737.29it/s]9892it [00:03, 3811.17it/s]10000it [00:03, 2795.97it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [3] segment 统计...
+Segment 数: 4, 各 segment num_rows 之和=1343514, collection.num_entities=1343514
+  Segment 1: segment_id=466303890305869657, num_rows=27497, state=3
+  Segment 2: segment_id=466303890305478617, num_rows=644240, state=3
+  Segment 3: segment_id=466303890305979660, num_rows=27503, state=3
+  Segment 4: segment_id=466303890305368617, num_rows=644274, state=3
+
+--- 漂移轮次 4/5 ---
+    [4] 插入 55000 / 删除 5000（dist=laplace）...
+Drift cycle done: inserted 55000, deleted 5000, insert_dist=laplace
+New state: base_id=20000, max_id=1403513
+    重算 KNN → /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl（不写 vectors.npy）...
+Wrote live tests (KNN only): /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl
+    [4] 搜索评测（skip-upload）...
+Running experiment: milvus-p10 - glove-100-angular-another-version-live-20260515-012234
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/another-version/live_eval already exists
+Experiment stage: Search
+0it [00:00, ?it/s]17it [00:00, 21.36it/s]27it [00:00, 31.49it/s]414it [00:01, 684.93it/s]864it [00:01, 1431.23it/s]1277it [00:01, 2014.96it/s]1619it [00:01, 2347.93it/s]2047it [00:01, 2835.06it/s]2412it [00:01, 3016.71it/s]2783it [00:01, 3202.81it/s]3242it [00:01, 3588.76it/s]3635it [00:01, 3657.00it/s]4083it [00:01, 3886.29it/s]4490it [00:02, 3838.71it/s]4899it [00:02, 3908.63it/s]5313it [00:02, 3974.77it/s]5717it [00:02, 3929.25it/s]6153it [00:02, 4054.82it/s]6563it [00:02, 3841.48it/s]6979it [00:02, 3928.45it/s]7376it [00:02, 3856.12it/s]7765it [00:02, 3741.10it/s]8194it [00:02, 3893.62it/s]8586it [00:03, 3831.62it/s]9005it [00:03, 3930.70it/s]9400it [00:03, 3829.26it/s]9804it [00:03, 3886.49it/s]10000it [00:03, 2890.20it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [4] segment 统计...
+Segment 数: 2, 各 segment num_rows 之和=1383514, collection.num_entities=1383514
+  Segment 1: segment_id=466303890306831196, num_rows=691834, state=3
+  Segment 2: segment_id=466303890306941197, num_rows=691680, state=3
+
+--- 漂移轮次 5/5 ---
+    [5] 插入 55000 / 删除 5000（dist=laplace）...
+Drift cycle done: inserted 55000, deleted 5000, insert_dist=laplace
+New state: base_id=25000, max_id=1458513
+    重算 KNN → /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl（不写 vectors.npy）...
+Wrote live tests (KNN only): /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl
+    [5] 搜索评测（skip-upload）...
+Running experiment: milvus-p10 - glove-100-angular-another-version-live-20260515-012234
+established connection
+/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/../../auto-configure/vdtuner/adapt/another-version/live_eval already exists
+Experiment stage: Search
+0it [00:00, ?it/s]17it [00:00, 19.02it/s]27it [00:01, 28.57it/s]300it [00:01, 452.91it/s]711it [00:01, 1122.48it/s]1117it [00:01, 1731.52it/s]1446it [00:01, 2086.88it/s]1859it [00:01, 2585.64it/s]2202it [00:01, 2795.75it/s]2594it [00:01, 3098.46it/s]2951it [00:01, 3212.11it/s]3371it [00:01, 3490.13it/s]3746it [00:02, 3521.35it/s]4118it [00:02, 3577.95it/s]4493it [00:02, 3614.62it/s]4864it [00:02, 3627.32it/s]5295it [00:02, 3827.69it/s]5683it [00:02, 3759.76it/s]6106it [00:02, 3896.52it/s]6499it [00:02, 3777.26it/s]6923it [00:02, 3907.54it/s]7317it [00:02, 3686.49it/s]7706it [00:03, 3738.95it/s]8083it [00:03, 3620.70it/s]8489it [00:03, 3743.76it/s]8866it [00:03, 3652.48it/s]9257it [00:03, 3719.11it/s]9631it [00:03, 3631.58it/s]10000it [00:03, 2694.61it/s]
+Experiment stage: Done
+Results saved to:  /talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/results
+    [5] segment 统计...
+Segment 数: 4, 各 segment num_rows 之和=1438514, collection.num_entities=1438514
+  Segment 1: segment_id=466303890307532287, num_rows=27662, state=3
+  Segment 2: segment_id=466303890306831196, num_rows=691834, state=3
+  Segment 3: segment_id=466303890306941197, num_rows=691680, state=3
+  Segment 4: segment_id=466303890307642290, num_rows=27338, state=3
+
+>>> [Step 6] 收尾：仅导出最后一轮语料（vectors.npy + tests.jsonl）...
+Final export: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/final_export/20260515-012234/vectors.npy, /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/final_export/20260515-012234/tests.jsonl, reload_meta.json
+
+=======================================
+📊 完成
+metrics: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/drift_cycle_metrics/20260515-012234/
+live 查询+KNN（每轮覆盖）: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/live_eval/tests.jsonl
+最终导出（仅此一处 vectors.npy）: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/final_export/20260515-012234/
+segment: /talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/adapt/another-version/drift_segment_stats/20260515-012234/
+=======================================

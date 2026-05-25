@@ -8,16 +8,15 @@
       {
         "parallel": 10,
         "params": {
-          "nprobe": 200,
-          "reorder_k": 200
+          "nprobe": 30
         }
       }
     ],
     "upload_params": {
       "parallel": 32,
-      "index_type": "SCANN",
+      "index_type": "IVF_FLAT",
       "index_params": {
-        "nlist": 10000
+        "nlist": 100
       }
     }
   }

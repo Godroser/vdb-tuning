@@ -50,7 +50,7 @@ N_SAMPLES = 30
 RANDOM_STATE = 42
 
 # 数据目录
-DATA_DIR = "/home/z78ding/project/vdb-tuning/auto-configure/vdtuner/perf-predict-model"
+DATA_DIR = "/talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/perf-predict-model"
 # ==================================================
 
 
