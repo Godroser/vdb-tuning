@@ -8,15 +8,17 @@
       {
         "parallel": 10,
         "params": {
-          "nprobe": 30
+          "nprobe": 10
         }
       }
     ],
     "upload_params": {
       "parallel": 32,
-      "index_type": "IVF_FLAT",
+      "index_type": "IVF_PQ",
       "index_params": {
-        "nlist": 100
+        "nlist": 50,
+        "m": 4,
+        "nbits": 16
       }
     }
   }

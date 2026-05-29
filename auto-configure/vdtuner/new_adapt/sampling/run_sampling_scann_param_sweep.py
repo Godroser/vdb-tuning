@@ -54,12 +54,18 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output-xlsx",
-        default="sampling_scann_param_sweep_results.xlsx",
+        default="sampling_new_scann_param_sweep_results.xlsx",
     )
     parser.add_argument(
         "--continue-on-error",
         action="store_true",
         help="Continue subsequent runs if one run fails.",
+    )
+    parser.add_argument(
+        "--reuse-sampled-dataset",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Reuse one generated sampled dataset per sample_ratio.",
     )
     return parser.parse_args()
 
@@ -146,10 +152,15 @@ def run_once(
     source_dataset: str,
     run_tag: str,
     sample_ratio: float,
+    sample_reuse_tag: str | None = None,
+    reuse_sampled_dataset: bool = True,
 ) -> Path:
     env = os.environ.copy()
     env["RUN_TAG"] = run_tag
     env["SAMPLE_RATIO"] = str(sample_ratio)
+    if sample_reuse_tag:
+        env["SAMPLE_REUSE_TAG"] = sample_reuse_tag
+    env["REUSE_SAMPLED_DATASET"] = "1" if reuse_sampled_dataset else "0"
     cmd = [
         "bash",
         str(sampling_script),
@@ -169,6 +180,12 @@ def make_run_tag(sample_ratio: float, nlist: int, nprobe: int, reorder_k: int, s
     ts = datetime.now().strftime("%Y%m%d-%H%M%S")
     safe_ratio = f"{sample_ratio:.3f}".rstrip("0").rstrip(".").replace(".", "p")
     return f"sample-scann-r{safe_ratio}-nl{nlist}-np{nprobe}-rk{reorder_k}-{seq:04d}-{ts}"
+
+
+def make_sample_cache_tag(sample_ratio: float) -> str:
+    ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+    safe_ratio = f"{sample_ratio:.3f}".rstrip("0").rstrip(".").replace(".", "p")
+    return f"sampled-cache-r{safe_ratio}-{ts}"
 
 
 def write_xlsx(rows: list[MetricRow], out_path: Path) -> None:
@@ -235,9 +252,10 @@ def main() -> None:
     config_path = resolve_path(args.config_json, script_dir)
     output_xlsx = resolve_path(args.output_xlsx, script_dir)
 
-    sample_ratio_values = [0.01, 0.03, 0.05, 0.08, 0.10]
-    nlist_values = list(range(100, 501, 100))
-    nprobe_values = list(range(10, 101, 30))
+    # sample_ratio_values = [0.01, 0.03, 0.05, 0.08, 0.10]
+    sample_ratio_values = [0.08, 0.10]
+    nlist_values = list(range(100, 401, 75))
+    nprobe_values = list(range(10, 111, 50))
     reorder_k_values = list(range(100, 201, 50))
     total_runs = (
         len(sample_ratio_values)
@@ -296,7 +314,11 @@ def main() -> None:
 
     try:
         run_index = 0
+        sample_cache_tags: dict[float, str] = {}
         for sample_ratio in sample_ratio_values:
+            if sample_ratio not in sample_cache_tags:
+                sample_cache_tags[sample_ratio] = make_sample_cache_tag(sample_ratio)
+            ratio_cache_tag = sample_cache_tags[sample_ratio]
             for nlist in nlist_values:
                 for nprobe in nprobe_values:
                     for reorder_k in reorder_k_values:
@@ -309,6 +331,7 @@ def main() -> None:
                         run_tag = make_run_tag(
                             sample_ratio, nlist, nprobe, reorder_k, run_index
                         )
+                        sample_reuse_tag = ratio_cache_tag if args.reuse_sampled_dataset else run_tag
                         run_dir = get_run_dir(project_root, run_tag)
                         cleanup_run_dir(run_dir, new_adapt_root)
 
@@ -328,6 +351,8 @@ def main() -> None:
                                 source_dataset=args.source_dataset,
                                 run_tag=run_tag,
                                 sample_ratio=sample_ratio,
+                                sample_reuse_tag=sample_reuse_tag,
+                                reuse_sampled_dataset=args.reuse_sampled_dataset,
                             )
                             original, sampled = extract_metrics(summary_path)
                             rows.append(

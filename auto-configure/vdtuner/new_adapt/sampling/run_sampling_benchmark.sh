@@ -29,6 +29,8 @@ DISTANCE=${DISTANCE:-""}
 VECTOR_SIZE=${VECTOR_SIZE:-0}
 HOST=${HOST:-127.0.0.1}
 RUN_TAG=${RUN_TAG:-"sample-$(date +%Y%m%d-%H%M%S)"}
+SAMPLE_REUSE_TAG=${SAMPLE_REUSE_TAG:-"$RUN_TAG"}
+REUSE_SAMPLED_DATASET=${REUSE_SAMPLED_DATASET:-1}
 
 VENV_PATH=${VENV_PATH:-"/talas-pool/home/z78ding/venv"}
 if [ -f "$VENV_PATH/bin/activate" ]; then
@@ -42,6 +44,12 @@ elif [ -f "$VENV_PATH/bin/python3" ]; then
 else
   PYTHON_CMD="python3"
 fi
+
+# 控制 BLAS/OpenMP 线程，避免在大并发机器上触发 OpenBLAS 线程元数据溢出或崩溃。
+export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-1}"
+export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"
+export MKL_NUM_THREADS="${MKL_NUM_THREADS:-1}"
+export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
 
 if [ ! -d "$BENCHMARK_ROOT" ]; then
   echo "Benchmark root not found: $BENCHMARK_ROOT"
@@ -63,27 +71,36 @@ fi
 echo "======================================="
 echo "Sampling benchmark"
 echo "Engine: $ENGINE_NAME | Source: $SOURCE_DATASET_PATH | Sample ratio: $SAMPLE_RATIO | Run: $RUN_TAG"
+echo "Sample reuse tag: $SAMPLE_REUSE_TAG | Reuse sampled dataset: $REUSE_SAMPLED_DATASET"
+echo "Threads: OPENBLAS=$OPENBLAS_NUM_THREADS OMP=$OMP_NUM_THREADS MKL=$MKL_NUM_THREADS NUMEXPR=$NUMEXPR_NUM_THREADS"
 echo "======================================="
 
 OUTPUT_ROOT="$DATASETS_ROOT/new_adapt"
-DATASET_PREFIX="new-adapt-${RUN_TAG}"
+SAMPLE_OUTPUT_DIR="$OUTPUT_ROOT/$SAMPLE_REUSE_TAG"
+RUN_OUTPUT_DIR="$OUTPUT_ROOT/$RUN_TAG"
+mkdir -p "$RUN_OUTPUT_DIR"
 
-echo ">>> [1/5] Generate sampled dataset..."
-"$PYTHON_CMD" "$SOURCE_DIR/generate_sampled_dataset.py" \
-  --datasets-root "$DATASETS_ROOT" \
-  --source-path "$SOURCE_DATASET_PATH" \
-  --output-root "$OUTPUT_ROOT" \
-  --output-name "$RUN_TAG" \
-  --dataset-name-prefix "$DATASET_PREFIX" \
-  --sample-ratio "$SAMPLE_RATIO" \
-  --seed "$SEED" \
-  --distance "$DISTANCE" \
-  --vector-size "$VECTOR_SIZE" \
-  --neighbors-top-k "$NEIGHBORS_TOP_K"
+DATASET_PREFIX="new-adapt-${SAMPLE_REUSE_TAG}"
+SAMPLE_INFO="$SAMPLE_OUTPUT_DIR/sample_info.json"
+if [ "$REUSE_SAMPLED_DATASET" = "1" ] && [ -f "$SAMPLE_INFO" ]; then
+  echo ">>> [1/5] Reuse sampled dataset: $SAMPLE_OUTPUT_DIR"
+else
+  echo ">>> [1/5] Generate sampled dataset..."
+  "$PYTHON_CMD" "$SOURCE_DIR/generate_sampled_dataset.py" \
+    --datasets-root "$DATASETS_ROOT" \
+    --source-path "$SOURCE_DATASET_PATH" \
+    --output-root "$OUTPUT_ROOT" \
+    --output-name "$SAMPLE_REUSE_TAG" \
+    --dataset-name-prefix "$DATASET_PREFIX" \
+    --sample-ratio "$SAMPLE_RATIO" \
+    --seed "$SEED" \
+    --distance "$DISTANCE" \
+    --vector-size "$VECTOR_SIZE" \
+    --neighbors-top-k "$NEIGHBORS_TOP_K"
+fi
 
-SAMPLE_INFO="$OUTPUT_ROOT/$RUN_TAG/sample_info.json"
 if [ ! -f "$SAMPLE_INFO" ]; then
-  echo "Sample info not found: $SAMPLE_INFO"
+  echo "Sample info not found after generation/reuse: $SAMPLE_INFO"
   exit 1
 fi
 
@@ -200,7 +217,7 @@ run_one() {
 
   reset_milvus
 
-  local out_json="$OUTPUT_ROOT/$RUN_TAG/${phase_name}_result_meta.json"
+  local out_json="$RUN_OUTPUT_DIR/${phase_name}_result_meta.json"
   echo ">>> Run phase: $phase_name" >&2
   if [ "$use_registry" = "1" ]; then
     "$PYTHON_CMD" "$NEW_ADAPT_DIR/run_custom_benchmark.py" \
@@ -252,7 +269,7 @@ echo ">>> [4/5] Summarize results..."
 ORIGINAL_METRICS=$(extract_metrics "$ORIGINAL_RESULT_FILE")
 SAMPLED_METRICS=$(extract_metrics "$SAMPLED_RESULT_FILE")
 
-SUMMARY_JSON="$OUTPUT_ROOT/$RUN_TAG/perf_compare_sampling_summary.json"
+SUMMARY_JSON="$RUN_OUTPUT_DIR/perf_compare_sampling_summary.json"
 "$PYTHON_CMD" - "$SUMMARY_JSON" "$SAMPLE_INFO" "$ORIGINAL_RESULT_FILE" "$SAMPLED_RESULT_FILE" <<'PY'
 import json
 import sys

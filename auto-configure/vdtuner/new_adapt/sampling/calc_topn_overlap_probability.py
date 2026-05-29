@@ -10,7 +10,7 @@ from typing import Any
 # User-configurable params
 # ======================
 SCRIPT_DIR = Path(__file__).resolve().parent
-XLSX_PATH = SCRIPT_DIR / "sampling_scann_param_sweep_results.xlsx"
+XLSX_PATH = SCRIPT_DIR / "sampling_ivf_param_sweep_results.xlsx"
 TOP_N = 10
 # Set to None to use active sheet.
 SHEET_NAME: str | None = None
