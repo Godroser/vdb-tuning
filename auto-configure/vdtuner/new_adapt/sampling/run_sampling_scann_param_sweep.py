@@ -253,7 +253,7 @@ def main() -> None:
     output_xlsx = resolve_path(args.output_xlsx, script_dir)
 
     # sample_ratio_values = [0.01, 0.03, 0.05, 0.08, 0.10]
-    sample_ratio_values = [0.08, 0.10]
+    sample_ratio_values = [0.01, 0.03, 0.05]
     nlist_values = list(range(100, 401, 75))
     nprobe_values = list(range(10, 111, 50))
     reorder_k_values = list(range(100, 201, 50))

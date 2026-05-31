@@ -1,0 +1,327 @@
+nohup: ignoring input
+OpenBLAS warning: precompiled NUM_THREADS exceeded, adding auxiliary array for thread metadata.
+To avoid this warning, please rebuild your copy of OpenBLAS with a larger NUM_THREADS setting
+or set the environment variable OPENBLAS_NUM_THREADS to 64 or lower
+{
+  "ok": true,
+  "sample_info": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sample_info.json"
+}
+[1/18] index_type=SCANN, index_params={'nlist': 100}, search_params={'nprobe': 10, 'reorder_k': 100}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 273.43it/s]1856it [00:00, 4111.98it/s]2757it [00:00, 3324.32it/s]4224it [00:01, 4705.70it/s]6272it [00:01, 6431.83it/s]8320it [00:01, 7572.06it/s]10368it [00:01, 8385.29it/s]12416it [00:01, 8932.44it/s]14464it [00:02, 9337.46it/s]16512it [00:02, 9580.38it/s]18560it [00:02, 9775.62it/s]20608it [00:02, 9909.75it/s]22656it [00:02, 10014.08it/s]24704it [00:03, 10057.26it/s]26752it [00:03, 10103.20it/s]28800it [00:03, 10130.27it/s]30848it [00:03, 10158.21it/s]32896it [00:03, 10171.75it/s]34944it [00:04, 10176.34it/s]36992it [00:04, 10204.08it/s]39040it [00:04, 10156.73it/s]41088it [00:04, 10181.72it/s]43136it [00:04, 10185.75it/s]45184it [00:05, 10178.60it/s]47232it [00:05, 10184.05it/s]49280it [00:05, 10183.03it/s]51328it [00:05, 10204.88it/s]53376it [00:05, 10214.58it/s]55376it [00:06, 11937.39it/s]56691it [00:06, 11120.92it/s]57880it [00:06, 9569.51it/s] 59176it [00:06, 9236.00it/s]
+Upload time: 6.673010841943324
+Total import time: 62.84046807512641
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 52.97it/s]43it [00:00, 61.09it/s]516it [00:00, 1034.97it/s]1068it [00:00, 2064.32it/s]1647it [00:01, 2981.11it/s]2261it [00:01, 3803.77it/s]2812it [00:01, 4266.28it/s]3381it [00:01, 4663.29it/s]3938it [00:01, 4919.77it/s]4559it [00:01, 5283.45it/s]5181it [00:01, 5556.36it/s]5767it [00:01, 5644.92it/s]6350it [00:01, 5668.67it/s]6930it [00:01, 5658.57it/s]7533it [00:02, 5761.11it/s]8175it [00:02, 5956.40it/s]8776it [00:02, 5866.48it/s]9367it [00:02, 5771.22it/s]9947it [00:02, 5716.77it/s]10000it [00:02, 4063.52it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-02-00.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[2/18] index_type=SCANN, index_params={'nlist': 100}, search_params={'nprobe': 10, 'reorder_k': 150}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 284.92it/s]1617it [00:00, 3808.48it/s]2505it [00:00, 3013.94it/s]4224it [00:01, 4788.23it/s]6272it [00:01, 6437.42it/s]8320it [00:01, 7483.09it/s]10368it [00:01, 8433.41it/s]12416it [00:01, 8962.04it/s]14464it [00:02, 9359.41it/s]16512it [00:02, 9585.12it/s]18560it [00:02, 9782.08it/s]20608it [00:02, 9928.67it/s]22656it [00:02, 9991.41it/s]24704it [00:03, 10065.54it/s]26752it [00:03, 10106.92it/s]28792it [00:03, 11919.43it/s]30117it [00:03, 11050.07it/s]31307it [00:03, 9789.49it/s] 32896it [00:03, 9464.91it/s]34944it [00:04, 9681.62it/s]36992it [00:04, 9828.91it/s]39040it [00:04, 9992.29it/s]41088it [00:04, 9982.38it/s]43136it [00:04, 10125.72it/s]45184it [00:05, 10155.31it/s]47232it [00:05, 10170.47it/s]49280it [00:05, 10159.01it/s]51328it [00:05, 10003.55it/s]53376it [00:05, 10262.27it/s]55424it [00:06, 10227.17it/s]57472it [00:06, 10229.13it/s]59176it [00:06, 9263.97it/s] 
+Upload time: 6.682012456469238
+Total import time: 62.848037083633244
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 51.49it/s]43it [00:00, 59.01it/s]491it [00:00, 956.16it/s]1060it [00:00, 2018.83it/s]1670it [00:01, 3006.78it/s]2206it [00:01, 3611.62it/s]2767it [00:01, 4148.34it/s]3324it [00:01, 4534.76it/s]3930it [00:01, 4947.12it/s]4542it [00:01, 5283.92it/s]5107it [00:01, 5374.25it/s]5670it [00:01, 5389.16it/s]6237it [00:01, 5470.93it/s]6860it [00:01, 5676.09it/s]7437it [00:02, 5561.95it/s]8001it [00:02, 5547.35it/s]8561it [00:02, 5559.70it/s]9124it [00:02, 5577.86it/s]9731it [00:02, 5720.30it/s]10000it [00:02, 3952.33it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-03-07.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[3/18] index_type=SCANN, index_params={'nlist': 100}, search_params={'nprobe': 30, 'reorder_k': 100}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 277.53it/s]1632it [00:00, 3768.45it/s]2528it [00:00, 3014.71it/s]4224it [00:01, 4852.61it/s]6272it [00:01, 6502.04it/s]8320it [00:01, 7636.06it/s]10368it [00:01, 8463.58it/s]12416it [00:01, 8977.36it/s]14344it [00:02, 10808.04it/s]15614it [00:02, 10087.08it/s]16746it [00:02, 9118.79it/s] 18560it [00:02, 9404.45it/s]20589it [00:02, 11600.61it/s]21899it [00:02, 10283.74it/s]23044it [00:02, 9549.10it/s] 24704it [00:03, 9391.04it/s]26752it [00:03, 9611.80it/s]28800it [00:03, 9881.51it/s]30848it [00:03, 9971.34it/s]32896it [00:03, 10046.81it/s]34944it [00:04, 10119.88it/s]36992it [00:04, 10108.56it/s]38911it [00:04, 11734.44it/s]40198it [00:04, 10926.21it/s]41362it [00:04, 9670.01it/s] 43136it [00:04, 9628.41it/s]45184it [00:05, 9816.13it/s]47159it [00:05, 11729.73it/s]48456it [00:05, 10886.33it/s]49628it [00:05, 9592.46it/s] 51328it [00:05, 9417.42it/s]53376it [00:05, 9766.10it/s]55424it [00:06, 9885.60it/s]57472it [00:06, 9988.06it/s]59176it [00:06, 9264.68it/s]
+Upload time: 6.676337373442948
+Total import time: 62.8458598991856
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 49.98it/s]53it [00:00, 76.13it/s]579it [00:00, 1120.20it/s]1115it [00:00, 2066.98it/s]1675it [00:01, 2920.92it/s]2269it [00:01, 3694.23it/s]2839it [00:01, 4231.53it/s]3361it [00:01, 4505.24it/s]3890it [00:01, 4724.85it/s]4489it [00:01, 5085.56it/s]5033it [00:01, 5123.16it/s]5570it [00:01, 5139.98it/s]6135it [00:01, 5285.71it/s]6733it [00:01, 5484.24it/s]7291it [00:02, 5459.38it/s]7844it [00:02, 5318.40it/s]8382it [00:02, 5294.24it/s]8985it [00:02, 5508.11it/s]9539it [00:02, 5399.33it/s]10000it [00:02, 3873.55it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-04-14.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[4/18] index_type=SCANN, index_params={'nlist': 100}, search_params={'nprobe': 30, 'reorder_k': 150}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 281.01it/s]2176it [00:00, 2784.48it/s]4224it [00:01, 4845.84it/s]6272it [00:01, 6349.21it/s]8320it [00:01, 7454.31it/s]10368it [00:01, 8277.25it/s]12416it [00:01, 8846.09it/s]14464it [00:02, 9258.38it/s]16512it [00:02, 9474.64it/s]18254it [00:02, 10853.85it/s]19472it [00:02, 9938.91it/s] 20608it [00:02, 9490.97it/s]22656it [00:02, 9762.70it/s]24704it [00:03, 9903.93it/s]26752it [00:03, 9980.61it/s]28800it [00:03, 10003.81it/s]30814it [00:03, 11853.33it/s]32126it [00:03, 11015.67it/s]33310it [00:03, 9755.37it/s] 34944it [00:04, 9514.07it/s]36577it [00:04, 10897.73it/s]37765it [00:04, 10376.86it/s]39040it [00:04, 9398.90it/s] 41088it [00:04, 9715.76it/s]43116it [00:04, 11886.88it/s]44428it [00:04, 10873.46it/s]45605it [00:05, 9615.91it/s] 47232it [00:05, 9371.26it/s]49280it [00:05, 9679.98it/s]51328it [00:05, 9786.60it/s]53376it [00:05, 9895.78it/s]55424it [00:06, 10074.16it/s]57472it [00:06, 10106.26it/s]59176it [00:06, 9274.82it/s] 
+Upload time: 6.67116710357368
+Total import time: 62.841250008903444
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 51.32it/s]53it [00:00, 77.76it/s]581it [00:00, 1143.56it/s]1091it [00:00, 2038.23it/s]1641it [00:01, 2883.26it/s]2132it [00:01, 3406.86it/s]2665it [00:01, 3925.52it/s]3225it [00:01, 4390.39it/s]3829it [00:01, 4859.26it/s]4373it [00:01, 5026.70it/s]4936it [00:01, 5201.95it/s]5494it [00:01, 5312.73it/s]6097it [00:01, 5500.87it/s]6681it [00:01, 5599.31it/s]7250it [00:02, 5524.67it/s]7809it [00:02, 5491.42it/s]8369it [00:02, 5517.53it/s]8963it [00:02, 5642.20it/s]9530it [00:02, 5421.82it/s]10000it [00:02, 3899.09it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-05-21.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[5/18] index_type=SCANN, index_params={'nlist': 100}, search_params={'nprobe': 50, 'reorder_k': 100}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 279.04it/s]2020it [00:00, 4705.35it/s]3144it [00:00, 3659.94it/s]4224it [00:01, 4438.32it/s]6272it [00:01, 6212.19it/s]8320it [00:01, 7371.45it/s]10368it [00:01, 8204.46it/s]12416it [00:01, 8930.79it/s]14450it [00:02, 10967.90it/s]15753it [00:02, 10292.43it/s]16918it [00:02, 9010.91it/s] 18560it [00:02, 9226.59it/s]20608it [00:02, 9590.90it/s]22656it [00:02, 9782.52it/s]24704it [00:03, 9916.21it/s]26470it [00:03, 11342.68it/s]27710it [00:03, 10653.90it/s]28841it [00:03, 9527.16it/s] 30848it [00:03, 9762.12it/s]32896it [00:03, 9897.05it/s]34944it [00:04, 9992.33it/s]36632it [00:04, 11283.29it/s]37848it [00:04, 10615.24it/s]39040it [00:04, 9502.98it/s] 41088it [00:04, 9814.05it/s]43136it [00:04, 9952.41it/s]45166it [00:05, 11954.14it/s]46484it [00:05, 10961.96it/s]47665it [00:05, 9367.81it/s] 49280it [00:05, 9534.90it/s]51328it [00:05, 9737.97it/s]53224it [00:05, 11548.59it/s]54500it [00:05, 10553.12it/s]55641it [00:06, 9578.27it/s] 57472it [00:06, 9586.58it/s]59176it [00:06, 9236.85it/s]
+Upload time: 6.684588881209493
+Total import time: 62.85090404842049
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 51.60it/s]43it [00:00, 59.66it/s]484it [00:00, 950.20it/s]1019it [00:00, 1945.71it/s]1610it [00:01, 2913.06it/s]2124it [00:01, 3488.51it/s]2654it [00:01, 3975.40it/s]3202it [00:01, 4391.74it/s]3727it [00:01, 4634.40it/s]4247it [00:01, 4793.74it/s]4785it [00:01, 4957.51it/s]5387it [00:01, 5265.02it/s]5931it [00:01, 5172.00it/s]6461it [00:01, 5162.99it/s]6995it [00:02, 5214.26it/s]7561it [00:02, 5267.17it/s]8122it [00:02, 5367.01it/s]8662it [00:02, 5326.46it/s]9197it [00:02, 5298.91it/s]9759it [00:02, 5374.11it/s]10000it [00:02, 3823.39it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-06-28.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[6/18] index_type=SCANN, index_params={'nlist': 100}, search_params={'nprobe': 50, 'reorder_k': 150}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 286.35it/s]2112it [00:00, 4925.70it/s]3204it [00:00, 3542.98it/s]4224it [00:01, 4402.13it/s]6272it [00:01, 6211.13it/s]8320it [00:01, 7426.84it/s]10368it [00:01, 8209.66it/s]12027it [00:01, 9694.56it/s]13189it [00:01, 9636.23it/s]14464it [00:02, 8948.96it/s]16512it [00:02, 9389.11it/s]18560it [00:02, 9672.60it/s]20608it [00:02, 9840.92it/s]22656it [00:02, 9949.60it/s]24704it [00:03, 9978.80it/s]26752it [00:03, 10089.51it/s]28800it [00:03, 10003.89it/s]30848it [00:03, 10162.74it/s]32896it [00:03, 10188.64it/s]34944it [00:04, 10185.16it/s]36851it [00:04, 11757.05it/s]38138it [00:04, 10971.36it/s]39304it [00:04, 9685.31it/s] 41088it [00:04, 9591.09it/s]43136it [00:04, 9877.17it/s]45184it [00:05, 9959.48it/s]47232it [00:05, 10032.56it/s]49280it [00:05, 10112.69it/s]51328it [00:05, 10104.90it/s]53376it [00:05, 10104.15it/s]55424it [00:06, 10141.31it/s]57472it [00:06, 10181.43it/s]59176it [00:06, 9254.39it/s] 
+Upload time: 6.688544916920364
+Total import time: 62.45114848576486
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 51.80it/s]43it [00:00, 60.58it/s]573it [00:00, 1146.32it/s]1069it [00:00, 2015.52it/s]1588it [00:01, 2795.37it/s]2166it [00:01, 3570.40it/s]2701it [00:01, 4050.16it/s]3243it [00:01, 4429.52it/s]3787it [00:01, 4709.16it/s]4361it [00:01, 5006.38it/s]4916it [00:01, 5164.14it/s]5457it [00:01, 5148.57it/s]5989it [00:01, 5166.10it/s]6563it [00:01, 5333.45it/s]7105it [00:02, 5338.30it/s]7645it [00:02, 5215.98it/s]8209it [00:02, 5302.79it/s]8743it [00:02, 5274.75it/s]9273it [00:02, 5235.03it/s]9805it [00:02, 5258.91it/s]10000it [00:02, 3847.34it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-07-35.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[7/18] index_type=SCANN, index_params={'nlist': 200}, search_params={'nprobe': 10, 'reorder_k': 100}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 286.33it/s]2112it [00:00, 4890.57it/s]3175it [00:00, 3656.19it/s]4224it [00:01, 4404.09it/s]6220it [00:01, 7250.42it/s]7381it [00:01, 7162.62it/s]8384it [00:01, 7180.43it/s]10368it [00:01, 8207.77it/s]12404it [00:01, 10670.00it/s]13690it [00:01, 10096.35it/s]14849it [00:02, 9000.88it/s] 16512it [00:02, 9009.61it/s]18560it [00:02, 9251.32it/s]20608it [00:02, 9749.08it/s]22656it [00:02, 9872.78it/s]24562it [00:03, 11581.63it/s]25842it [00:03, 10800.31it/s]27001it [00:03, 9432.78it/s] 28800it [00:03, 9395.96it/s]30848it [00:03, 9905.63it/s]32896it [00:03, 9966.06it/s]34944it [00:04, 10033.45it/s]36992it [00:04, 10082.69it/s]39040it [00:04, 10061.67it/s]41088it [00:04, 10161.94it/s]43136it [00:04, 10172.99it/s]45184it [00:05, 10185.89it/s]47232it [00:05, 10202.25it/s]49280it [00:05, 10193.74it/s]51328it [00:05, 10157.73it/s]53376it [00:05, 10159.48it/s]55424it [00:06, 10191.84it/s]57433it [00:06, 11934.64it/s]58750it [00:06, 10877.94it/s]59176it [00:06, 9245.79it/s] 
+Upload time: 6.684303431771696
+Total import time: 62.82833166606724
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 52.05it/s]51it [00:00, 74.89it/s]637it [00:00, 1269.41it/s]1163it [00:00, 2178.32it/s]1719it [00:01, 3007.93it/s]2315it [00:01, 3773.28it/s]2917it [00:01, 4377.89it/s]3500it [00:01, 4781.93it/s]4082it [00:01, 5077.08it/s]4644it [00:01, 5232.74it/s]5279it [00:01, 5556.70it/s]5861it [00:01, 5608.34it/s]6440it [00:01, 5646.51it/s]7018it [00:01, 5625.34it/s]7590it [00:02, 5651.37it/s]8243it [00:02, 5903.91it/s]8839it [00:02, 5865.40it/s]9429it [00:02, 5797.03it/s]10000it [00:02, 4072.76it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-08-42.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[8/18] index_type=SCANN, index_params={'nlist': 200}, search_params={'nprobe': 10, 'reorder_k': 150}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 273.08it/s]2048it [00:00, 4535.50it/s]3042it [00:00, 3604.49it/s]4224it [00:01, 4585.19it/s]6272it [00:01, 6325.75it/s]8320it [00:01, 7511.49it/s]10314it [00:01, 9749.78it/s]11558it [00:01, 9468.29it/s]12683it [00:01, 8600.87it/s]14464it [00:02, 8897.55it/s]16512it [00:02, 9306.68it/s]18560it [00:02, 9635.23it/s]20608it [00:02, 9825.57it/s]22656it [00:02, 9935.03it/s]24704it [00:03, 10015.27it/s]26752it [00:03, 10016.53it/s]28800it [00:03, 10130.71it/s]30848it [00:03, 10170.31it/s]32896it [00:03, 10161.67it/s]34944it [00:04, 10201.00it/s]36992it [00:04, 10178.01it/s]39040it [00:04, 10153.11it/s]41088it [00:04, 10187.51it/s]43136it [00:04, 10205.13it/s]45184it [00:05, 10212.10it/s]47232it [00:05, 10186.84it/s]49280it [00:05, 10217.89it/s]51328it [00:05, 10197.47it/s]53376it [00:05, 10133.18it/s]55424it [00:06, 10213.90it/s]57472it [00:06, 10208.49it/s]59176it [00:06, 9271.05it/s] 
+Upload time: 6.682397733442485
+Total import time: 63.446988236159086
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 53.32it/s]43it [00:00, 60.68it/s]645it [00:00, 1297.23it/s]1189it [00:00, 2243.59it/s]1803it [00:01, 3195.63it/s]2381it [00:01, 3863.26it/s]2915it [00:01, 4261.67it/s]3459it [00:01, 4587.35it/s]4080it [00:01, 5048.26it/s]4703it [00:01, 5384.35it/s]5277it [00:01, 5415.74it/s]5844it [00:01, 5464.83it/s]6411it [00:01, 5519.91it/s]7047it [00:01, 5725.59it/s]7629it [00:02, 5685.70it/s]8204it [00:02, 5627.52it/s]8773it [00:02, 5645.67it/s]9345it [00:02, 5664.93it/s]9981it [00:02, 5869.30it/s]10000it [00:02, 4074.75it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-09-50.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[9/18] index_type=SCANN, index_params={'nlist': 200}, search_params={'nprobe': 30, 'reorder_k': 100}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 272.94it/s]1984it [00:00, 4479.32it/s]3025it [00:00, 3456.23it/s]4224it [00:01, 4535.68it/s]6272it [00:01, 6415.49it/s]8320it [00:01, 7600.66it/s]10368it [00:01, 8358.15it/s]12416it [00:01, 8818.82it/s]14464it [00:02, 9375.51it/s]16512it [00:02, 9645.27it/s]18541it [00:02, 11539.68it/s]19859it [00:02, 10409.49it/s]21013it [00:02, 9676.36it/s] 22656it [00:02, 9442.44it/s]24704it [00:03, 9727.63it/s]26752it [00:03, 9890.73it/s]28800it [00:03, 9977.26it/s]30416it [00:03, 11115.86it/s]31610it [00:03, 10498.70it/s]32896it [00:03, 9663.09it/s] 34944it [00:04, 9873.90it/s]36992it [00:04, 9974.85it/s]39040it [00:04, 10027.60it/s]41088it [00:04, 10046.27it/s]43136it [00:04, 10085.50it/s]45184it [00:05, 10163.50it/s]47232it [00:05, 10192.68it/s]49280it [00:05, 10218.29it/s]51328it [00:05, 10191.91it/s]53376it [00:05, 10175.02it/s]55424it [00:06, 10179.03it/s]57460it [00:06, 11974.21it/s]58784it [00:06, 11027.06it/s]59176it [00:06, 9263.13it/s] 
+Upload time: 6.675068557262421
+Total import time: 63.03871880937368
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 53.59it/s]48it [00:00, 71.73it/s]636it [00:00, 1302.47it/s]1187it [00:00, 2279.59it/s]1767it [00:01, 3142.13it/s]2373it [00:01, 3900.32it/s]2889it [00:01, 4241.16it/s]3431it [00:01, 4570.66it/s]4063it [00:01, 5018.24it/s]4639it [00:01, 5230.68it/s]5198it [00:01, 5333.17it/s]5755it [00:01, 5386.36it/s]6345it [00:01, 5536.44it/s]6911it [00:01, 5521.86it/s]7485it [00:02, 5581.17it/s]8049it [00:02, 5593.07it/s]8667it [00:02, 5753.01it/s]9246it [00:02, 5509.44it/s]9802it [00:02, 5460.20it/s]10000it [00:02, 4035.32it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-10-57.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[10/18] index_type=SCANN, index_params={'nlist': 200}, search_params={'nprobe': 30, 'reorder_k': 150}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 272.49it/s]1830it [00:00, 4177.75it/s]2843it [00:00, 3314.47it/s]4224it [00:01, 4722.88it/s]6272it [00:01, 6437.40it/s]8320it [00:01, 7603.22it/s]10368it [00:01, 8376.07it/s]12416it [00:01, 8850.74it/s]14464it [00:02, 9379.14it/s]16512it [00:02, 9625.68it/s]18560it [00:02, 9789.83it/s]20608it [00:02, 9893.57it/s]22656it [00:02, 9998.67it/s]24704it [00:03, 10076.87it/s]26752it [00:03, 10113.27it/s]28800it [00:03, 10167.35it/s]30848it [00:03, 10127.52it/s]32896it [00:03, 10187.56it/s]34944it [00:04, 10194.66it/s]36992it [00:04, 10194.14it/s]39040it [00:04, 10209.43it/s]41088it [00:04, 10180.99it/s]43136it [00:04, 10179.60it/s]45184it [00:05, 10182.81it/s]47232it [00:05, 10216.67it/s]49280it [00:05, 9931.39it/s] 51328it [00:05, 10110.46it/s]53376it [00:05, 10252.43it/s]55424it [00:06, 10203.58it/s]57472it [00:06, 10260.24it/s]59176it [00:06, 9261.96it/s] 
+Upload time: 6.684391122311354
+Total import time: 62.84706950187683
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 52.72it/s]60it [00:00, 93.05it/s]545it [00:00, 1089.46it/s]1083it [00:00, 2077.31it/s]1687it [00:01, 3057.48it/s]2221it [00:01, 3649.25it/s]2779it [00:01, 4172.69it/s]3325it [00:01, 4531.62it/s]3945it [00:01, 5006.06it/s]4493it [00:01, 5074.79it/s]5040it [00:01, 5188.71it/s]5599it [00:01, 5306.10it/s]6195it [00:01, 5497.70it/s]6757it [00:01, 5467.68it/s]7313it [00:02, 5448.00it/s]7879it [00:02, 5499.46it/s]8437it [00:02, 5517.35it/s]8992it [00:02, 5392.46it/s]9534it [00:02, 5339.92it/s]10000it [00:02, 3953.23it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-12-04.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[11/18] index_type=SCANN, index_params={'nlist': 200}, search_params={'nprobe': 50, 'reorder_k': 100}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 285.24it/s]1764it [00:00, 4166.14it/s]2738it [00:00, 3300.82it/s]4224it [00:01, 4694.85it/s]5877it [00:01, 6849.45it/s]6934it [00:01, 7139.54it/s]8320it [00:01, 7521.73it/s]10368it [00:01, 8432.57it/s]12101it [00:01, 10209.09it/s]13297it [00:01, 9825.14it/s] 14464it [00:02, 8956.18it/s]16512it [00:02, 9417.43it/s]18560it [00:02, 9657.78it/s]20608it [00:02, 9845.99it/s]22656it [00:02, 9801.68it/s]24704it [00:03, 10092.73it/s]26752it [00:03, 10136.30it/s]28800it [00:03, 10146.62it/s]30848it [00:03, 10148.97it/s]32896it [00:03, 10146.74it/s]34944it [00:04, 10192.26it/s]36992it [00:04, 10203.13it/s]39040it [00:04, 10198.10it/s]41088it [00:04, 10194.64it/s]43136it [00:04, 10210.09it/s]45184it [00:05, 10149.91it/s]47232it [00:05, 10019.18it/s]49280it [00:05, 10257.64it/s]51328it [00:05, 10252.51it/s]53376it [00:05, 10226.20it/s]55199it [00:06, 11637.31it/s]56463it [00:06, 10444.84it/s]57576it [00:06, 9749.43it/s] 59176it [00:06, 9246.10it/s]
+Upload time: 6.674666112288833
+Total import time: 62.84583432227373
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 51.12it/s]43it [00:00, 59.62it/s]528it [00:00, 1039.67it/s]1044it [00:00, 1970.46it/s]1610it [00:01, 2870.78it/s]2133it [00:01, 3479.18it/s]2681it [00:01, 4015.35it/s]3233it [00:01, 4431.57it/s]3839it [00:01, 4886.98it/s]4376it [00:01, 5010.79it/s]4911it [00:01, 5064.28it/s]5467it [00:01, 5204.66it/s]6083it [00:01, 5484.85it/s]6645it [00:01, 5448.16it/s]7199it [00:02, 5355.72it/s]7766it [00:02, 5446.08it/s]8356it [00:02, 5574.91it/s]8918it [00:02, 5580.63it/s]9479it [00:02, 5547.35it/s]10000it [00:02, 3896.11it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-13-11.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[12/18] index_type=SCANN, index_params={'nlist': 200}, search_params={'nprobe': 50, 'reorder_k': 150}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 270.67it/s]2032it [00:00, 4624.67it/s]3163it [00:00, 3543.63it/s]4224it [00:01, 4506.42it/s]6272it [00:01, 6294.82it/s]8289it [00:01, 8826.36it/s]9544it [00:01, 8737.64it/s]10667it [00:01, 8087.66it/s]12416it [00:01, 8534.83it/s]14464it [00:02, 9124.26it/s]16512it [00:02, 9451.01it/s]18560it [00:02, 9671.63it/s]20516it [00:02, 11488.92it/s]21806it [00:02, 10759.32it/s]22974it [00:02, 9583.64it/s] 24704it [00:03, 9463.04it/s]26752it [00:03, 9715.17it/s]28800it [00:03, 9827.86it/s]30848it [00:03, 9984.71it/s]32896it [00:03, 10043.99it/s]34944it [00:04, 10083.01it/s]36992it [00:04, 10108.65it/s]39040it [00:04, 10140.37it/s]41088it [00:04, 10113.49it/s]42882it [00:04, 11494.94it/s]44130it [00:04, 10799.76it/s]45269it [00:05, 9670.42it/s] 47232it [00:05, 9782.03it/s]49280it [00:05, 9921.65it/s]51328it [00:05, 10016.25it/s]53376it [00:05, 10052.70it/s]55424it [00:06, 10064.24it/s]57472it [00:06, 10160.74it/s]59176it [00:06, 9247.47it/s] 
+Upload time: 6.6844259751960635
+Total import time: 62.85993569996208
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 51.22it/s]43it [00:00, 60.04it/s]497it [00:00, 981.89it/s]1037it [00:00, 1985.10it/s]1621it [00:01, 2923.87it/s]2143it [00:01, 3517.08it/s]2652it [00:01, 3940.81it/s]3187it [00:01, 4330.43it/s]3792it [00:01, 4819.21it/s]4321it [00:01, 4950.83it/s]4853it [00:01, 5052.34it/s]5419it [00:01, 5220.58it/s]5966it [00:01, 5291.47it/s]6508it [00:01, 5319.57it/s]7049it [00:02, 5314.28it/s]7679it [00:02, 5526.77it/s]8236it [00:02, 5493.17it/s]8788it [00:02, 5408.83it/s]9331it [00:02, 5377.30it/s]9965it [00:02, 5575.00it/s]10000it [00:02, 3870.01it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-14-18.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[13/18] index_type=SCANN, index_params={'nlist': 300}, search_params={'nprobe': 10, 'reorder_k': 100}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 269.38it/s]2068it [00:00, 4691.18it/s]3220it [00:00, 3859.13it/s]4224it [00:01, 4369.84it/s]6272it [00:01, 6294.70it/s]8320it [00:01, 7470.77it/s]10368it [00:01, 8309.53it/s]12416it [00:01, 8858.16it/s]14464it [00:02, 9326.53it/s]16237it [00:02, 10822.62it/s]17466it [00:02, 10284.65it/s]18587it [00:02, 9238.20it/s] 20608it [00:02, 9547.99it/s]22109it [00:02, 10633.88it/s]23258it [00:02, 10273.53it/s]24704it [00:03, 9548.51it/s] 26752it [00:03, 9766.41it/s]28800it [00:03, 9920.49it/s]30848it [00:03, 10005.44it/s]32896it [00:03, 9827.58it/s] 34944it [00:04, 10178.93it/s]36992it [00:04, 10207.68it/s]39040it [00:04, 10206.82it/s]41088it [00:04, 10218.98it/s]43136it [00:04, 10202.44it/s]45184it [00:05, 10158.99it/s]47176it [00:05, 11881.12it/s]48486it [00:05, 11117.05it/s]49674it [00:05, 9862.37it/s] 51328it [00:05, 9574.68it/s]53376it [00:05, 9770.66it/s]55424it [00:06, 9865.60it/s]57411it [00:06, 11731.63it/s]58711it [00:06, 10967.74it/s]59176it [00:06, 9268.39it/s] 
+Upload time: 6.681606614030898
+Total import time: 62.87190311495215
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 52.29it/s]43it [00:00, 61.08it/s]525it [00:00, 1053.29it/s]1055it [00:00, 2027.77it/s]1683it [00:01, 3077.24it/s]2255it [00:01, 3766.04it/s]2847it [00:01, 4350.42it/s]3438it [00:01, 4785.82it/s]4035it [00:01, 5121.39it/s]4689it [00:01, 5518.43it/s]5277it [00:01, 5578.61it/s]5860it [00:01, 5624.51it/s]6452it [00:01, 5709.69it/s]7048it [00:01, 5783.40it/s]7636it [00:02, 5614.21it/s]8205it [00:02, 5613.93it/s]8777it [00:02, 5643.70it/s]9412it [00:02, 5850.88it/s]10000it [00:02, 4076.62it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-15-25.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[14/18] index_type=SCANN, index_params={'nlist': 300}, search_params={'nprobe': 10, 'reorder_k': 150}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 277.52it/s]1608it [00:00, 3711.40it/s]2490it [00:00, 3025.16it/s]4224it [00:01, 4843.74it/s]6272it [00:01, 6413.96it/s]8320it [00:01, 7660.20it/s]10368it [00:01, 8412.85it/s]12416it [00:01, 8916.92it/s]14464it [00:02, 9305.74it/s]16512it [00:02, 9629.43it/s]18560it [00:02, 9802.81it/s]20608it [00:02, 9907.45it/s]22656it [00:02, 9998.94it/s]24704it [00:03, 9919.92it/s]26752it [00:03, 10152.37it/s]28800it [00:03, 10178.84it/s]30848it [00:03, 10192.00it/s]32896it [00:03, 10165.43it/s]34944it [00:04, 10149.97it/s]36992it [00:04, 10225.78it/s]39040it [00:04, 10213.38it/s]41088it [00:04, 10207.18it/s]43136it [00:04, 10206.26it/s]45122it [00:05, 11905.45it/s]46433it [00:05, 11105.95it/s]47619it [00:05, 9487.98it/s] 49280it [00:05, 9622.41it/s]51187it [00:05, 11523.92it/s]52467it [00:05, 10709.97it/s]53626it [00:05, 9567.50it/s] 55424it [00:06, 9507.86it/s]57472it [00:06, 9768.29it/s]59176it [00:06, 9263.76it/s]
+Upload time: 6.682900224812329
+Total import time: 62.857289960607886
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 51.45it/s]43it [00:00, 60.25it/s]623it [00:00, 1244.45it/s]1182it [00:00, 2233.57it/s]1788it [00:01, 3172.13it/s]2407it [00:01, 3954.16it/s]2961it [00:01, 4382.55it/s]3526it [00:01, 4735.63it/s]4111it [00:01, 5049.57it/s]4680it [00:01, 5233.95it/s]5239it [00:01, 5324.81it/s]5822it [00:01, 5469.36it/s]6390it [00:01, 5531.10it/s]7006it [00:01, 5716.70it/s]7587it [00:02, 5598.81it/s]8154it [00:02, 5616.08it/s]8721it [00:02, 5601.65it/s]9353it [00:02, 5812.83it/s]9937it [00:02, 5760.61it/s]10000it [00:02, 4051.50it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-16-32.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[15/18] index_type=SCANN, index_params={'nlist': 300}, search_params={'nprobe': 30, 'reorder_k': 100}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 293.52it/s]1642it [00:00, 3956.81it/s]2545it [00:00, 3035.57it/s]4224it [00:01, 4739.68it/s]6272it [00:01, 6390.11it/s]8320it [00:01, 7572.67it/s]10368it [00:01, 8373.42it/s]12416it [00:01, 8922.64it/s]14464it [00:02, 9198.32it/s]16512it [00:02, 9620.48it/s]18560it [00:02, 9804.52it/s]20608it [00:02, 9935.77it/s]22656it [00:02, 9961.89it/s]24704it [00:03, 10064.95it/s]26493it [00:03, 11443.36it/s]27742it [00:03, 10438.16it/s]28853it [00:03, 9644.12it/s] 30848it [00:03, 9819.42it/s]32896it [00:03, 9905.81it/s]34944it [00:04, 9914.69it/s]36992it [00:04, 10102.66it/s]39040it [00:04, 10145.17it/s]40853it [00:04, 11594.25it/s]42111it [00:04, 10753.45it/s]43248it [00:04, 9643.93it/s] 45178it [00:05, 11682.14it/s]46463it [00:05, 10925.33it/s]47637it [00:05, 9224.37it/s] 49280it [00:05, 9278.19it/s]51328it [00:05, 9721.88it/s]53144it [00:05, 11412.44it/s]54395it [00:05, 10765.60it/s]55545it [00:06, 9478.74it/s] 57472it [00:06, 9613.86it/s]59176it [00:06, 9261.43it/s]
+Upload time: 6.684760916978121
+Total import time: 63.25694344379008
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 50.47it/s]43it [00:00, 58.82it/s]509it [00:00, 990.31it/s]1063it [00:00, 2010.76it/s]1680it [00:01, 3019.67it/s]2235it [00:01, 3666.72it/s]2793it [00:01, 4180.08it/s]3360it [00:01, 4589.18it/s]3991it [00:01, 5059.82it/s]4572it [00:01, 5274.72it/s]5136it [00:01, 5349.98it/s]5697it [00:01, 5410.15it/s]6308it [00:01, 5614.74it/s]6883it [00:01, 5543.75it/s]7447it [00:02, 5571.59it/s]8011it [00:02, 5540.90it/s]8623it [00:02, 5700.54it/s]9226it [00:02, 5797.56it/s]9809it [00:02, 5725.01it/s]10000it [00:02, 3986.38it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-17-40.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[16/18] index_type=SCANN, index_params={'nlist': 300}, search_params={'nprobe': 30, 'reorder_k': 150}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 283.63it/s]2010it [00:00, 4740.22it/s]3129it [00:00, 3667.85it/s]4224it [00:01, 4437.44it/s]6272it [00:01, 6238.16it/s]8320it [00:01, 7461.09it/s]10368it [00:01, 8262.31it/s]12416it [00:01, 8822.93it/s]14464it [00:02, 9274.57it/s]16512it [00:02, 9549.63it/s]18560it [00:02, 9754.51it/s]20608it [00:02, 9880.54it/s]22656it [00:02, 9845.53it/s]24704it [00:03, 10084.02it/s]26752it [00:03, 10127.24it/s]28800it [00:03, 10137.39it/s]30848it [00:03, 10157.80it/s]32896it [00:03, 10140.47it/s]34944it [00:04, 10020.86it/s]36992it [00:04, 10252.83it/s]39040it [00:04, 10225.86it/s]41088it [00:04, 10206.24it/s]43136it [00:04, 10231.23it/s]45184it [00:05, 10214.56it/s]46853it [00:05, 11354.86it/s]48070it [00:05, 10750.98it/s]49280it [00:05, 9700.71it/s] 51328it [00:05, 9872.94it/s]53376it [00:05, 9992.26it/s]55424it [00:06, 10066.82it/s]57472it [00:06, 10082.44it/s]59176it [00:06, 9261.07it/s] 
+Upload time: 6.68231603782624
+Total import time: 62.84416652005166
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 52.89it/s]43it [00:00, 60.12it/s]625it [00:00, 1246.14it/s]1139it [00:00, 2129.12it/s]1704it [00:01, 2990.85it/s]2270it [00:01, 3681.94it/s]2802it [00:01, 4123.90it/s]3331it [00:01, 4445.76it/s]3973it [00:01, 4988.76it/s]4520it [00:01, 5116.77it/s]5066it [00:01, 5199.07it/s]5610it [00:01, 5230.72it/s]6200it [00:01, 5426.55it/s]6755it [00:01, 5417.86it/s]7306it [00:02, 5391.38it/s]7852it [00:02, 5391.94it/s]8437it [00:02, 5527.15it/s]8993it [00:02, 5411.33it/s]9537it [00:02, 5326.33it/s]10000it [00:02, 3936.41it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-18-47.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[17/18] index_type=SCANN, index_params={'nlist': 300}, search_params={'nprobe': 50, 'reorder_k': 100}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 271.38it/s]1849it [00:00, 4208.75it/s]2873it [00:00, 3270.71it/s]4224it [00:01, 4675.82it/s]6272it [00:01, 6418.11it/s]8320it [00:01, 7584.38it/s]10368it [00:01, 8389.81it/s]12416it [00:01, 8784.40it/s]14464it [00:02, 9375.14it/s]16512it [00:02, 9643.58it/s]18560it [00:02, 9799.60it/s]20608it [00:02, 9893.51it/s]22573it [00:02, 11613.20it/s]23872it [00:02, 10854.84it/s]25045it [00:03, 9705.78it/s] 26752it [00:03, 9536.77it/s]28672it [00:03, 11472.49it/s]29947it [00:03, 10187.17it/s]31065it [00:03, 9461.19it/s] 32896it [00:03, 9569.50it/s]34944it [00:04, 9797.69it/s]36992it [00:04, 9907.01it/s]39040it [00:04, 10019.99it/s]41088it [00:04, 10055.17it/s]43136it [00:04, 10095.41it/s]45184it [00:05, 10152.89it/s]47232it [00:05, 10184.55it/s]49280it [00:05, 10186.63it/s]51328it [00:05, 10206.88it/s]53376it [00:05, 10180.94it/s]55424it [00:06, 10219.72it/s]57472it [00:06, 10147.57it/s]59176it [00:06, 9252.63it/s] 
+Upload time: 6.685276860371232
+Total import time: 62.84478002972901
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 51.53it/s]43it [00:00, 60.01it/s]526it [00:00, 1041.25it/s]1077it [00:00, 2054.13it/s]1679it [00:01, 3024.50it/s]2166it [00:01, 3501.04it/s]2717it [00:01, 4043.46it/s]3273it [00:01, 4458.66it/s]3791it [00:01, 4662.39it/s]4303it [00:01, 4785.91it/s]4857it [00:01, 5002.91it/s]5401it [00:01, 5120.92it/s]5930it [00:01, 5170.08it/s]6505it [00:01, 5337.58it/s]7072it [00:02, 5436.44it/s]7646it [00:02, 5524.71it/s]8203it [00:02, 5478.64it/s]8754it [00:02, 5439.05it/s]9369it [00:02, 5648.39it/s]9936it [00:02, 5563.55it/s]10000it [00:02, 3892.08it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-19-54.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+[18/18] index_type=SCANN, index_params={'nlist': 300}, search_params={'nprobe': 50, 'reorder_k': 150}
+/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampled already exists
+established connection
+Experiment stage: Configure
+Experiment stage: Upload
+0it [00:00, ?it/s]128it [00:00, 287.76it/s]1937it [00:00, 4615.07it/s]3013it [00:00, 3404.28it/s]4224it [00:01, 4539.93it/s]6272it [00:01, 6225.22it/s]8125it [00:01, 8429.23it/s]9310it [00:01, 8423.88it/s]10382it [00:01, 8054.78it/s]12416it [00:01, 8774.98it/s]14464it [00:02, 9072.44it/s]16512it [00:02, 9655.56it/s]18560it [00:02, 9817.61it/s]20608it [00:02, 9948.88it/s]22402it [00:02, 11403.95it/s]23653it [00:02, 10632.78it/s]24786it [00:03, 9369.25it/s] 26752it [00:03, 9790.49it/s]28800it [00:03, 9923.83it/s]30848it [00:03, 10020.58it/s]32896it [00:03, 10081.59it/s]34944it [00:04, 10077.04it/s]36992it [00:04, 10042.63it/s]39040it [00:04, 10203.83it/s]41088it [00:04, 10218.47it/s]43136it [00:04, 10204.96it/s]45184it [00:05, 10194.46it/s]47232it [00:05, 10214.12it/s]49280it [00:05, 10194.35it/s]51328it [00:05, 10023.70it/s]53376it [00:05, 10257.89it/s]55424it [00:06, 10204.68it/s]57341it [00:06, 11783.22it/s]58632it [00:06, 10600.61it/s]59176it [00:06, 9236.05it/s] 
+Upload time: 6.679424620233476
+Total import time: 62.83843524008989
+Experiment stage: Search
+0it [00:00, ?it/s]33it [00:00, 52.16it/s]43it [00:00, 60.67it/s]515it [00:00, 1026.57it/s]1108it [00:00, 2146.95it/s]1669it [00:01, 2994.63it/s]2193it [00:01, 3577.89it/s]2711it [00:01, 4011.38it/s]3301it [00:01, 4537.82it/s]3829it [00:01, 4746.09it/s]4379it [00:01, 4963.22it/s]4935it [00:01, 5128.44it/s]5503it [00:01, 5287.25it/s]6049it [00:01, 5278.24it/s]6589it [00:01, 5279.00it/s]7183it [00:02, 5441.70it/s]7771it [00:02, 5569.50it/s]8333it [00:02, 5469.56it/s]8898it [00:02, 5520.76it/s]9486it [00:02, 5624.44it/s]10000it [00:02, 3928.31it/s]
+Experiment stage: Done
+Results saved to:  /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results
+{
+  "result_file": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/results/milvus-p10-new-adapt-sampling-sweep-20260530-230020-sampled-search-0-2026-05-30-23-21-01.json",
+  "dataset_name": "new-adapt-sampling-sweep-20260530-230020-sampled",
+  "engine_name": "milvus-p10"
+}
+{
+  "run_tag": "sampling-sweep-20260530-230020",
+  "sample_info": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sample_info.json",
+  "full_results_json": "/talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampling_index_sweep_results.json",
+  "total_combos": 18,
+  "ok_combos": 18,
+  "failed_combos": 0,
+  "recall_threshold": 0.9,
+  "top_n": 5,
+  "top_configs": []
+}
+Saved full results: /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/sampling_index_sweep_results.json
+Saved top-N summary: /talas-store1-pool/z78ding/vdb-tuning/vector-db-benchmark-master/datasets/new_adapt/sampling-sweep-20260530-230020/topn_by_recall_and_p95.json

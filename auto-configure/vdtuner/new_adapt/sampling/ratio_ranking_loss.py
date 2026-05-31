@@ -25,7 +25,7 @@ def calculate_ranking_loss(x, y):
 
 # 1. 读取 Excel 文件 (修改为 read_excel)
 # 注意：运行前请确保已安装 openpyxl 库（pip install openpyxl）
-file_path = "1sampling_new_scann_param_sweep_results.xlsx" 
+file_path = "sampling_new_scann_param_sweep_results.xlsx" 
 df = pd.read_excel(file_path)
 
 # 2. 计算全局（Overall）的 Ranking Loss
