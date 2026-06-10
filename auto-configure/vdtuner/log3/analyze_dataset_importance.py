@@ -21,7 +21,7 @@ import json
 
 # ==================== 配置区域 ====================
 # 指定要分析的数据集文件
-DATASET_FILE = "glove-100-angular.xlsx"
+DATASET_FILE = "random-match-int-2048-angular-no-filters.xlsx"
 # "random-geo-radius-2048-angular-no-filters.xlsx"
 
 # 输出JSON文件路径（如果为None则不保存）
@@ -35,7 +35,7 @@ PRECISION_THRESHOLD = 0.9  # 只统计Precisions大于此值的配置
 RPS_THRESHOLD = 1.1
 
 # 数据目录
-DATA_DIR = "/talas-pool/home/z78ding/vdb-tuning/auto-configure/vdtuner/log3"
+DATA_DIR = "/talas-store1-pool/z78ding/vdb-tuning/auto-configure/vdtuner/log3"
 # ==================================================
 
 

@@ -1,12 +1,14 @@
 import json
 import yaml
 
-with open('/talas-pool/home/z78ding/vdb-tuning/auto-configure/index_param.json', 'r') as f:
+VDB_TUNING_ROOT = "/talas-store1-pool/z78ding/vdb-tuning"
+
+with open(f"{VDB_TUNING_ROOT}/auto-configure/index_param.json", 'r') as f:
     INDEX_PARAM_DICT = json.load(f)
 
-CONF_PATH = r'/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/experiments/configurations/milvus-single-node.json'
-ORIGIN_PATH = r'/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/engine/servers/milvus-single-node/milvus.yaml.backup'
-ADJUST_PATH = r'/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/engine/servers/milvus-single-node/milvus.yaml'
+CONF_PATH = f"{VDB_TUNING_ROOT}/vector-db-benchmark-master/experiments/configurations/milvus-single-node.json"
+ORIGIN_PATH = f"{VDB_TUNING_ROOT}/vector-db-benchmark-master/engine/servers/milvus-single-node/milvus.yaml.backup"
+ADJUST_PATH = f"{VDB_TUNING_ROOT}/vector-db-benchmark-master/engine/servers/milvus-single-node/milvus.yaml"
 
 def filter_index_rule(conf):
     for item in INDEX_PARAM_DICT.keys():
@@ -32,7 +34,7 @@ def filter_index_rule(conf):
         building_params = {'M': conf['M'], 'efConstruction': conf['efConstruction']}
         searching_params = {'ef': conf['ef']}
     elif conf['index_type'] in ['SCANN']:
-        # building_params = {'nlist': conf['nlist']}  ##report invalid index params
+        building_params = {'nlist': conf['nlist']}  ##report invalid index params
         building_params = {}
         searching_params = {'nprobe': conf['nprobe'], 'reorder_k': conf['reorder_k']}
 

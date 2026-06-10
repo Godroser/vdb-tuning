@@ -17,6 +17,9 @@ MONITOR_DIR="$SOURCE_DIR/monitoring"
 DEFAULT_DOCKER_VOLUME_PARENT="/talas-store1-pool/z78ding/docker"
 export DOCKER_VOLUME_DIRECTORY="${DOCKER_VOLUME_DIRECTORY:-$DEFAULT_DOCKER_VOLUME_PARENT}"
 
+# 数据集默认使用 benchmark 仓库内 datasets/（已在 store1 大盘上）
+export VDB_DATASETS_DIR="${VDB_DATASETS_DIR:-$SOURCE_DIR/datasets}"
+
 # Activate virtual environment if it exists
 VENV_PATH=${VENV_PATH:-"/talas-pool/home/z78ding/venv"}
 if [ -f "$VENV_PATH/bin/activate" ]; then

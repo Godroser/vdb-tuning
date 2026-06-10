@@ -371,5 +371,57 @@
     "distance": "cosine",
     "type": "tar",
     "path": "../../auto-configure/vdtuner/adapt/drift_exports/random-geo-radius-2048-angular-no-filters/20260513-214412/cycle_5"
+  },
+  {
+    "name": "sift1m-128-angular",
+    "vector_size": 128,
+    "distance": "l2",
+    "type": "h5",
+    "path": "sift1m-128-angular/sift1m-128-angular.hdf5",
+    "link": "http://ann-benchmarks.com/sift-128-euclidean.hdf5"
+  },
+  {
+    "name": "paper-200-angular",
+    "vector_size": 200,
+    "distance": "l2",
+    "type": "h5",
+    "path": "paper-200-angular/paper-200-angular.hdf5"
+  },
+  {
+    "name": "crawl-300-angular",
+    "vector_size": 300,
+    "distance": "cosine",
+    "type": "h5",
+    "path": "crawl-300-angular/crawl-300-angular.hdf5"
+  },
+  {
+    "name": "msong-420-angular",
+    "vector_size": 420,
+    "distance": "l2",
+    "type": "h5",
+    "path": "msong-420-angular/msong-420-angular.hdf5"
+  },
+  {
+    "name": "nytimes-256-angular",
+    "vector_size": 256,
+    "distance": "cosine",
+    "type": "h5",
+    "path": "nytimes-256-angular/nytimes-256-angular.hdf5",
+    "link": "http://ann-benchmarks.com/nytimes-256-angular.hdf5"
+  },
+  {
+    "name": "gist1m-960-angular",
+    "vector_size": 960,
+    "distance": "l2",
+    "type": "h5",
+    "path": "gist1m-960-angular/gist1m-960-angular.hdf5",
+    "link": "http://ann-benchmarks.com/gist-960-euclidean.hdf5"
+  },
+  {
+    "name": "tiny1m-384-angular",
+    "vector_size": 384,
+    "distance": "l2",
+    "type": "h5",
+    "path": "tiny1m-384-angular/tiny1m-384-angular.hdf5"
   }
 ]

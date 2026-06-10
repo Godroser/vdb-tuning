@@ -19,7 +19,7 @@
     "nbits": {"min": 8, "max": 9},
     "M": {"min": 32, "max": 64},
     "rootCoord*minSegmentSizeToEnableIndex": {"min": 100, "max": 10000},
-    "dataCoord*segment*maxSize": {"min": 100, "max": 10000},
+    "dataCoord*segment*maxSize": {"min": 100, "max": 100000},
     "common*gracefulTime": {"min": 100, "max": 100000},
     "reorder_k": {"min": 100, "max": 1000},
     "ef": {"min": 100, "max": 501},

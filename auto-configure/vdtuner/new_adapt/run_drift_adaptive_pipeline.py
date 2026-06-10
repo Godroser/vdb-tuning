@@ -58,8 +58,8 @@ CONFIG: dict[str, Any] = {
 
     # Baseline initial index config (on original dataset)
     "initial_index_type": "SCANN",
-    "initial_index_params": {"nlist": 100},
-    "initial_search_params": {"nprobe": 30, "reorder_k": 150},
+    "initial_index_params": {"nlist": 1942},
+    "initial_search_params": {"nprobe": 190, "reorder_k": 167},
 
     # Drift simulation
     # drift_mode: "random" | "skewed"
@@ -80,8 +80,8 @@ CONFIG: dict[str, Any] = {
     "sampling_kmeans_clusters": 50,
     "sampling_kmeans_batch_size": 2048,
     "sweep_index_type": "SCANN",
-    "sweep_index_param_grid": {"nlist": [100, 200, 300]},
-    "sweep_search_param_grid": {"nprobe": [10, 30, 50], "reorder_k": [101, 150, 200]},
+    "sweep_index_param_grid": {"nlist": [1000, 1250, 1500, 1750, 2000, 2500, 2750,3000]},
+    "sweep_search_param_grid": {"nprobe": [100, 150, 200, 250, 300, 350], "reorder_k": [101, 150, 200, 250]},
     "sampled_recall_threshold": 0.8,
     "sampled_top_k": 5,
     "continue_on_sweep_error": True,

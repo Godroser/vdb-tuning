@@ -8,17 +8,16 @@
       {
         "parallel": 10,
         "params": {
-          "nprobe": 10
+          "ef": 100
         }
       }
     ],
     "upload_params": {
       "parallel": 32,
-      "index_type": "IVF_PQ",
+      "index_type": "HNSW",
       "index_params": {
-        "nlist": 50,
-        "m": 4,
-        "nbits": 16
+        "M": 4,
+        "efConstruction": 23
       }
     }
   }

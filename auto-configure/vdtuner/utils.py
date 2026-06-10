@@ -12,9 +12,11 @@ from configure import *
 import threading
 import traceback
 from pathlib import Path
+from typing import Optional
 
-KNOB_PATH = r'/talas-pool/home/z78ding/vdb-tuning/auto-configure/whole_param.json'
-RUN_ENGINE_PATH = r'/talas-pool/home/z78ding/vdb-tuning/vector-db-benchmark-master/run_engine_test.sh'
+VDB_TUNING_ROOT = "/talas-store1-pool/z78ding/vdb-tuning"
+KNOB_PATH = f"{VDB_TUNING_ROOT}/auto-configure/whole_param.json"
+RUN_ENGINE_PATH = f"{VDB_TUNING_ROOT}/vector-db-benchmark-master/run_engine_test.sh"
 
 def LHS_sample(dimension, num_points, seed):
     sampler = qmc.LatinHypercube(d=dimension, seed=seed)
@@ -87,11 +89,19 @@ class StaticEnv:
         return np.concatenate((np.array(Y1).reshape(-1,1), np.array(Y2).reshape(-1,1)), axis=1)
 
 class RealEnv:
-    def __init__(self, bench_path=RUN_ENGINE_PATH, knob_path=KNOB_PATH, dataset="glove-100-angular") -> None:
+    def __init__(
+        self,
+        bench_path=RUN_ENGINE_PATH,
+        knob_path=KNOB_PATH,
+        dataset="glove-100-angular",
+        record_log_path: Optional[str] = None,
+    ) -> None:
         self.bench_path = bench_path
         self.knob_stand = KnobStand(knob_path)
         self.names = list(self.knob_stand.knobs_detail.keys())
         self.dataset = dataset  # Store the dataset name
+        default_record_log_path = Path(__file__).resolve().parent / "record.log"
+        self.record_log_path = Path(record_log_path) if record_log_path else default_record_log_path
         self.t1 = time.time()
         self.t2 = time.time()
         self.sampled_times = 0
@@ -107,7 +117,6 @@ class RealEnv:
         # - col 0: Precisions (larger is better)
         # - col 1: RPS        (larger is better)
         # - col 2: Time (optional bookkeeping; not used by current optimizer)
-        record_log_path = Path(__file__).resolve().parent / "record.log"
         Y1, Y2, Y3, Y4 = [], [], [], []
         for i,record in enumerate(knob_vals_arr):
             conf_value = [self.knob_stand.scale_back(self.names[j], knob_val)[1] for j,knob_val in enumerate(record)]
@@ -232,8 +241,8 @@ class RealEnv:
                 'RPS': y4
             })
             # Write via Python to avoid `/bin/sh` syntax errors when log entry contains special chars.
-            record_log_path.parent.mkdir(parents=True, exist_ok=True)
-            with record_log_path.open("a", encoding="utf-8") as f:
+            self.record_log_path.parent.mkdir(parents=True, exist_ok=True)
+            with self.record_log_path.open("a", encoding="utf-8") as f:
                 f.write(log_entry + "\n")
 
             Y1.append(y1)
